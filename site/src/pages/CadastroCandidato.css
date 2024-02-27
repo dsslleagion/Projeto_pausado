@@ -1,0 +1,48 @@
+/* CadastroCandidato.css */
+.cadastro-candidato {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .cadastro-candidato h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .cadastro-candidato .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .cadastro-candidato label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .cadastro-candidato input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .cadastro-candidato button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .cadastro-candidato {
+      padding: 10px;
+    }
+  
+    .cadastro-candidato h1 {
+      font-size: 2rem;
+    }
+  }
+  

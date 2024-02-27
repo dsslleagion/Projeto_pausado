@@ -1,0 +1,13 @@
+FROM python:alpine
+
+WORKDIR /usr/src/app
+
+COPY ./ /usr/src/app/
+
+
+RUN pip install  pymongo mysql-connector-python
+RUN pip install python-dotenv
+
+EXPOSE 5000
+
+CMD [ "python", "app.py" ]

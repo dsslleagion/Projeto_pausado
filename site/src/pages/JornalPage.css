@@ -1,0 +1,58 @@
+/* JornalPage.css */
+
+.jornal-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Adicionando um fundo branco ao conteúdo do jornal */
+  .jornal-content {
+    margin-top: 50px;
+    background-color: #ffffff; /* Cor de fundo branca */
+    padding: 20px; /* Espaçamento interno para simular o papel do jornal */
+    border-radius: 10px; /* Borda arredondada para simular o papel do jornal */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para dar dimensão */
+    color: #333333; /* Cor do texto */
+  }
+  
+  .jornal-content h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .article {
+    margin-bottom: 50px;
+  }
+  
+  .article img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .article h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .article p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .jornal-page {
+      padding: 10px;
+    }
+  
+    .article h2 {
+      font-size: 1.5rem;
+    }
+  
+    .article p {
+      font-size: 1rem;
+    }
+  }
+  

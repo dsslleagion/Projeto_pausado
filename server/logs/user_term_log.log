@@ -1,0 +1,31 @@
+ID-Wed Nov 08 2023 19:46:12 GMT-0300 (Horário Padrão de Brasília)-{python é legal: 0}
+ID-Wed Nov 08 2023 19:46:21 GMT-0300 (Horário Padrão de Brasília)-{python é legal: 1}
+ID-Wed Nov 08 2023 19:52:07 GMT-0300 (Horário Padrão de Brasília)-{123456: 1}
+ID-Wed Nov 08 2023 19:52:24 GMT-0300 (Horário Padrão de Brasília)-{pode xingar?: 0}
+ID-Wed Nov 08 2023 19:56:33 GMT-0300 (Horário Padrão de Brasília)-{123456: 1}
+ID-Wed Nov 08 2023 19:56:47 GMT-0300 (Horário Padrão de Brasília)-{pode xingar todos: 1}
+[2023-11-09 16:09:00] Created Termos: 1, Descricao: dionisiosamuel611@gmail.com
+[2023-11-09 16:15:01] Created Termos: 2, Descricao: nao pode xingar
+[2023-11-09 16:15:12] Created Termos: 3, Descricao: nao pode chorar
+[2023-11-09 16:15:22] Created Termos: 4, Descricao: nao pode gritar
+[2023-11-09 16:15:31] Created Termos: 5, Descricao: nao pode chutar
+[2023-11-09 16:15:47] ID-Thu Nov 09 2023 16:15:47 GMT-0300 (Horário Padrão de Brasília)-{nao pode chutar: 0}
+[2023-11-09 18:22:50] Created ClienteTermos: 1, Cliente: undefined, Termos: undefined
+[2023-11-09 18:24:39] ID-Thu Nov 09 2023 18:24:39 GMT-0300 (Horário Padrão de Brasília)-{ClienteTermos: 1, TermosAceitos: [object Object]}
+[2023-11-19 18:15:28] ClienteTermos encontrado: 1
+[2023-11-19 18:18:01] ClienteTermos excluído: undefined
+[2023-11-20 17:24:10] Created Termos: 3, Descricao: linux merda
+[2023-11-21 21:03:14] Created Termos: 2, Descricao: Política de Privacidade: usuário. Termos de Serviço: Especifica. Cookies: cookies.
+[2023-11-27 23:59:38] Created Termos: 3, itemTermos: [object Object]
+[2023-11-28 00:11:38] Erro ao criar termos: Field 'itemTermos' doesn't have a default value
+[2023-11-28 00:11:57] Erro ao criar termos: Field 'itemTermos' doesn't have a default value
+[2023-11-28 00:14:33] Erro ao criar termos: Field 'itemTermos' doesn't have a default value
+[2023-11-28 00:26:34] Erro ao criar termos: Field 'itemTermos' doesn't have a default value
+[2023-11-28 00:28:56] Created Termos: 4, itemTermos: [object Object]
+[2023-11-28 00:31:44] Created Termos: 5, itemTermos: [object Object]
+[2023-11-28 10:33:31] Created Termos: 6, itemTermos: [object Object]
+[2023-11-28 21:36:26] Created Termos: 8, itemTermos: [object Object]
+[2023-11-28 22:15:21] Created Termos: 9, itemTermos: {"titulo": "Amem", "descricao": "Jesus"; "titulo": "VaiDaCertp", "descricao": "issoai"}
+[2023-11-28 22:19:19] Created Termos: 10, itemTermos: [object Object],[object Object]
+[2023-11-28 22:28:08] Created Termos: 11, itemTermos: [object Object]
+[2023-12-01 09:57:08] Created Termos: 23, itemTermos: [object Object]

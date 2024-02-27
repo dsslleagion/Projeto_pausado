@@ -1,0 +1,47 @@
+/* Estilizações específicas da página Home */
+.main-container {
+  margin-top: 80px; /* Ajuste conforme necessário */
+}
+
+h1 {
+  font-size: 2.5rem; /* Reduza o tamanho do título */
+  font-weight: bold;
+  margin-bottom: 20px; /* Adicione algum espaço abaixo do título */
+  color: #fff; /* Mude a cor do título para branco */
+  text-align: center; /* Centralize o título */
+}
+
+.news-grid {
+  display: grid; /* Usando display grid para melhor controle dos elementos */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsividade e ajuste automático das colunas */
+  gap: 20px; /* Espaço entre os cards */
+}
+
+.news-card {
+  background-color: rgba(255, 255, 255, 0.1); /* Adicione uma cor de fundo semi-transparente para os cards de notícias */
+  border-radius: 10px; /* Adicione bordas arredondadas */
+  /* padding: 20px; */ /* Remova esta linha para evitar o preenchimento interno */
+}
+
+.news-title {
+  font-size: 1.5rem; /* Tamanho do título da notícia */
+  font-weight: bold; /* Negrito */
+  margin-bottom: 10px; /* Espaço abaixo do título */
+  color: #fff;
+}
+
+.news-content {
+  font-size: 1.2rem; /* Tamanho do conteúdo da notícia */
+  line-height: 1.5; /* Espaçamento entre linhas */
+}
+
+.news-date {
+  font-size: 0.9rem; /* Tamanho da data */
+  color: #ccc; /* Cor cinza para a data */
+  margin-top: 10px; /* Espaço acima da data */
+}
+
+.news-card:hover {
+  transform: translateY(-5px); /* Efeito de levantamento ao passar o mouse */
+  transition: transform 0.3s ease-in-out; /* Transição suave */
+}

@@ -1,0 +1,154 @@
+.nav-container {
+  background-color: #ff0000;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  top: 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+.logo-img {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 20px;
+  color: #fff;
+}
+
+.nav-right {
+  display: flex;
+}
+
+.nav-category {
+  margin-right: 20px;
+  position: relative; /* Adicione esta linha */
+}
+
+.nav-category-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: color 0.3s ease;
+  cursor: pointer; /* Adicione esta linha */
+}
+
+.nav-category:hover .nav-category-title {
+  color: #ccc;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  /* Altere o posicionamento do dropdown */
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  right: 0; /* Alinha o dropdown com a borda direita do elemento pai */
+}
+
+/* Adicione uma classe específica para cada dropdown */
+.dropdown-cadastro {
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  left: 0; /* Alinha o dropdown com a borda esquerda do elemento pai */
+}
+
+.dropdown-jornal {
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  left: -20px; /* Ajuste a posição horizontal conforme necessário */
+}
+
+.dropdown-candidatos {
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  left: -40px; /* Ajuste a posição horizontal conforme necessário */
+}
+
+.dropdown-tribunas {
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  left: -60px; /* Ajuste a posição horizontal conforme necessário */
+}
+
+.dropdown-profile {
+  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
+  right: 0; /* Alinha o dropdown com a borda direita do elemento pai */
+}
+
+.nav-category:hover .dropdown-content,
+.nav-category.active .dropdown-content { /* Adicione esta linha */
+  display: block;
+}
+
+.nav-link {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #ccc;
+}
+
+.nav-button {
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #e94545;
+}
+
+.profile-pic {
+  width: 40px; /* Ajuste o tamanho conforme necessário */
+  height: 40px; /* Ajuste o tamanho conforme necessário */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-pic-large {
+  width: 80px; /* Ajuste o tamanho conforme necessário */
+  height: 80px; /* Ajuste o tamanho conforme necessário */
+  border-radius: 50%;
+}
+
+.profile-dropdown {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.profile-info {
+  margin-left: 10px;
+}
+
+.profile-info p {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}

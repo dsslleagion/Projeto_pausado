@@ -1,0 +1,26 @@
+/* Reset de estilos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo global */
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('./assets/planodefundo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding-top: 170px;  /* Mantém a imagem fixa enquanto o conteúdo rola */
+  padding-bottom: 500px;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Adicione um fundo semi-transparente para destacar o conteúdo */
+  border-radius: 10px; /* Adicione bordas arredondadas para o contêiner */
+}

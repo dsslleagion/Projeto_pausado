@@ -1,0 +1,25 @@
+/* TribunasPage.css */
+/* TribunaPage.css */
+.tribuna-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .tribuna-page h1 {
+    margin-bottom: 20px;
+  }
+  
+  .tribuna-page p {
+    margin-bottom: 20px;
+  }
+  
+  .tribuna-page a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .tribuna-page a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,14 @@
+/* Estilização dos botões */
+button {
+    background-color: #ff6b6b;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #e94545;
+  }
+  

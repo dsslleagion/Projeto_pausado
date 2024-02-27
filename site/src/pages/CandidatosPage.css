@@ -1,0 +1,32 @@
+/* CandidatosPage.css */
+.candidatos-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .candidatos-page h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .candidatos-page ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .candidatos-page li {
+    margin-bottom: 10px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .candidatos-page {
+      padding: 10px;
+    }
+  
+    .candidatos-page h1 {
+      font-size: 2rem;
+    }
+  }
+  
