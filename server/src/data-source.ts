@@ -3,7 +3,7 @@ import {info} from "./postMongo";
 
 
 const AppDataSource = new DataSource({
-  database: "clientes",
+  database: "camera",
   type: "mysql", 
   host: "localhost", 
   port: 3306, 

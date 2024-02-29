@@ -1,6 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, BeforeUpdate, ManyToOne } from "typeorm";
 
 import * as bcrypt from "bcrypt";
+import { Formulario } from "./Formulario";
+import { ClienteToTribuna } from "./ClienteToTribuna";
+import { ClienteToCandidato } from "./ClienteToCandidato";
 
 @Entity({ name: "cliente" })
 export class Cliente {
@@ -56,4 +59,13 @@ export class Cliente {
         return bcrypt.compare(input, this.password);
     }
 
+
+    @ManyToOne(() => Formulario, (form) => form.clinte, { onDelete: 'CASCADE', eager: true })
+    form: Formulario;
+
+    @OneToMany(() => ClienteToTribuna, (cliToTri) => cliToTri.cliente)
+    cliToTri: ClienteToTribuna[];
+
+    @OneToMany(() => ClienteToCandidato, (cliToCan) => cliToCan.cliente)
+    cliToCan: ClienteToCandidato[];
 }
