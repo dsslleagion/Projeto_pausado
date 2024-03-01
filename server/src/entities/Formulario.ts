@@ -6,8 +6,8 @@ export class Formulario {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  imagem: string;
+  // @Column()
+  // imagem: string;
 
   @Column({ nullable: false })
   conteudo: string;
