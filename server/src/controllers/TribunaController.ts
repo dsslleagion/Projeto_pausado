@@ -28,14 +28,43 @@ class TribunaController {
     }
   }
 
-  public async putTribuna(req: Request, res: Response): Promise<Response> {
+  public async post(req: Request, res: Response): Promise<Response>{
+    try{
+      const { nome } = req.body
+      const rep = AppDataSource.getRepository(Tribuna)
+      const tribuna = new Tribuna()
+      tribuna.nome = nome
+      const one = await rep.save(tribuna)
+      return res.status(200).json(one)
+    }catch(err){
+      return res.status(400).json({erro: "Tribuna não cadastrada!", err: err})
+    }
+  }
+
+  public async put(req: Request, res: Response): Promise<Response> {
 
     try {
-     
+      const id:any = req.params.uuid
+      const { nome } = req.body
+      const rep = AppDataSource.getRepository(Tribuna)
+      const one = await rep.findOneBy({id: id})
+      one.nome = nome
+      const save = await rep.save(one)
+      return res.status(200).json(save)
     } catch (error) {
-      console.error('Erro ao atualizar tribuna:', error);
-  
-      return res.status(500).json({ error: 'Erro ao atualizar tribuna' });
+      return res.status(500).json({ error: 'Erro ao atualizar tribuna', err: error });
+    }
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response>{
+    try{
+      const id:any = req.params.uuid
+      const rep = AppDataSource.getRepository(Tribuna)
+      const one = await rep.findOneBy({id: id})
+      const remove = await rep.remove(one)
+      return res.status(200).json(remove)
+    }catch(err){
+      return res.status(400).json({erro:'Erro ao deletar tribuna!', err: err})
     }
   }
 
