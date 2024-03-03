@@ -1,88 +1,76 @@
-// candidato.controller.ts
-
 import { Request, Response } from 'express';
 import { Candidato } from '../entities/Candidato';
 import AppDataSource from "../data-source";
-import { info, error, warm } from "../postMongo";
 
 class CandidatoController {
-  public async putCandidato(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
 
-    try {
-      // Implemente a lógica de atualização do candidato aqui
-    } catch (error) {
-      console.error('Erro ao atualizar candidato:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao atualizar candidato: ' + error,
-      });
-      return res.status(500).json({ error: 'Erro ao atualizar candidato' });
+  public async getAll(req: Request, res: Response): Promise<Response>{
+    try{
+      const rep = AppDataSource.getRepository(Candidato)
+      const all = await rep.find()
+      return res.status(200).json(all)
+    }catch(err){
+      return res.status(404).json({erro: 'Erro ao buscar os candidatos!', err: err})
     }
   }
 
-  public async getCandidato(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
-
-    try {
-      // Implemente a lógica de busca do candidato aqui
-    } catch (error) {
-      console.error('Erro ao buscar candidato:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao buscar candidato: ' + error,
-      });
-      return res.status(500).json({ error: 'Erro ao buscar candidato' });
+  public async getOne(req: Request, res: Response): Promise<Response>{
+    try{
+      const id:any = req.params.uuid
+      const rep = AppDataSource.getRepository(Candidato)
+      const one = await rep.findOne(id)
+      return res.status(200).json(one)
+    }catch(err){
+      return res.status(404).json({erro: 'Candidato não encontrado!', err: err})
     }
   }
 
-  public async getAllCandidatos(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
-
-    try {
-      // Implemente a lógica para buscar todos os candidatos aqui
-    } catch (error) {
-      console.error('Erro ao buscar candidatos:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao buscar candidatos: ' + error,
-      });
-      return res.status(500).json({ error: 'Erro ao buscar candidatos' });
+  public async post(req: Request, res: Response): Promise<Response>{
+    try{
+      const { nome, partido, cargo } = req.body
+      const rep = AppDataSource.getRepository(Candidato)
+      const candidato = new Candidato()
+      candidato.nome = nome
+      candidato.partido = partido
+      candidato.cargo = cargo
+      const result = await rep.save(candidato)
+      return res.status(200).json(result)
+    }catch(err){
+      return res.status(400).json({erro: "Candidato não cadastrado!", err: err})
     }
   }
 
-  public async postCandidato(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
-
+  public async put(req: Request, res: Response): Promise<Response> {
     try {
-      // Implemente a lógica para criar um novo candidato aqui
+      const id:any = req.params.uuid
+      const { nome, partido, cargo } = req.body
+      const rep = AppDataSource.getRepository(Candidato)
+      const candidato = await rep.findOne(id)
+      if (!candidato) {
+        return res.status(404).json({ error: 'Candidato não encontrado' });
+      }
+      candidato.nome = nome
+      candidato.partido = partido
+      candidato.cargo = cargo
+      const result = await rep.save(candidato)
+      return res.status(200).json(result)
     } catch (error) {
-      console.error('Erro ao cadastrar candidato:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao cadastrar candidato: ' + error,
-      });
-      return res.status(500).json({ error: 'Erro ao cadastrar candidato' });
+      return res.status(500).json({ error: 'Erro ao atualizar candidato', err: error });
     }
   }
 
-  public async deleteCandidato(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
-
-    try {
-      // Implemente a lógica para deletar um candidato aqui
-    } catch (error) {
-      console.error('Erro ao deletar candidato:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao deletar candidato: ' + error,
-      });
-      return res.status(500).json({ error: 'Erro ao deletar candidato' });
+  public async delete(req: Request, res: Response): Promise<Response>{
+    try{
+      const id:any = req.params.uuid
+      const rep = AppDataSource.getRepository(Candidato)
+      const candidato = await rep.findOne(id)
+      if (!candidato) {
+        return res.status(404).json({ error: 'Candidato não encontrado' });
+      }
+      const result = await rep.remove(candidato)
+      return res.status(200).json(result)
+    }catch(err){
+      return res.status(400).json({erro:'Erro ao deletar candidato!', err: err})
     }
   }
 }
