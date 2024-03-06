@@ -18,7 +18,7 @@ class CandidatoController {
     try{
       const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Candidato)
-      const one = await rep.findOne(id)
+      const one = await rep.findOneBy({id:id})
       return res.status(200).json(one)
     }catch(err){
       return res.status(404).json({erro: 'Candidato não encontrado!', err: err})
@@ -45,7 +45,7 @@ class CandidatoController {
       const id:any = req.params.uuid
       const { nome, partido, cargo } = req.body
       const rep = AppDataSource.getRepository(Candidato)
-      const candidato = await rep.findOne(id)
+      const candidato = await rep.findOneBy({id:id})
       if (!candidato) {
         return res.status(404).json({ error: 'Candidato não encontrado' });
       }
@@ -63,7 +63,7 @@ class CandidatoController {
     try{
       const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Candidato)
-      const candidato = await rep.findOne(id)
+      const candidato = await rep.findOneBy({id:id})
       if (!candidato) {
         return res.status(404).json({ error: 'Candidato não encontrado' });
       }

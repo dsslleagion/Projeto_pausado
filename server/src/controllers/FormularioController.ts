@@ -16,9 +16,9 @@ class FormularioController {
 
   public async getOne(req: Request, res: Response): Promise<Response>{
     try{
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Formulario)
-      const one = await rep.findOne(id)
+      const one = await rep.findOneBy({id:id})
       return res.status(200).json(one)
     }catch(err){
       return res.status(404).json({erro: 'Formulário não encontrado!', err: err})
@@ -40,10 +40,10 @@ class FormularioController {
 
   public async put(req: Request, res: Response): Promise<Response> {
     try {
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const { conteudo } = req.body
       const rep = AppDataSource.getRepository(Formulario)
-      const formulario = await rep.findOne(id)
+      const formulario = await rep.findOneBy({id:id})
       if (!formulario) {
         return res.status(404).json({ error: 'Formulário não encontrado' });
       }
@@ -57,9 +57,9 @@ class FormularioController {
 
   public async delete(req: Request, res: Response): Promise<Response>{
     try{
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Formulario)
-      const formulario = await rep.findOne(id)
+      const formulario = await rep.findOneBy({id:id})
       if (!formulario) {
         return res.status(404).json({ error: 'Formulário não encontrado' });
       }
