@@ -10,6 +10,7 @@ import formulario from './formulario';
 import clienteToTribuna from './ClienteToTribuna'
 import clienteToCandidato from './ClienteToCandidato'
 import candidatoToJornal from './candidatoToJornal'
+import tribunaToNoticia from './TribunaToNoticia'
 
 const routes = Router()
 
@@ -25,6 +26,7 @@ routes.use("/form", formulario);
 routes.use('/ct', clienteToTribuna)
 routes.use('/cc', clienteToCandidato)
 routes.use('/cj', candidatoToJornal)
+routes.use('/tn', tribunaToNoticia)
 
 routes.use((req: Request, res: Response) => res.status(404).json({ error: "Requisição desconhecida" }));
 

@@ -8,6 +8,7 @@ import JornalController from "./JornalController";
 import ClienteToTribunaController from "./ClienteToTribunaController";
 import ClienteToCandidatoController from "./ClienteToCandidatoController";
 import CandidatoToJornalController from "./CandidatoToJornalController";
+import TribunaToNoticiaController from "./TribunaToNoticiaController";
 
 export{
     JornalController,
@@ -19,5 +20,5 @@ export{
     ClienteToTribunaController,
     ClienteToCandidatoController,
     CandidatoToJornalController,
-    
+    TribunaToNoticiaController
 }
