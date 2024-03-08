@@ -70,21 +70,14 @@ class ClienteController {
   }
 
   public async putCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try {
       const createCliente = req.body;
       const idCliente: any = req.params.uuid;
       const clienteRepository = AppDataSource.getRepository(Cliente);
       const findCliente = await clienteRepository.findOneBy({ id: idCliente });
       if (!findCliente) {
-        warmLog.insertOne({
-          date: new Date(),
-          message: "Cliente não encontrado"
-        })
         return res.status(404).json({ error: 'Cliente não encontrado' });
       }
-      loggerUpdate.info(`Cliente atualizado: ID ${idCliente}`);
       
       // Verifique cada campo e atualize o cliente
       // if (createCliente.nome !== undefined) {
@@ -111,10 +104,6 @@ class ClienteController {
       // }
 
       if (createCliente.nome === undefined || createCliente.email === undefined || createCliente.sexo === undefined || createCliente.telefone === undefined || createCliente.endereco === undefined ) {
-        warmLog.insertOne({
-          date: new Date(),
-          message: 'Erro ao atualizar cliente: ' + "Dados invalidos!"
-        })
         return res.status(405).json({erro: "Dados invalidos!"})
       }
       findCliente.nome = createCliente.nome;
@@ -126,6 +115,7 @@ class ClienteController {
       findCliente.cidade = createCliente.cidade;
       findCliente.cep = createCliente.cep;
       findCliente.redes_sociais = createCliente.redes_sociais;
+      findCliente.form = createCliente.form
       console.log(findCliente);
       
       if(createCliente.profile !== undefined){
@@ -134,28 +124,15 @@ class ClienteController {
 
       // Salve as alterações no cliente
       const updatedCliente = await clienteRepository.save(findCliente);
-
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Cliente atualizado",
-        idUser: updatedCliente.id
-      })
       return res.json(updatedCliente);
     } catch (error) {
       console.error('Erro ao atualizar cliente:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao atualizar cliente: ' + error
-      })
-
       return res.status(500).json({ error: 'Erro ao atualizar cliente' });
     }
   }
 
 
   public async putPassword(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try{
       const { password } = req.body
       const id: any = req.params.uuid;
@@ -170,132 +147,72 @@ class ClienteController {
       client.password = password
 
       const r = await AppDataSource.manager.save(Cliente, client)
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Senha atualizada com sucesso",
-        idUser: id
-      })
+
       return res.json(r)
     }catch(err){
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao atualizar senha: ' + err
-      })
       return res.status(400).json({error: err})
     }
   }
 
 
   public async getHistoricCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try{
       const clienteRepository = AppDataSource.getRepository(Cliente)
       const allCliente = await clienteRepository.find()
       console.log(allCliente)
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Clientes pegos com sucesso"
-      })
+
       return res.json(allCliente)
     }catch(err){
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao pegar usuarios: ' + err
-      })
       return res.status(400).json({error: err})
     }
   }
 
   public async getCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try {
       const idCliente: any = req.params.uuid;
       const clienteRepository = AppDataSource.getRepository(Cliente);
       const cliente = await clienteRepository.findOneBy({ id: idCliente });
 
       if (!cliente) {
-        warmLog.insertOne({
-          date: new Date(),
-          message: 'Cliente não encontrado'
-        })
         return res.status(404).json({ error: 'Cliente não encontrado' });
       }
 
-      const { nome, email, sexo, telefone, endereco, bairro, cep , cidade, redes_sociais, profile } = cliente;
+    //  const { nome, email, sexo, telefone, endereco, bairro, cep , cidade, redes_sociais, profile } = cliente;
 
-      const clienteData = {
-        id: idCliente,
-        nome,
-        email,
-        sexo,
-        telefone,
-        endereco,
-        bairro,
-        cep,
-        cidade,
-        redes_sociais,
+      // const clienteData = {
+      //   id: idCliente,
+      //   nome,
+      //   email,
+      //   sexo,
+      //   telefone,
+      //   endereco,
+      //   bairro,
+      //   cep,
+      //   cidade,
+      //   redes_sociais,
 
-        profile
-      };
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Clientes pego com sucesso",
-        id: idCliente
-      })
-      return res.json(clienteData);
+      //   profile
+      // };
+      return res.json(cliente);
     } catch (error) {
       console.error('Erro ao buscar cliente:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao buscar cliente: ' + error
-      })
       return res.status(500).json({ error: 'Erro ao buscar cliente' });
     }
   }
   public async getAllCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog = await info();
-    const warmLog = await warm();
 
     try {
       const clienteRepository = AppDataSource.getRepository(Cliente);
       const clientes = await clienteRepository.find();
 
       if (!clientes || clientes.length === 0) {
-        warmLog.insertOne({
-          date: new Date(),
-          message: 'Nenhum cliente encontrado'
-        });
         return res.status(404).json({ error: 'Nenhum cliente encontrado' });
       }
 
-      const clientesData = clientes.map(cliente => ({
-        id: cliente.id,
-        nome: cliente.nome,
-        email: cliente.email,
-        sexo: cliente.sexo,
-        telefone: cliente.telefone,
-        endereco: cliente.endereco,
-        bairro: cliente.bairro,
-        cep: cliente.cep,
-        cidade: cliente.cidade,
-        redes_sociais: cliente.redes_sociais,
-        profile: cliente.profile
-      }));
-
-      infoLog.insertOne({
-        date: new Date(),
-        message: 'Clientes pegos com sucesso'
-      });
-
-      return res.json(clientesData);
+      return res.json(clientes);
     } catch (error) {
       console.error('Erro ao buscar clientes:', error);
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao buscar clientes: ' + error
-      });
+    
       return res.status(500).json({ error: 'Erro ao buscar clientes' });
     }
   }
@@ -315,6 +232,7 @@ class ClienteController {
       insertCliente.telefone = createCliente.telefone
       insertCliente.profile = createCliente.profile
       insertCliente.password = createCliente.password
+      insertCliente.form = createCliente.form
 
   
   
