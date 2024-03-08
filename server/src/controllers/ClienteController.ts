@@ -27,7 +27,14 @@ class ClienteController {
         .getOne();
 
         const rep = AppDataSource.getRepository(ClienteToTribuna)
-        const one = await rep.findOneBy({cliente: usuario.id})
+        const one = await rep
+          .createQueryBuilder('clienteToTribuna')
+          .innerJoinAndSelect('clienteToTribuna.tribuna', 'tribuna')
+          .where('clienteToTribuna.cliente = :clienteId', { clienteId: usuario.id })
+          .getMany();
+        // const one = await rep.findBy({cliente: usuario.id})
+        // console.log(one.forEach((item) => console.log(item.tribuna)))
+        
 
       if (usuario && usuario.id) {
         const isPasswordValid = await usuario.compare(password);
