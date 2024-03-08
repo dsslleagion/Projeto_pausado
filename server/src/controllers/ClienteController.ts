@@ -6,6 +6,7 @@ import { loggerDelete, loggerUpdate } from "../config/logger";
 import cliente from "../routes/cliente";
 import { info, error, warm } from "../postMongo";
 import { ClienteToTribuna } from "../entities/ClienteToTribuna";
+import { ClienteToCandidato } from "../entities/ClienteToCandidato";
 
 class ClienteController {
   public async login(req: Request, res: Response): Promise<Response> {
@@ -34,7 +35,12 @@ class ClienteController {
           .getMany();
         // const one = await rep.findBy({cliente: usuario.id})
         // console.log(one.forEach((item) => console.log(item.tribuna)))
-        
+        const repCandi = AppDataSource.getRepository(ClienteToCandidato)
+        const candidatos = await repCandi
+          .createQueryBuilder('clienteToCandidato')
+          .innerJoinAndSelect('clienteToCandidato.candidato', 'candidato')
+          .where('clienteToCandidato.cliente = :clienteId', { clienteId: usuario.id })
+          .getMany();
 
       if (usuario && usuario.id) {
         const isPasswordValid = await usuario.compare(password);
@@ -55,6 +61,7 @@ class ClienteController {
             redes_sociais: usuario.redes_sociais,
             profile: usuario.profile,
             tribunas: one,
+            candidatos: candidatos,
             token
           });
         } else {
