@@ -5,9 +5,13 @@ import CandidatoController from "./CandidatoController";
 import FormularioController from "./FormularioController";
 import TribunaController from "./TribunaController";
 import JornalController from "./JornalController";
-export{JornalController};
-export{TribunaController};
-export{FormularioController};
-export{CandidatoController};
-export{ClienteController};
-export{NoticiaController};
+import ClienteToTribunaController from "./ClienteToTribunaController";
+export{
+    JornalController,
+    TribunaController,
+    FormularioController,
+    CandidatoController,
+    ClienteController,
+    NoticiaController,
+    ClienteToTribunaController,
+}

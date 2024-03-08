@@ -31,9 +31,15 @@ class ClienteToTribunaController {
     try{
       const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(ClienteToTribuna)
-      const one = await rep.findOneBy({cliente: id})
+      const one = await rep
+          .createQueryBuilder('clienteToTribuna')
+          .innerJoinAndSelect('clienteToTribuna.tribuna', 'tribuna')
+          .where('clienteToTribuna.cliente = :clienteId', { clienteId: id })
+          .getMany();
       return res.status(200).json(one)
     }catch(err){
+      console.log(err);
+      
       return res.status(404).json({erro: 'Tribuna não encontrada!', err: err})
     }
   }
@@ -41,6 +47,9 @@ class ClienteToTribunaController {
   public async post(req: Request, res: Response): Promise<Response>{
     try{
       const { cliente, tribuna } = req.body
+      if(cliente == undefined || cliente == null || tribuna == undefined || tribuna == null){
+        return res.status(400).json({erro: 'Dados inseridos errados!'})
+      }
       const rep = AppDataSource.getRepository(ClienteToTribuna)
       const liga = new ClienteToTribuna()
       liga.cliente = cliente
