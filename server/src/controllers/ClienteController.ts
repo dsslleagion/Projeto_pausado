@@ -5,19 +5,14 @@ import { authAdmin, generateToken } from "../middlewares";
 import { loggerDelete, loggerUpdate } from "../config/logger";
 import cliente from "../routes/cliente";
 import { info, error, warm } from "../postMongo";
+import { ClienteToTribuna } from "../entities/ClienteToTribuna";
 
 class ClienteController {
   public async login(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
-    const infoLog =  await info()
-    const warmLog = await warm()
-    const errorLog =  await error()
     // Verifica se foram fornecidos os parâmetros
     if (!email || !password || email.trim() === "" || password.trim() === "") {
-      warmLog.insertOne({
-        date: new Date(),
-        message: "E-mail e senha necessários"
-      })
+
       return res.json({ error: "E-mail e senha necessários" });
     }
 
@@ -31,7 +26,8 @@ class ClienteController {
         .where("cliente.email=:email", { email })
         .getOne();
 
-      loggerUpdate.info("Sucesso");
+        const rep = AppDataSource.getRepository(ClienteToTribuna)
+        const one = await rep.findOneBy({cliente: usuario.id})
 
       if (usuario && usuario.id) {
         const isPasswordValid = await usuario.compare(password);
@@ -39,12 +35,7 @@ class ClienteController {
         if (isPasswordValid) {
           // Cria um token codificando o objeto {id, email, profile}
           const token = await generateToken({ id: usuario.id, email: usuario.email, profile: usuario.profile });
-          
-          infoLog.insertOne({
-            date: new Date(),
-            message: "User login sucess",
-            idUser: usuario.id
-          })
+
           return res.json({
             id: usuario.id,
             nome: usuario.nome,
@@ -56,27 +47,16 @@ class ClienteController {
             cidade: usuario.cidade,
             redes_sociais: usuario.redes_sociais,
             profile: usuario.profile,
+            tribunas: one,
             token
           });
         } else {
-          warmLog.insertOne({
-            date: new Date(),
-            message: "Dados de login não conferem"
-          })
           return res.status(400).json({ error: "Dados de login não conferem" });
         }
       } else {
-        warmLog.insertOne({
-          date: new Date(),
-          message: "Usuário não localizado"
-        })
         return res.status(400).json({ error: "Usuário não localizado" });
       }
     } catch (error) {
-      errorLog.insertOne({
-        date: new Date(),
-        message: "Erro ao buscar usuário"
-      })
       console.error('Erro ao buscar usuário:', error);
       return res.status(500).json({ error: 'Erro ao buscar usuário' });
     }
@@ -313,8 +293,6 @@ class ClienteController {
     }
   }
   public async postCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try{
       const createCliente = req.body
       const clienteRepository = AppDataSource.getRepository(Cliente)
@@ -330,20 +308,12 @@ class ClienteController {
       insertCliente.telefone = createCliente.telefone
       insertCliente.profile = createCliente.profile
       insertCliente.password = createCliente.password
+
   
   
       const allCliente = await clienteRepository.save(insertCliente)
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Clientes cadastrado com sucesso",
-        id: allCliente.id
-      })
       return res.json(allCliente)
     }catch(err){
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao cadastrar cliente: ' + err
-      })
       return res.status(400).json({error: err})
     }
   }
@@ -375,25 +345,13 @@ class ClienteController {
 
 
   public async deleteCliente(req: Request, res: Response): Promise<Response> {
-    const infoLog =  await info()
-    const warmLog = await warm()
     try{
       const userId: any = req.params.uuid
       const clienteRepository = AppDataSource.getRepository(Cliente)
       const findCliente = await clienteRepository.findOneBy({ id: userId })
       const allCliente = await clienteRepository.remove(findCliente)
-      loggerDelete.info(`id: ${userId}`)
-      infoLog.insertOne({
-        date: new Date(),
-        message: "Clientes deletado",
-        id: userId
-      })
       return res.json(allCliente)
     }catch(err){
-      warmLog.insertOne({
-        date: new Date(),
-        message: 'Erro ao deletar cliente: ' + err
-      })
       return res.status(400).json(err)
     }
   }
