@@ -6,6 +6,8 @@ import FormularioController from "./FormularioController";
 import TribunaController from "./TribunaController";
 import JornalController from "./JornalController";
 import ClienteToTribunaController from "./ClienteToTribunaController";
+import ClienteToCandidatoController from "./ClienteToCandidatoController";
+
 export{
     JornalController,
     TribunaController,
@@ -14,4 +16,5 @@ export{
     ClienteController,
     NoticiaController,
     ClienteToTribunaController,
+    ClienteToCandidatoController,
 }
