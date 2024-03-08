@@ -16,9 +16,9 @@ class JornalController {
 
   public async getOne(req: Request, res: Response): Promise<Response>{
     try{
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Jornal)
-      const one = await rep.findOne(id)
+      const one = await rep.findOneBy({id:id})
       return res.status(200).json(one)
     }catch(err){
       return res.status(404).json({erro: 'Jornal não encontrado!', err: err})
@@ -42,10 +42,10 @@ class JornalController {
 
   public async put(req: Request, res: Response): Promise<Response> {
     try {
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const { titulo, conteudo, dataPublicacao } = req.body
       const rep = AppDataSource.getRepository(Jornal)
-      const jornal = await rep.findOne(id)
+      const jornal = await rep.findOneBy({id:id})
       if (!jornal) {
         return res.status(404).json({ error: 'Jornal não encontrado' });
       }
@@ -61,9 +61,9 @@ class JornalController {
 
   public async delete(req: Request, res: Response): Promise<Response>{
     try{
-      const id:any = req.params.id
+      const id:any = req.params.uuid
       const rep = AppDataSource.getRepository(Jornal)
-      const jornal = await rep.findOne(id)
+      const jornal = await rep.findOneBy({id:id})
       if (!jornal) {
         return res.status(404).json({ error: 'Jornal não encontrado' });
       }
