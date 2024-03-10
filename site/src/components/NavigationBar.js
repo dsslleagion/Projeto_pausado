@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import logo from '../assets/logoccv.png';
 import profilePic from '../assets/perfil-sem-foto.png'; // Importe uma imagem de perfil fictícia
 import './NavigationBar.css';
 
-
 const NavigationBar = () => {
   const { userData, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showCandidatos, setShowCandidatos] = useState(false);
+  const [showTribunas, setShowTribunas] = useState(false);
   const location = useLocation();
 
-
-  // Verificar se o usuário está autenticado de forma segura
-  const isAuthenticated = userData && userData.token;
-  // Verificar se o usuário é admin
-  const isAdmin = isAuthenticated && userData.cliente && userData.cliente.profile === 'admin';
-  // Verificar se o usuário é do tipo "user"
-  const isUser = isAuthenticated && userData.cliente && userData.cliente.profile === 'user';
+  useEffect(() => {
+    if (userData && userData.cliente) {
+      setShowCandidatos(userData.cliente.candidatos && userData.cliente.candidatos.length > 0);
+      setShowTribunas(userData.cliente.tribunas && userData.cliente.tribunas.length > 0);
+    }
+  }, [userData]);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -29,6 +29,8 @@ const NavigationBar = () => {
   };
 
   const isCadastroPage = location.pathname === '/cadastro';
+  const isAuthenticated = userData && userData.token;
+  const isAdmin = isAuthenticated && userData.cliente && userData.cliente.profile === 'admin';
 
   return (
     <nav className="nav-container">
@@ -36,7 +38,6 @@ const NavigationBar = () => {
         <Link to="/" className="logo-link">
           <img src={logo} alt="Logo" className="logo-img" />
         </Link>
-        
       </div>
       <div className="nav-right">
         {!isAuthenticated && !isCadastroPage && (
@@ -82,19 +83,23 @@ const NavigationBar = () => {
                 <Link to="/Jornal" className="nav-link">Cá entre Nós</Link>                
               </div>
             </div>
-            <div className="nav-category" onClick={() => activateDropdown('dropdown-candidatos')}>
-              <span className="nav-category-title">Candidatos</span>
-              <div className="dropdown-content dropdown-candidatos">
-                <Link to="/candidatosPage" className="nav-link">Principal</Link>
+            {(isAdmin || showCandidatos) && (
+              <div className="nav-category" onClick={() => activateDropdown('dropdown-candidatos')}>
+                <span className="nav-category-title">Candidatos</span>
+                <div className="dropdown-content dropdown-candidatos">
+                  {/* <Link to="/candidatosPage" className="nav-link">Principal</Link> */}
+                </div>
               </div>
-            </div>
-            <div className="nav-category" onClick={() => activateDropdown('dropdown-tribunas')}>
-              <span className="nav-category-title">Tribunas</span>
-              <div className="dropdown-content dropdown-tribunas">
-                <Link to="/tribuna/educacao" className="nav-link">Educação</Link>
-                <Link to="/tribuna/saude" className="nav-link">Saúde</Link>
+            )}
+            {(isAdmin || showTribunas) && (
+              <div className="nav-category" onClick={() => activateDropdown('dropdown-tribunas')}>
+                <span className="nav-category-title">Tribunas</span>
+                <div className="dropdown-content dropdown-tribunas">
+                  {/* <Link to="/tribuna/educacao" className="nav-link">Educação</Link>
+                  <Link to="/tribuna/saude" className="nav-link">Saúde</Link> */}
+                </div>
               </div>
-            </div>
+            )}
             <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
               <div className="nav-profile" onClick={toggleDropdown}>
                 <img src={profilePic} alt="Perfil" className="profile-pic" />

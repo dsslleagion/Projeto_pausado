@@ -39,8 +39,14 @@ export const AuthProvider = ({ children }) => {
     window.location.href = "/";
   };
 
+  // Adicionando função para receber o JSON fornecido
+  const receiveUserData = (json) => {
+    localStorage.setItem('userData', JSON.stringify(json));
+    setUserData(json);
+  };
+
   return (
-    <AuthContext.Provider value={{ userData, login, logout }}>
+    <AuthContext.Provider value={{ userData, login, logout, receiveUserData }}>
       {children}
     </AuthContext.Provider>
   );
