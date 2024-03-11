@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Button from '../components/Button';
 import './Cadastro.css';
@@ -16,8 +16,28 @@ const Cadastro = () => {
     cep: '',
     redes_sociais: '',
     password: '',
-    profile: 'user'
+    profile: 'user',
+    tribunaId: '', // Inicializar como string vazia
+    candidatoId: '', // Inicializar como string vazia
+    tribunas: [],
+    candidatos: []
   });
+
+  useEffect(() => {
+    fetch('http://localhost:3001/tribuna/all')
+      .then(response => response.json())
+      .then(data => {
+        setFormValues(prevState => ({ ...prevState, tribunas: data }));
+      })
+      .catch(error => console.error('Erro ao carregar tribunas:', error));
+    
+    fetch('http://localhost:3001/candidato/all')
+      .then(response => response.json())
+      .then(data => {
+        setFormValues(prevState => ({ ...prevState, candidatos: data }));
+      })
+      .catch(error => console.error('Erro ao carregar candidatos:', error));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,17 +46,65 @@ const Cadastro = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { confirmPassword, ...formData } = formValues;
     fetch('http://localhost:3001/cliente/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify({
+        ...formValues,
+        tribunaId: formValues.tribunaId ? parseInt(formValues.tribunaId) : null,
+        candidatoId: formValues.candidatoId ? parseInt(formValues.candidatoId) : null
+      })
     })
     .then(response => response.json())
-    .then(data => {
-      console.log('Dados cadastrados com sucesso:', data);
+    .then(clienteData => {
+      console.log('Dados cadastrados com sucesso:', clienteData);
+      const clienteId = clienteData.id;
+
+      if (formValues.tribunaId) {
+        const tribunaVinculo = {
+          cliente: { id: clienteId },
+          tribuna: { id: parseInt(formValues.tribunaId) }
+        };
+
+        fetch('http://localhost:3001/ct/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(tribunaVinculo)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Vínculo com tribuna criado com sucesso:', data);
+        })
+        .catch(error => {
+          console.error('Erro ao vincular cliente à tribuna:', error);
+        });
+      }
+
+      if (formValues.candidatoId) {
+        const candidatoVinculo = {
+          cliente: { id: clienteId },
+          candidato: { id: parseInt(formValues.candidatoId) }
+        };
+
+        fetch('http://localhost:3001/cc/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(candidatoVinculo)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Vínculo com candidato criado com sucesso:', data);
+        })
+        .catch(error => {
+          console.error('Erro ao vincular cliente ao candidato:', error);
+        });
+      }
     })
     .catch(error => {
       console.error('Erro ao cadastrar os dados:', error);
@@ -132,33 +200,17 @@ const Cadastro = () => {
               onChange={handleChange}
             />
           </div>
-          
           <div className="form-group">
             <label htmlFor="redes_sociais">Rede Social Mais Utilizada:</label>
-            <select
+            <input
+              type="text"
               id="redes_sociais"
               name="redes_sociais"
               value={formValues.redes_sociais}
               onChange={handleChange}
-            >
-              <option value="">Selecione</option>
-              <option value="facebook">Facebook</option>
-              <option value="twitter">Twitter</option>
-              <option value="instagram">Instagram</option>
-              <option value="linkedin">LinkedIn</option>
-              {/* Adicione mais opções conforme necessário */}
-            </select>
-          </div>
-          {/* <div className="form-group">
-            <label htmlFor="nomeUsuario">Nome de Usuário:</label>
-            <input
-              type="text"
-              id="nomeUsuario"
-              name="nomeUsuario"
-              value={formValues.nomeUsuario}
-              onChange={handleChange}
+              placeholder="Exemplo: Instagram: @seuUsuario, Facebook: nome de usuário"
             />
-          </div> */}
+          </div>
           <div className="form-group">
             <label htmlFor="password">Senha:</label>
             <input
@@ -169,6 +221,34 @@ const Cadastro = () => {
               onChange={handleChange}
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="tribunaId">Selecione uma tribuna:</label>
+            <select
+              id="tribunaId"
+              name="tribunaId"
+              value={formValues.tribunaId}
+              onChange={handleChange}
+            >
+              <option value="">Selecione</option>
+              {formValues.tribunas.map(tribuna => (
+                <option key={tribuna.id} value={tribuna.id}>{tribuna.nome}</option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="candidatoId">Selecione um candidato:</label>
+            <select
+              id="candidatoId"
+              name="candidatoId"
+              value={formValues.candidatoId}
+              onChange={handleChange}
+            >
+              <option value="">Selecione</option>
+              {formValues.candidatos.map(candidato => (
+                <option key={candidato.id} value={candidato.id}>{candidato.nome}</option>
+              ))}
+            </select>
+          </div>
           <Button type="submit" text="Cadastrar" />
         </form>
       </div>
@@ -176,6 +256,5 @@ const Cadastro = () => {
     </div>
   );
 };
-
 
 export default Cadastro;
