@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
@@ -39,14 +39,27 @@ export const AuthProvider = ({ children }) => {
     window.location.href = "/";
   };
 
-  // Adicionando função para receber o JSON fornecido
   const receiveUserData = (json) => {
     localStorage.setItem('userData', JSON.stringify(json));
     setUserData(json);
   };
 
+  const getClienteById = async (id) => {
+    try {
+      const response = await fetch(`/cliente/specific/${id}`);
+      if (!response.ok) {
+        throw new Error('Erro ao obter dados do cliente');
+      }
+      const clienteData = await response.json();
+      return clienteData;
+    } catch (error) {
+      console.error('Erro ao obter dados do cliente:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ userData, login, logout, receiveUserData }}>
+    <AuthContext.Provider value={{ userData, login, logout, receiveUserData, getClienteById }}>
       {children}
     </AuthContext.Provider>
   );

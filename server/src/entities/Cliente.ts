@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BeforeInsert, BeforeUpdate, ManyToOne } from "typeorm";
-
 import * as bcrypt from "bcrypt";
 import { Formulario } from "./Formulario";
 import { ClienteToTribuna } from "./ClienteToTribuna";
@@ -48,8 +47,8 @@ export class Cliente {
     @BeforeInsert() //a função hashPassword é disparada antes do insert e update
     @BeforeUpdate()
     hashPassword(): void {
-        if (this.password) {
-            // a senha é codificada usando o algoritmo do pacote bcrypt
+        if (this.password && this.password !== this.getOriginalPassword()) {
+            // A senha foi alterada, então criptografe-a novamente
             this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
         }
     }
@@ -59,6 +58,10 @@ export class Cliente {
         return bcrypt.compare(input, this.password);
     }
 
+    private getOriginalPassword(): string {
+        // Recupera a senha original do banco de dados
+        return this.constructor.prototype.password;
+    }
 
     @ManyToOne(() => Formulario, (form) => form.clinte, { onDelete: 'CASCADE', eager: true })
     form: Formulario;
