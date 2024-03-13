@@ -16,28 +16,31 @@ import CandidatosPage from './pages/CandidatosPage';
 import TribunasPage from './pages/TribunasPage';
 import EducaçãoTribunaPage from './pages/EducaçãoTribunaPage';
 import SaúdeTribunaPage from './pages/SaúdeTribunaPage';
+import { Provider } from './contexts/TribunaContext'
 
 function App() {
   return (
     <Router>
       <AuthProvider> {/* Envolve a aplicação com o AuthProvider */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/cadastroAdm" element={<CadastroAdm />} />
-          <Route path="/tribunas" element={<TribunasPage />} />
-          <Route path="/tribuna/educacao" element={<EducaçãoTribunaPage />} />
-          <Route path="/tribuna/saude" element={<SaúdeTribunaPage />} />
-          <Route path="/cadastroJornal" element={<CadastroJornal />} />
-          <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
-          <Route path="/candidato" element={<CandidatoPage />} />
-          <Route path="/candidatosPage" element={<CandidatosPage />} />
-          <Route path="/jornal" element={<JornalPage />} />
-          <Route path="/perfil" element={<ProfilePage />} />
-          <Route path="/cadastroNoticia" element={<CadastroNoticia />} />
-          <Route path="/login" element={<Login />} /> {/* Adiciona a rota para a página de login */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Provider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/cadastroAdm" element={<CadastroAdm />} />
+            <Route path="/tribunas" element={<TribunasPage />} />
+            <Route path="/tribuna/educacao" element={<EducaçãoTribunaPage />} />
+            <Route path="/tribuna/saude" element={<SaúdeTribunaPage />} />
+            <Route path="/cadastroJornal" element={<CadastroJornal />} />
+            <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
+            <Route path="/candidato" element={<CandidatoPage />} />
+            <Route path="/candidatosPage" element={<CandidatosPage />} />
+            <Route path="/jornal" element={<JornalPage />} />
+            <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/cadastroNoticia" element={<CadastroNoticia />} />
+            <Route path="/login" element={<Login />} /> {/* Adiciona a rota para a página de login */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Provider>
       </AuthProvider>
     </Router>
   );

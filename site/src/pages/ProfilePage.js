@@ -3,9 +3,13 @@ import { useAuth } from '../contexts/AuthContext';
 import './ProfilePage.css'; // Arquivo de estilos CSS
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
+import { useContextoTribuna } from '../hooks'
+import Checkboxes  from '../components/Checkbox';
 
 const ProfilePage = () => {
   const { userData, updateUserData, getClienteById } = useAuth();
+  const { tribuna } = useContextoTribuna()
+  const [ tribunasUsa, setTribunasUsa ] = useState()
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -19,24 +23,39 @@ const ProfilePage = () => {
     password: '',
   });
 
+  const isChecked = (lista1, lista2) => {
+    lista1.forEach(item1 => {
+      // Verifica se o elemento da primeira lista está presente na segunda lista
+      const encontrado = lista2.some(item2 => item1.id === item2.tribuna.id);
+
+      // Adiciona o campo de verificação ao objeto JSON
+      item1.checked = encontrado ? true : false;
+    });
+
+  // Retorna a primeira lista modificada
+  return lista1;
+  }
+
   useEffect(() => {
     const fetchClienteData = async () => {
       try {
         const clienteData = await getClienteById(userData.cliente.id);
         setFormData(clienteData);
+        setTribunasUsa(isChecked(tribuna,userData.cliente.tribunas))
       } catch (error) {
         console.error('Erro ao buscar dados do cliente:', error);
       }
     };
 
     fetchClienteData();
-  }, [userData.cliente.id, getClienteById]);
+  }, [userData.cliente.id, getClienteById, tribunasUsa, tribuna]);
 
+  //console.log(tribuna);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+console.log(tribunasUsa);
   const handleUpdateData = async () => {
     try {
       const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
@@ -127,6 +146,14 @@ const ProfilePage = () => {
           <div className="form-group">
             <label>Nova Senha:</label>
             <input type="password" name="password" value={formData.password} onChange={handleChange} />
+          </div>
+          <div>
+            {tribuna.map((res) => 
+              <div>
+                <Checkboxes value={res.id} isChecked={true}/> 
+                <p>{res.nome}</p> 
+              </div>
+            )}
           </div>
           <button type="button" onClick={handleUpdateData}>Atualizar Dados</button>
           <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
