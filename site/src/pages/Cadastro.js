@@ -17,8 +17,8 @@ const Cadastro = () => {
     redes_sociais: '',
     password: '',
     profile: 'user',
-    tribunaId: '', // Inicializar como string vazia
-    candidatoId: '', // Inicializar como string vazia
+    tribunaIds: [], // Inicializar como array vazio para múltiplas seleções
+    candidatoIds: [], // Inicializar como array vazio para múltiplas seleções
     tribunas: [],
     candidatos: []
   });
@@ -40,8 +40,18 @@ const Cadastro = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const isChecked = e.target.checked;
+      setFormValues(prevState => ({
+        ...prevState,
+        [name]: isChecked
+          ? [...prevState[name], value]
+          : prevState[name].filter(id => id !== value)
+      }));
+    } else {
+      setFormValues({ ...formValues, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -53,8 +63,8 @@ const Cadastro = () => {
       },
       body: JSON.stringify({
         ...formValues,
-        tribunaId: formValues.tribunaId ? parseInt(formValues.tribunaId) : null,
-        candidatoId: formValues.candidatoId ? parseInt(formValues.candidatoId) : null
+        tribunaIds: formValues.tribunaIds.map(id => parseInt(id)),
+        candidatoIds: formValues.candidatoIds.map(id => parseInt(id))
       })
     })
     .then(response => response.json())
@@ -62,10 +72,10 @@ const Cadastro = () => {
       console.log('Dados cadastrados com sucesso:', clienteData);
       const clienteId = clienteData.id;
 
-      if (formValues.tribunaId) {
+      formValues.tribunaIds.forEach(tribunaId => {
         const tribunaVinculo = {
           cliente: { id: clienteId },
-          tribuna: { id: parseInt(formValues.tribunaId) }
+          tribuna: { id: parseInt(tribunaId) }
         };
 
         fetch('http://localhost:3001/ct/post', {
@@ -82,12 +92,12 @@ const Cadastro = () => {
         .catch(error => {
           console.error('Erro ao vincular cliente à tribuna:', error);
         });
-      }
+      });
 
-      if (formValues.candidatoId) {
+      formValues.candidatoIds.forEach(candidatoId => {
         const candidatoVinculo = {
           cliente: { id: clienteId },
-          candidato: { id: parseInt(formValues.candidatoId) }
+          candidato: { id: parseInt(candidatoId) }
         };
 
         fetch('http://localhost:3001/cc/post', {
@@ -104,12 +114,13 @@ const Cadastro = () => {
         .catch(error => {
           console.error('Erro ao vincular cliente ao candidato:', error);
         });
-      }
+      });
     })
     .catch(error => {
       console.error('Erro ao cadastrar os dados:', error);
     });
   };
+
 
   return (
     <div>
@@ -222,32 +233,34 @@ const Cadastro = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="tribunaId">Selecione uma tribuna:</label>
-            <select
-              id="tribunaId"
-              name="tribunaId"
-              value={formValues.tribunaId}
-              onChange={handleChange}
-            >
-              <option value="">Selecione</option>
-              {formValues.tribunas.map(tribuna => (
-                <option key={tribuna.id} value={tribuna.id}>{tribuna.nome}</option>
-              ))}
-            </select>
+            <label htmlFor="tribunaIds">Selecione as tribunas de interesse:</label>
+            {formValues.tribunas.map(tribuna => (
+              <div key={tribuna.id}>
+                <input
+                  type="checkbox"
+                  id={`tribuna_${tribuna.id}`}
+                  name="tribunaIds"
+                  value={tribuna.id}
+                  onChange={handleChange}
+                />
+                <label htmlFor={`tribuna_${tribuna.id}`}>{tribuna.nome}</label>
+              </div>
+            ))}
           </div>
           <div className="form-group">
-            <label htmlFor="candidatoId">Selecione um candidato:</label>
-            <select
-              id="candidatoId"
-              name="candidatoId"
-              value={formValues.candidatoId}
-              onChange={handleChange}
-            >
-              <option value="">Selecione</option>
-              {formValues.candidatos.map(candidato => (
-                <option key={candidato.id} value={candidato.id}>{candidato.nome}</option>
-              ))}
-            </select>
+            <label htmlFor="candidatoIds">Selecione os candidatos de interesse:</label>
+            {formValues.candidatos.map(candidato => (
+              <div key={candidato.id}>
+                <input
+                  type="checkbox"
+                  id={`candidato_${candidato.id}`}
+                  name="candidatoIds"
+                  value={candidato.id}
+                  onChange={handleChange}
+                />
+                <label htmlFor={`candidato_${candidato.id}`}>{candidato.nome}</label>
+              </div>
+            ))}
           </div>
           <Button type="submit" text="Cadastrar" />
         </form>
