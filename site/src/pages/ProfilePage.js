@@ -9,7 +9,8 @@ import Checkboxes  from '../components/Checkbox';
 const ProfilePage = () => {
   const { userData, updateUserData, getClienteById } = useAuth();
   const { tribuna } = useContextoTribuna()
-  const [ tribunasUsa, setTribunasUsa ] = useState()
+  const [ tribunasUsa, setTribunasUsa ] = useState([])
+  const [ novasTribunas, setNovasTribunas ] = useState([])
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -28,21 +29,42 @@ const ProfilePage = () => {
       // Verifica se o elemento da primeira lista está presente na segunda lista
       const encontrado = lista2.some(item2 => item1.id === item2.tribuna.id);
 
+      const idjunt = lista2.find(item3 => item3.tribuna.id === item1.id)
       // Adiciona o campo de verificação ao objeto JSON
-      item1.checked = encontrado ? true : false;
+      item1.checked = encontrado 
+      if (idjunt !== undefined){
+        item1.idjunt = idjunt.id
+      }else{
+        item1.idjunt = -1
+      }
     });
 
   // Retorna a primeira lista modificada
   return lista1;
   }
 
+  const handleCheckboxChange = (id, idjunt) => {
+    setNovasTribunas(prevTribunas => {
+      // Verifica se o id já está na lista
+      const exists = prevTribunas.find(item => item.id === id);
+      
+      // Se o id não existe na lista, adiciona-o
+      if (!exists) {
+        return [...prevTribunas, { id: Number(id), idjunt: idjunt }];
+      }
+      
+      // Se o id já existe na lista, remove-o
+      return prevTribunas.filter(item => item.id !== id);
+    });
+  };
+
 
   useEffect(() => {
+    setTribunasUsa(isChecked(tribuna,userData.cliente.tribunas))
     const fetchClienteData = async () => {
       try {
         const clienteData = await getClienteById(userData.cliente.id);
         setFormData(clienteData);
-        setTribunasUsa(isChecked(tribuna,userData.cliente.tribunas))
       } catch (error) {
         console.error('Erro ao buscar dados do cliente:', error);
       }
@@ -56,7 +78,10 @@ const ProfilePage = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-console.log(tribunasUsa);
+
+ 
+  
+console.log(novasTribunas);
   const handleUpdateData = async () => {
     try {
       const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
@@ -149,9 +174,9 @@ console.log(tribunasUsa);
             <input type="password" name="password" value={formData.password} onChange={handleChange} />
           </div>
           <div>
-            {tribuna.map((res) => 
+            {tribunasUsa.map((res) => 
               <div>
-                <Checkboxes value={res.id} isChecked={true}/> 
+                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt)}/> 
                 <p>{res.nome}</p> 
               </div>
             )}
