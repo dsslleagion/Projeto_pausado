@@ -60,7 +60,7 @@ const ProfilePage = () => {
 
 
   useEffect(() => {
-    setTribunasUsa(isChecked(tribuna,userData.cliente.tribunas))
+    setTribunasUsa(isChecked(tribuna,userData.tribunas))
     const fetchClienteData = async () => {
       try {
         const clienteData = await getClienteById(userData.cliente.id);
@@ -81,7 +81,7 @@ const ProfilePage = () => {
 
   const tribunasCD = async() => {
     try{
-      novasTribunas.forEach(async (tri) => {
+      novasTribunas.map(async (tri) => {
         if(tri.idjunt === -1){
           const response = await fetch('http://localhost:3001/ct/post', {
             method: 'POST',
@@ -108,13 +108,21 @@ const ProfilePage = () => {
           }
         }
       })
+      const response = await fetch(`http://localhost:3001/ct/allTri/${userData.cliente.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      });
+      const trib = await response.json()
+      updateUserData({ ...userData, cliente: formData, tribunas: trib });
     }catch(err){
 
     }
   }
  
   
-console.log(novasTribunas);
+console.log(userData.tribunas);
   const handleUpdateData = async () => {
     try {
       const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
@@ -215,7 +223,7 @@ console.log(novasTribunas);
               </div>
             )}
           </div>
-          <button type="button" onClick={handleUpdateData}>Atualizar Dados</button>
+          <button type="button" onClick={tribunasCD}>Atualizar Dados</button>
           <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
         </form>
       </div>

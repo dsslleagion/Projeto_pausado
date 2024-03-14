@@ -26,8 +26,8 @@ export const AuthProvider = ({ children }) => {
 
       const { token, ...clienteData } = await response.json();
 
-      localStorage.setItem('userData', JSON.stringify({ token, cliente: clienteData }));
-      setUserData({ token, cliente: clienteData });
+      localStorage.setItem('userData', JSON.stringify({ token, cliente: clienteData, tribunas: clienteData.tribunas }));
+      setUserData({ token, cliente: clienteData, tribunas: clienteData.tribunas });
     } catch (error) {
       console.error('Erro ao fazer login:', error.message);
     }
