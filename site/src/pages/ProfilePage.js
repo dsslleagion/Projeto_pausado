@@ -36,6 +36,7 @@ const ProfilePage = () => {
   return lista1;
   }
 
+
   useEffect(() => {
     const fetchClienteData = async () => {
       try {
@@ -79,7 +80,7 @@ console.log(tribunasUsa);
 
   const handleUpdatePassword = async () => {
     try {
-      const response = await fetch(`/cliente/modifypassword/${userData.cliente.id}`, {
+      const response = await fetch(`/cliente/modifypassword/${userData.cliente.userEmail}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

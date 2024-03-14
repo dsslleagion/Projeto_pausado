@@ -9,7 +9,7 @@ routes.post('/login', ClienteController.login)
 routes.post('/create', ClienteController.postCliente);
 
 routes.put('/modify/:uuid', ClienteController.putCliente);
-routes.put('/modifypassword/:uuid', ClienteController.putPassword);
+routes.put('/modifypassword/:email', ClienteController.putPassword);
 
 routes.delete('/delete/:uuid', ClienteController.deleteCliente);
 

@@ -142,13 +142,13 @@ class ClienteController {
   public async putPassword(req: Request, res: Response): Promise<Response> {
     try{
       const { password } = req.body
-      const id: any = req.params.uuid;
+      const email: any = req.params.email;
       const client: any = await AppDataSource.manager
         .getRepository(Cliente)
         .createQueryBuilder("cliente")
         .select()
         .addSelect('cliente.password')
-        .where("cliente.id=:id", { id })
+        .where("cliente.email=:email", { email })
         .getOne();
       console.log();
       client.password = password
