@@ -36,6 +36,9 @@ const CadastroUsuarios = () => {
       if (editandoUsuario) {
         // Se estiver editando um usuário, chame a função de atualizar
         await atualizarUsuario(editandoUsuario.id, formValues);
+        if(formValues.password !== undefined && formValues.password !== null && formValues.password !== ' '){
+          await handleUpdatePassword(editandoUsuario.email)
+        }
       } else {
         // Se não estiver editando um usuário, chame a função de criar
         await cadastrarUsuario(formValues);
@@ -150,6 +153,28 @@ const CadastroUsuarios = () => {
       console.error('Erro ao atualizar usuário:', error.message);
     }
   };
+
+  const handleUpdatePassword = async (data) => {
+    try {
+      const response = await fetch(`/cliente/modifypassword/${data}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: formValues.password }),
+      });
+      if (response.ok) {
+        alert('Senha atualizada com sucesso!');
+      } else {
+        alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar a senha:', error);
+      alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+    }
+  };
+
+  console.log(formValues.password);
 
   return (
     <div>

@@ -227,6 +227,9 @@ class ClienteController {
     try{
       const createCliente = req.body
       const clienteRepository = AppDataSource.getRepository(Cliente)
+      if (createCliente.nome === undefined || createCliente.email === undefined || createCliente.sexo === undefined || createCliente.telefone === undefined || createCliente.endereco === undefined ) {
+        return res.status(405).json({erro: "Dados invalidos!"})
+      }
       const insertCliente = new Cliente();
       insertCliente.nome = createCliente.nome
       insertCliente.email = createCliente.email
