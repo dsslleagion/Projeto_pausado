@@ -79,6 +79,39 @@ const ProfilePage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const tribunasCD = async() => {
+    try{
+      novasTribunas.forEach(async (tri) => {
+        if(tri.idjunt === -1){
+          const response = await fetch('http://localhost:3001/ct/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({cliente: userData.cliente.id, tribuna: tri.id})
+          });
+          if (response.ok) {
+            console.log('Usuário cadastrado com sucesso!');
+            // Recarregar a lista de usuários após cadastrar um novo
+          } else {
+            console.error('Erro ao cadastrar usuário:', response.statusText);
+          }
+        }else{
+          const response = await fetch(`http://localhost:3001/ct/delete/${tri.idjunt}`, {
+            method: 'DELETE'
+          });
+          if (response.ok) {
+            console.log('Usuário excluído com sucesso!');
+            // Recarregar a lista de usuários após excluir
+          } else {
+            console.error('Erro ao excluir usuário:', response.statusText);
+          }
+        }
+      })
+    }catch(err){
+
+    }
+  }
  
   
 console.log(novasTribunas);
@@ -93,9 +126,10 @@ console.log(novasTribunas);
       });
       if (response.ok) {
         updateUserData({ ...userData, cliente: formData });
+        tribunasCD()
         alert('Dados atualizados com sucesso!');
       } else {
-        alert('Erro ao atualizar os dados. Tente novamente mais tarde.');
+        //alert('Erro ao atualizar os dados. Tente novamente mais tarde.');
       }
     } catch (error) {
       console.error('Erro ao atualizar dados:', error);
