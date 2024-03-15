@@ -123,27 +123,21 @@ const ProfilePage = () => {
  
   
 console.log(userData.tribunas);
-  const handleUpdateData = async () => {
+useEffect(() => {
+  const fetchClienteData = async () => {
     try {
-      const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        updateUserData({ ...userData, cliente: formData });
-        tribunasCD()
-        alert('Dados atualizados com sucesso!');
-      } else {
-        //alert('Erro ao atualizar os dados. Tente novamente mais tarde.');
-      }
+      const clienteData = await getClienteById(userData.cliente.id);
+      setFormData(clienteData);
+      // Atualize as tribunasUsa com os dados atualizados do cliente
+      setTribunasUsa(isChecked(tribuna, clienteData.tribunas));
     } catch (error) {
-      console.error('Erro ao atualizar dados:', error);
-      alert('Erro ao atualizar os dados. Tente novamente mais tarde.');
+      console.error('Erro ao buscar dados do cliente:', error);
     }
   };
+
+  fetchClienteData();
+}, [userData.cliente.id, getClienteById, tribuna]);
+
 
   const handleUpdatePassword = async () => {
     try {
@@ -163,6 +157,29 @@ console.log(userData.tribunas);
     } catch (error) {
       console.error('Erro ao atualizar a senha:', error);
       alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+    }
+  };
+  const handleUpdateClientData = async () => {
+    try {
+      const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const updatedClienteData = await response.json();
+        // Atualize apenas os dados do cliente no estado local
+        const updatedUserData = { ...userData, cliente: updatedClienteData };
+        updateUserData(updatedUserData);
+        alert('Dados do cliente atualizados com sucesso!');
+      } else {
+        alert('Erro ao atualizar os dados do cliente. Tente novamente mais tarde.');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar dados do cliente:', error);
+      alert('Erro ao atualizar os dados do cliente. Tente novamente mais tarde.');
     }
   };
 
@@ -223,7 +240,8 @@ console.log(userData.tribunas);
               </div>
             )}
           </div>
-          <button type="button" onClick={tribunasCD}>Atualizar Dados</button>
+          <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
+          <button type="button" onClick={tribunasCD}>Atualizar Dados de interreses</button>
           <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
         </form>
       </div>
