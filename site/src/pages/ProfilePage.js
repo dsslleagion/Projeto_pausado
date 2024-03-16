@@ -168,8 +168,9 @@ const ProfilePage = () => {
     <div>
       <NavigationBar />
       <div className="profile-container">
-        <h1>Perfil do Usuário</h1>
+       
         <form className="profile-form">
+        <h1>Perfil do Usuário</h1>
           <div className="form-group">
             <label>Nome:</label>
             <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
