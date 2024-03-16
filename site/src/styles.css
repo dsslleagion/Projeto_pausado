@@ -21,6 +21,6 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Adicione um fundo semi-transparente para destacar o conteúdo */
+  background-color: white;/* Adicione um fundo semi-transparente para destacar o conteúdo */
   border-radius: 10px; /* Adicione bordas arredondadas para o contêiner */
 }

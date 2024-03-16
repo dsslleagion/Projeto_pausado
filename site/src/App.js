@@ -14,8 +14,8 @@ import CadastroCandidato from './pages/CadastroCandidato';
 import CandidatoPage from './pages/CandidatoPage';
 import CandidatosPage from './pages/CandidatosPage';
 import TribunasPage from './pages/TribunasPage';
-import EducaçãoTribunaPage from './pages/EducaçãoTribunaPage';
-import SaúdeTribunaPage from './pages/SaúdeTribunaPage';
+
+
 import { Provider } from './contexts/TribunaContext'
 
 function App() {
@@ -28,8 +28,8 @@ function App() {
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cadastroAdm" element={<CadastroAdm />} />
             <Route path="/tribunas" element={<TribunasPage />} />
-            <Route path="/tribuna/educacao" element={<EducaçãoTribunaPage />} />
-            <Route path="/tribuna/saude" element={<SaúdeTribunaPage />} />
+        
+            
             <Route path="/cadastroJornal" element={<CadastroJornal />} />
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
             <Route path="/candidato" element={<CandidatoPage />} />
