@@ -140,10 +140,10 @@ const ProfilePage = () => {
       });
   
       if (response.ok) {
-        // Se a resposta estiver ok, exibe uma mensagem de sucesso
+      
         alert('Dados do cliente atualizados com sucesso!');
         logout();
-        // Atualiza os dados do usuário localmente sem verificar os dados retornados pelo servidor
+      
         const updatedUserData = { ...userData, cliente: formData };
         updateUserData(updatedUserData);
         // Chama o logout após a atualização
@@ -161,7 +161,7 @@ const ProfilePage = () => {
   const logout = () => {
     localStorage.removeItem('userData');
     // setUserData({ token: null, cliente: null });
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (
