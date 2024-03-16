@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import './CadastroNoticia.css';
 import Footer from '../components/Footer';
+import MultiSelect from '../components/MultiSelect';
+import Descrition from '../components/Description';
+import { useContextoTribuna } from '../hooks';
 
 const CadastroNoticia = () => {
   const [formData, setFormData] = useState({
@@ -10,14 +13,17 @@ const CadastroNoticia = () => {
   });
   const [noticias, setNoticias] = useState([]);
   const [editandoNoticia, setEditandoNoticia] = useState(null); // Variável para controlar se está editando uma notícia
+  const [ tribunalista, setTribuna ] = useState([])
+  const { selectTribuna } = useContextoTribuna()
 
   useEffect(() => {
     fetchNoticias();
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    console.log(e);
+    // const { name, value } = e.target;
+    // setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -128,8 +134,8 @@ const CadastroNoticia = () => {
       console.error('Erro ao atualizar notícia:', error.message);
     }
   };
-  
 
+  
   return (
     <div>
       <NavigationBar />
@@ -140,9 +146,14 @@ const CadastroNoticia = () => {
             <label htmlFor="titulo">Título:</label>
             <input type="text" id="titulo" name="titulo" value={formData.titulo} onChange={handleChange} />
           </div>
+          <div>
+            <label htmlFor='tribuna'>Tribuna </label>
+            <MultiSelect options={selectTribuna()} set={setTribuna} /> 
+          </div>
           <div className="form-group">
             <label htmlFor="conteudo">Conteúdo:</label>
-            <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea>
+            {/* <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea> */}
+            <Descrition value={formData.conteudo} setValue={handleChange} />
           </div>
           <button type="submit" className="submit-button">Enviar</button>
         </form>

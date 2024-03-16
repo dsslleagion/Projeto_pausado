@@ -24,3 +24,9 @@ body {
   background-color: white;/* Adicione um fundo semi-transparente para destacar o conteúdo */
   border-radius: 10px; /* Adicione bordas arredondadas para o contêiner */
 }
+.p {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #000000;
+}

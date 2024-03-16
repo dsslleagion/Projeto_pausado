@@ -2,7 +2,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  color: white; /* Alteração para texto em branco */
+  color: black; /* Alteração para texto em branco */
 }
 
 .form-group {
@@ -34,6 +34,13 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.p {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #000000;
 }
 
 .noticias-container {

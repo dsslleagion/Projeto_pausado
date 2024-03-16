@@ -7,6 +7,7 @@ export const ContextoTribuna = createContext()
 
 export function Provider({ children }) {
   const [tribuna, setTribuna] = useState([]);
+  
 
 
 
@@ -15,10 +16,18 @@ export function Provider({ children }) {
         const resp = await fetch(`/tribuna/all`);
         setTribuna(await resp.json())
     })()
+   
   }, [setTribuna])
 
+  const selectTribuna = () => {
+    const select = tribuna.map((item) => {
+      return { value: item.id, label: item.nome }
+    })
+    return select
+  }
+
   return (
-    <ContextoTribuna.Provider value={{ tribuna, setTribuna }}>
+    <ContextoTribuna.Provider value={{ tribuna, setTribuna, selectTribuna }}>
       {children}
     </ContextoTribuna.Provider>
   )
