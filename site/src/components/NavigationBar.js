@@ -100,23 +100,25 @@ const NavigationBar = () => {
                 </div>
               </div>
             )}
-            <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
-              <div className="nav-profile" onClick={toggleDropdown}>
-                <img src={profilePic} alt="Perfil" className="profile-pic" />
-              </div>
-              {dropdownOpen && (
-                <div className="dropdown-content dropdown-profile">
-                  <div className="profile-dropdown">
-                    <img src={profilePic} alt="Perfil" className="profile-pic-large" />
-                    <div className="profile-info">
-                    <p>Bem-Vindo! {userData.cliente.nome}</p>
-                      <Link to="/perfil" className="nav-link">Perfil</Link>
-                      <button className="nav-link" onClick={logout}>Logout</button>
+            {location.pathname !== '/perfil' && (
+              <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
+                <div className="nav-profile" onClick={toggleDropdown}>
+                  <img src={profilePic} alt="Perfil" className="profile-pic" />
+                </div>
+                {dropdownOpen && (
+                  <div className="dropdown-content dropdown-profile">
+                    <div className="profile-dropdown">
+                      <img src={profilePic} alt="Perfil" className="profile-pic-large" />
+                      <div className="profile-info">
+                        <p>Bem-Vindo! {userData.cliente.nome}</p>
+                        <Link to="/perfil" className="nav-link">Perfil</Link>
+                        <button className="nav-link" onClick={logout}>Logout</button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>
