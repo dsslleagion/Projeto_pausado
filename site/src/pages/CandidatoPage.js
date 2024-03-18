@@ -23,7 +23,7 @@ const CandidatoPage = () => {
   return (
     <div>
       <NavigationBar></NavigationBar>
-    <div className="candidato-page">
+    <div className="container">
       <h1>{candidato.nome}</h1>
       <p>Partido: {candidato.partido}</p>
       <p>Cargo: {candidato.cargo}</p>
