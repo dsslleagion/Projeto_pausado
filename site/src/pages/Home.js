@@ -12,7 +12,7 @@ const Home = () => {
   }, []);
 
   function getData() {
-    fetch("http://localhost:3001/noticia/noticias", {
+    fetch("http://localhost:3001/noticia/all", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'

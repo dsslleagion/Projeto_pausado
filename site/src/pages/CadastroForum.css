@@ -1,0 +1,75 @@
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000000;
+  }
+  
+  .form-group {
+    margin-bottom: 30px;
+  }
+  
+  label {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  button {
+    background-color: #e00a0a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #cd4444;
+  }
+  
+  /* Estilos para tornar o formulário responsivo */
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 20px;
+    }
+  
+    .title {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+  
+    .form-group {
+      margin-bottom: 20px;
+    }
+  
+    label {
+      font-size: 16px;
+    }
+  
+    input,
+    select,
+    textarea {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+  }
+  

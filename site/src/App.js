@@ -14,8 +14,8 @@ import CadastroCandidato from './pages/CadastroCandidato';
 import CandidatoPage from './pages/CandidatoPage';
 import CandidatosPage from './pages/CandidatosPage';
 import TribunasPage from './pages/TribunasPage';
-
-
+import ViewForum from './pages/ViewForum';
+import CadastroForum from './pages/CadastroForum';
 import { Provider } from './contexts/TribunaContext'
 import { ProviderCandidato } from './contexts/CandidatoContext';
 
@@ -32,12 +32,14 @@ function App() {
             <Route path="/tribunas" element={<TribunasPage />} />
             <Route path="/cadastroJornal" element={<CadastroJornal />} />
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
+            <Route path="/CadastroForum" element={<CadastroForum />} />
             <Route path="/candidato" element={<CandidatoPage />} />
             <Route path="/candidatosPage" element={<CandidatosPage />} />
             <Route path="/jornal" element={<JornalPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/cadastroNoticia" element={<CadastroNoticia />} />
             <Route path="/login" element={<Login />} /> {/* Adiciona a rota para a página de login */}
+            <Route path="/viewforum" element={<ViewForum />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Provider>

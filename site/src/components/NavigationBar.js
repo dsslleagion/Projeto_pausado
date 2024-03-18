@@ -73,8 +73,8 @@ const NavigationBar = () => {
             <div className="nav-category" onClick={() => activateDropdown('dropdown-jornal')}>
               <span className="nav-category-title">Forum</span>
               <div className="dropdown-content dropdown-jornal">
-                <Link to="/Jornal" className="nav-link">Reclame aqui</Link>
-                <Link to="/Jornal" className="nav-link">Veja as principais reclamações</Link>              
+                <Link to="/CadastroForum" className="nav-link">Reclame aqui</Link>
+                <Link to="/viewForum" className="nav-link">Veja as principais reclamações</Link>              
               </div>
             </div>
             <div className="nav-category" onClick={() => activateDropdown('dropdown-jornal')}>
