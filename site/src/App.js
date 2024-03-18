@@ -18,7 +18,7 @@ import ViewForum from './pages/ViewForum';
 import CadastroForum from './pages/CadastroForum';
 import { Provider } from './contexts/TribunaContext'
 import { ProviderCandidato } from './contexts/CandidatoContext';
-
+import CadastroTribunas from './pages/CadastroTribunas';
 function App() {
   return (
     <Router>
@@ -31,6 +31,7 @@ function App() {
             <Route path="/cadastroAdm" element={<CadastroAdm />} />
             <Route path="/tribunas" element={<TribunasPage />} />
             <Route path="/cadastroJornal" element={<CadastroJornal />} />
+            <Route path="/CadastroTribunas" element={<CadastroTribunas />} />
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
             <Route path="/CadastroForum" element={<CadastroForum />} />
             <Route path="/candidato" element={<CandidatoPage />} />

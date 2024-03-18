@@ -1,58 +1,63 @@
 /* JornalPage.css */
 
 .jornal-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.jornal-content {
+  margin-top: 50px;
+  background-color: #f5f5f5; /* Cor de fundo */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.jornal-content h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.article {
+  margin-bottom: 50px;
+  background-color: #ffffff; /* Cor de fundo */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  padding: 20px;
+}
+
+.article h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333333; /* Cor do título */
+}
+
+.article p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #666666; /* Cor do texto */
+}
+
+.article img {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .jornal-page {
+    padding: 10px;
   }
-  
-  /* Adicionando um fundo branco ao conteúdo do jornal */
-  .jornal-content {
-    margin-top: 50px;
-    background-color: #ffffff; /* Cor de fundo branca */
-    padding: 20px; /* Espaçamento interno para simular o papel do jornal */
-    border-radius: 10px; /* Borda arredondada para simular o papel do jornal */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para dar dimensão */
-    color: #333333; /* Cor do texto */
-  }
-  
-  .jornal-content h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-  }
-  
-  .article {
-    margin-bottom: 50px;
-  }
-  
-  .article img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  
+
   .article h2 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
   }
-  
+
   .article p {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1rem;
   }
-  
-  @media screen and (max-width: 768px) {
-    .jornal-page {
-      padding: 10px;
-    }
-  
-    .article h2 {
-      font-size: 1.5rem;
-    }
-  
-    .article p {
-      font-size: 1rem;
-    }
-  }
-  
+}

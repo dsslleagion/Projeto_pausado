@@ -1,0 +1,62 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .cadastro-tribuna {
+    margin-top: 20px;
+  }
+  
+  .cadastro-tribuna h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .cadastro-tribuna .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .cadastro-tribuna label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .cadastro-tribuna input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .cadastro-tribuna ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .cadastro-tribuna li {
+    margin-bottom: 10px;
+  }
+  
+  .cadastro-tribuna li button {
+    margin-left: 10px;
+  }
+  
+  /* Estilos do botão podem ser personalizados conforme necessário */
+  .button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .button:active {
+    background-color: #0056b3;
+    transform: translateY(1px);
+  }

@@ -94,7 +94,7 @@ const CadastroJornal = () => {
       <div className='conteiner'>
         <div className="jornal-page">
           <div className="jornal-content">
-            <h1>{isEditing ? 'Editar Jornal' : 'Cadastro de Notícia'}</h1>
+            <h1>{isEditing ? 'Editar Jornal' : 'Cadastro de Jornal'}</h1>
             <form onSubmit={handleSubmit} className="form">
               <div className="form-group">
                 <label htmlFor="titulo">Título:</label>
@@ -117,9 +117,8 @@ const CadastroJornal = () => {
               </div>
               <Button type="submit" text={isEditing ? 'Editar' : 'Cadastrar'} />
             </form>
-          </div>
-          <h2>Lista de Jornais</h2>
-          <ul>
+            <h2>Lista de Jornais</h2>
+            <ul>
             {jornais.map((jornal) => (
               <li key={jornal.id}>
                 {jornal.titulo}
@@ -128,6 +127,7 @@ const CadastroJornal = () => {
               </li>
             ))}
           </ul>
+          </div>          
         </div>
       </div>
       <Footer></Footer>

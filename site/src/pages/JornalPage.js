@@ -1,47 +1,46 @@
-// JornalPage.js
-import React from 'react';
-import './JornalPage.css';
+import React, { useState, useEffect } from 'react';
 import NavigationBar from '../components/NavigationBar';
-
 import Footer from '../components/Footer';
+import './JornalPage.css';
 
 const JornalPage = () => {
+  const [jornais, setJornais] = useState([]);
+
+  useEffect(() => {
+    fetchJornais();
+  }, []);
+
+  const fetchJornais = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/jornal/all');
+      if (response.ok) {
+        const data = await response.json();
+        setJornais(data);
+      } else {
+        console.error('Erro ao buscar jornais:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar jornais:', error);
+    }
+  };
+
   return (
     <div>
-    <NavigationBar />
-    <div className="jornal-page">
-      
-      <div className="jornal-content">
-        <h1>Cá entre nós</h1>
-        <article className="article">
-          <h2>Manchete principal</h2>
-          <img src="caminho/para/imagem.jpg" alt="Manchete principal" />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget purus in nulla pharetra tincidunt. Proin consectetur felis ut tellus ultricies, eget suscipit libero varius. Integer tempus, urna a tincidunt finibus, mauris elit tempor est, nec cursus orci sapien at ipsum. Donec ultricies arcu eu justo aliquam ullamcorper. Cras id lacus nec orci faucibus laoreet vel sit amet ipsum.
-          </p>
-        </article>
-
-        {/* Exemplo de mais artigos */}
-        <article className="article">
-          <h2>Artigo 1</h2>
-          <img src="caminho/para/imagem.jpg" alt="Artigo 1" />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget purus in nulla pharetra tincidunt. Proin consectetur felis ut tellus ultricies, eget suscipit libero varius. Integer tempus, urna a tincidunt finibus, mauris elit tempor est, nec cursus orci sapien at ipsum. Donec ultricies arcu eu justo aliquam ullamcorper. Cras id lacus nec orci faucibus laoreet vel sit amet ipsum.
-          </p>
-        </article>
-
-        <article className="article">
-          <h2>Artigo 2</h2>
-          <img src="caminho/para/imagem.jpg" alt="Artigo 2" />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget purus in nulla pharetra tincidunt. Proin consectetur felis ut tellus ultricies, eget suscipit libero varius. Integer tempus, urna a tincidunt finibus, mauris elit tempor est, nec cursus orci sapien at ipsum. Donec ultricies arcu eu justo aliquam ullamcorper. Cras id lacus nec orci faucibus laoreet vel sit amet ipsum.
-          </p>
-        </article>
-
-        {/* Mais artigos podem ser adicionados conforme necessário */}
+      <NavigationBar />
+      <div className="jornal-page">
+        <div className="jornal-content">
+          <h1>Cá entre nós</h1>
+          {jornais.map((jornal) => (
+            <article key={jornal.id} className="article">
+              <h2>{jornal.titulo}</h2>
+              <p>{jornal.conteudo}</p>
+              {/* Adicione um campo de imagem se houver uma imagem associada ao jornal */}
+              {jornal.imagem && <img src={jornal.imagem} alt={jornal.titulo} />}
+            </article>
+          ))}
+        </div>
       </div>
-    </div>
-    <Footer></Footer>
+      <Footer />
     </div>
   );
 };
