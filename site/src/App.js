@@ -17,19 +17,19 @@ import TribunasPage from './pages/TribunasPage';
 
 
 import { Provider } from './contexts/TribunaContext'
+import { ProviderCandidato } from './contexts/CandidatoContext';
 
 function App() {
   return (
     <Router>
-      <AuthProvider> {/* Envolve a aplicação com o AuthProvider */}
+      <AuthProvider>
+        <ProviderCandidato> {/* Envolve a aplicação com o AuthProvider */}
         <Provider>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cadastroAdm" element={<CadastroAdm />} />
             <Route path="/tribunas" element={<TribunasPage />} />
-        
-            
             <Route path="/cadastroJornal" element={<CadastroJornal />} />
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
             <Route path="/candidato" element={<CandidatoPage />} />
@@ -41,6 +41,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Provider>
+        </ProviderCandidato>
       </AuthProvider>
     </Router>
   );

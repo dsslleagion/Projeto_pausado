@@ -4,10 +4,14 @@ import './ProfilePage.css'; // Arquivo de estilos CSS
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 import { useContextoTribuna } from '../hooks'
-import Checkboxes  from '../components/Checkbox';
+import Checkboxes from '../components/Checkbox';
+import { useContextoCandidato } from '../hooks';
 
 const ProfilePage = () => {
-  const { userData, updateUserData, getClienteById} = useAuth();
+  const { userData, updateUserData, getClienteById } = useAuth();
+  const { candidato } = useContextoCandidato();
+  const [candidatosUsa, setCandidatosUsa] = useState([]);
+  const [novosCandidatos, setNovosCandidatos] = useState([]);
   const { tribuna } = useContextoTribuna();
   const [tribunasUsa, setTribunasUsa] = useState([]);
   const [novasTribunas, setNovasTribunas] = useState([]);
@@ -37,6 +41,19 @@ const ProfilePage = () => {
     });
     return lista1;
   };
+  const isChecked2 = (lista1, lista2) => {
+    lista1.forEach((item1) => {
+      const encontrado = lista2.some((item2) => item1.id === item2.candidato.id);
+      const idjunt = lista2.find((item3) => item3.candidato.id === item1.id);
+      item1.checked = encontrado;
+      if (idjunt !== undefined) {
+        item1.idjunt = idjunt.id;
+      } else {
+        item1.idjunt = -1;
+      }
+    });
+    return lista1;
+  };
 
   const handleCheckboxChange = (id, idjunt) => {
     setNovasTribunas((prevTribunas) => {
@@ -47,6 +64,16 @@ const ProfilePage = () => {
       return prevTribunas.filter((item) => item.id !== id);
     });
   };
+  const handleCheckboxChange2 = (id, idjunt) => {
+    setNovosCandidatos((prevCandidatos) => {
+      const exists = prevCandidatos.find((item) => item.id === id);
+      if (!exists) {
+        return [...prevCandidatos, { id: Number(id), idjunt: idjunt }];
+      }
+      return prevCandidatos.filter((item) => item.id !== id);
+    });
+  };
+
 
   useEffect(() => {
     setTribunasUsa(isChecked(tribuna, userData.tribunas));
@@ -60,6 +87,19 @@ const ProfilePage = () => {
     };
     fetchClienteData();
   }, [userData.cliente.id, getClienteById, tribunasUsa, tribuna]);
+
+  useEffect(() => {
+    setCandidatosUsa(isChecked2(candidato, userData.candidatos));
+    const fetchClienteData = async () => {
+      try {
+        const clienteData = await getClienteById(userData.cliente.id);
+        setFormData(clienteData);
+      } catch (error) {
+        console.error('Erro ao buscar dados do cliente:', error);
+      }
+    };
+    fetchClienteData();
+  }, [userData.cliente.id, getClienteById, candidatosUsa, candidato]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,7 +144,48 @@ const ProfilePage = () => {
       const trib = await response.json();
       updateUserData({ ...userData, cliente: formData, tribunas: trib });
       logout(); // Chama o logout após a atualização
-    } catch (err) {}
+    } catch (err) { }
+  };
+
+  const candidatosCD = async () => {
+    try {
+      novosCandidatos.map(async (can) => {
+        if (can.idjunt === -1) {
+          const response = await fetch('http://localhost:3001/cc/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+            },
+            body: JSON.stringify({ cliente: userData.cliente.id, candidato: can.id }),
+          });
+          if (response.ok) {
+            logout();
+            console.log('Usuário cadastrado com sucesso!');
+          } else {
+            console.error('Erro ao cadastrar usuário:', response.statusText);
+          }
+        } else {
+          const response = await fetch(`http://localhost:3001/cc/delete/${can.idjunt}`, {
+            method: 'DELETE',
+          });
+          if (response.ok) {
+            logout();
+            console.log('Usuário excluído com sucesso!');
+          } else {
+            console.error('Erro ao excluir usuário:', response.statusText);
+          }
+        }
+      });
+      const response = await fetch(`http://localhost:3001/cc/allCan/${userData.cliente.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      });
+      const canb = await response.json();
+      updateUserData({ ...userData, cliente: formData, candidatos: canb });
+      logout(); // Chama o logout após a atualização
+    } catch (err) { }
   };
 
   const handleUpdatePassword = async () => {
@@ -138,29 +219,28 @@ const ProfilePage = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-      
+
         alert('Dados do cliente atualizados com sucesso!');
         logout();
-      
+
         const updatedUserData = { ...userData, cliente: formData };
         updateUserData(updatedUserData);
         // Chama o logout após a atualização
         logout();
       } else {
-      
+
       }
     } catch (error) {
-      
+
     }
   };
-  
-  
-  
+
+
+
   const logout = () => {
     localStorage.removeItem('userData');
-    // setUserData({ token: null, cliente: null });
     window.location.href = "/login";
   };
 
@@ -168,9 +248,9 @@ const ProfilePage = () => {
     <div>
       <NavigationBar />
       <div className="profile-container">
-       
+
         <form className="profile-form">
-        <h1>Perfil do Usuário</h1>
+          <h1>Perfil do Usuário</h1>
           <div className="form-group">
             <label>Nome:</label>
             <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
@@ -214,16 +294,27 @@ const ProfilePage = () => {
             <label>Nova Senha:</label>
             <input type="password" name="password" value={formData.password} onChange={handleChange} />
           </div>
+          <h3>Tribunas interessados</h3>
           <div>
-            {tribunasUsa.map((res) => 
+            {tribunasUsa.map((res) =>
               <div>
-                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt)}/> 
-                <p>{res.nome}</p> 
+                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt)} />
+                <p>{res.nome}</p>
+              </div>
+            )}
+          </div>
+          <h3>Candidatos interessados</h3>
+          <div>
+            {candidatosUsa.map((res) =>
+              <div>
+                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange2(e, res.idjunt)} />
+                <p>{res.nome}</p>
               </div>
             )}
           </div>
           <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
-          <button type="button" onClick={tribunasCD}>Atualizar Dados de interreses</button>
+          <button type="button" onClick={tribunasCD}>Atualizar tribunas</button>
+          <button type="button" onClick={candidatosCD}>Atualizar candidatos</button>
           <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
         </form>
       </div>

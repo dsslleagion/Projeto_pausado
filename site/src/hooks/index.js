@@ -1,5 +1,7 @@
-import useContextoTribuna from "./UseContextoTribuna" 
+import useContextoTribuna from "./UseContextoTribuna"
+import useContextoCandidato from "./UseContextoCandidato"
 
 export {
-    useContextoTribuna
+    useContextoTribuna,
+    useContextoCandidato
 }
