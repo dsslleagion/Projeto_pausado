@@ -1,40 +1,28 @@
+/* NewsCard.css */
+
 .news-card {
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  max-height: 200px; /* Defina uma altura máxima para os cards expandidos */
-  overflow: hidden; /* Esconda o conteúdo que excede a altura máxima */
-  position: relative; /* Defina a posição relativa para o card */
-  background: linear-gradient(to bottom right, #4b4d4c, #4b4d4c); /* Degrade de cores pastéis */
+  background-color: #ffffff;
   border-radius: 8px;
-  padding: 20px; /* Adicione preenchimento para melhor visualização */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
-.news-card.expanded {
-  max-height: none; /* Remova a altura máxima quando o card estiver expandido */
+.news-card h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
-
-.news-image {
-  width: 100%;
-  height: 150px; /* Altura da imagem fictícia */
-  background-color: #ccc; /* Cor de fundo da imagem */
-  border-radius: 8px;
+.news-card img {
+  width: 100%; /* Ajuste a largura conforme necessário */
+  height: auto; /* Para manter a proporção */
+  border-radius: 8px 8px 0 0; /* Borda arredondada apenas no topo */
+}
+.news-card p {
+  font-size: 14px;
+  color: #333333;
   margin-bottom: 10px;
 }
 
-.news-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #a7a7a7; /* Cor do título */
-}
-
-.news-content {
-  color: #fcfbfb;
-}
-
-.news-date {
-  font-size: 0.9rem;
-  color: #f8f8f8;
-  margin-top: 10px;
+.news-card span {
+  font-size: 12px;
+  color: #999999;
 }
