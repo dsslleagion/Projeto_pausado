@@ -16,58 +16,54 @@ const CadastroNoticia = () => {
   const [ tribunalista, setTribuna ] = useState([])
   const { selectTribuna } = useContextoTribuna()
 
-  useEffect(() => {
-    fetchNoticias();
-  }, []);
+  // useEffect(() => {
+  //   fetchNoticias();
+  // }, []);
 
   const handleChange = (e) => {
-    console.log(e);
-    // const { name, value } = e.target;
-    // setFormData({ ...formData, [name]: value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
+  const handleChangeDesc = (e) => {
+    const name = 'conteudo'
+    setFormData({ ...formData, [name]: e });
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (editandoNoticia) {
-        // Se estiver editando uma notícia, chame a função de atualizar
-        await atualizarNoticia(editandoNoticia.id, formData);
-      } else {
-        // Se não estiver editando uma notícia, chame a função de criar
-        await cadastrarNoticia(formData);
-      }
       // Limpar o formulário após o envio bem-sucedido
       setFormData({ titulo: '', conteudo: '' });
-      setEditandoNoticia(null); // Limpar o estado de edição
+      //setEditandoNoticia(null); // Limpar o estado de edição
     } catch (error) {
       console.error('Erro ao cadastrar/atualizar notícia:', error.message);
     }
   };
 
-  const fetchNoticias = async () => {
-    try {
-      const response = await fetch('/noticia/noticias', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        const formattedData = data.map((noticia) => ({
-          id: noticia.id,
-          titulo: noticia.titulo,
-          conteudo: noticia.conteudo,
-          // Se necessário, adicione mais campos aqui
-        }));
-        setNoticias(formattedData);
-      } else {
-        console.error('Erro ao buscar notícias:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar notícias:', error.message);
-    }
-  };
+  // const fetchNoticias = async () => {
+  //   try {
+  //     const response = await fetch('/noticia/noticias', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json;charset=utf-8'
+  //       }
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       const formattedData = data.map((noticia) => ({
+  //         id: noticia.id,
+  //         titulo: noticia.titulo,
+  //         conteudo: noticia.conteudo,
+  //         // Se necessário, adicione mais campos aqui
+  //       }));
+  //       setNoticias(formattedData);
+  //     } else {
+  //       console.error('Erro ao buscar notícias:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Erro ao buscar notícias:', error.message);
+  //   }
+  // };
 
   const handleExcluirNoticia = async (id) => {
     try {
@@ -77,7 +73,7 @@ const CadastroNoticia = () => {
       if (response.ok) {
         console.log('Notícia excluída com sucesso!');
         // Recarregar a lista de notícias após excluir
-        fetchNoticias();
+        //fetchNoticias();
       } else {
         console.error('Erro ao excluir notícia:', response.statusText);
       }
@@ -93,22 +89,41 @@ const CadastroNoticia = () => {
     console.log('Editar notícia:', noticia);
   };
 
+  console.log(tribunalista);
+
   const cadastrarNoticia = async (data) => {
     try {
-      const response = await fetch('/noticia/noticias', {
+      await fetch('/noticia/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-      });
-      if (response.ok) {
-        console.log('Notícia cadastrada com sucesso!');
-        // Recarregar a lista de notícias após cadastrar uma nova
-        fetchNoticias();
-      } else {
-        console.error('Erro ao cadastrar notícia:', response.statusText);
-      }
+      }).then(async (res) => {
+        const re =  await res.json()
+        console.log(re);
+        cadastrarNoticiaToTribuna(re.id)
+      })
+    } catch (error) {
+      console.error('Erro ao cadastrar notícia:', error.message);
+    }
+  };
+
+  console.log(formData.conteudo);
+
+  const cadastrarNoticiaToTribuna = async (data) => {
+    try {
+      tribunalista.map(async (item) => {
+        console.log(item);
+        console.log(data);
+        await fetch('/tn/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({ noticia: data , tribuna: item.value }),
+        });
+      })
     } catch (error) {
       console.error('Erro ao cadastrar notícia:', error.message);
     }
@@ -126,7 +141,7 @@ const CadastroNoticia = () => {
       if (response.ok) {
         console.log('Notícia atualizada com sucesso!');
         // Recarregar a lista de notícias após atualizar
-        fetchNoticias();
+        //fetchNoticias();
       } else {
         console.error('Erro ao atualizar notícia:', response.statusText);
       }
@@ -153,12 +168,12 @@ const CadastroNoticia = () => {
           <div className="form-group">
             <label htmlFor="conteudo">Conteúdo:</label>
             {/* <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea> */}
-            <Descrition value={formData.conteudo} setValue={handleChange} />
+            <Descrition value={formData.conteudo} setValue={handleChangeDesc} />
           </div>
-          <button type="submit" className="submit-button">Enviar</button>
+          <button onClick={() => cadastrarNoticia(formData)} className="edit-button">Enviar</button>
         </form>
 
-        <h2>Notícias</h2>
+        {/* <h2>Notícias</h2>
         <div className="noticias-container">
           {noticias.map((noticia) => (
             <div className="noticia-card" key={noticia.id}>
@@ -170,7 +185,7 @@ const CadastroNoticia = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
         
       </div>
       <Footer />
