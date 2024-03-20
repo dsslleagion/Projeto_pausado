@@ -22,4 +22,9 @@
   .tribuna-page a:hover {
     text-decoration: underline;
   }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
   
