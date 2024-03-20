@@ -13,5 +13,5 @@ export class Formulario {
   conteudo: string;
 
   @OneToMany(() => Cliente, (cliente) => cliente.form)
-  cliente: Cliente[];
+  clinte: Cliente[];
 }
