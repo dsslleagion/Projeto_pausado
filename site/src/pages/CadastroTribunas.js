@@ -3,11 +3,15 @@ import React, { useState, useEffect } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 import './CadastroTribuna.css';
+import lapis from '../assets/lapis.png' 
+import lixeira from '../assets/lixeira.png' 
+import { ModalComponent } from '../components/Modal';
 
 const CadastroTribunas = () => {
   const [tribunas, setTribunas] = useState([]);
   const [formData, setFormData] = useState({
-    nome: ''
+    nome: '',
+    descricao: ''
   });
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState('');
@@ -47,8 +51,11 @@ const CadastroTribunas = () => {
       if (!response.ok) {
         throw new Error('Erro ao cadastrar tribuna');
       }
-      setFormData({ nome: '' });
-      fetchTribunas();
+      if(response.ok){
+        alert("Cadastro realizado com susseso!")
+        setFormData({ nome: '', descricao: '' });
+        fetchTribunas();
+      }
     } catch (error) {
       console.error('Erro ao cadastrar tribuna:', error);
     }
@@ -56,7 +63,8 @@ const CadastroTribunas = () => {
 
   const handleEdit = (tribuna) => {
     setFormData({
-      nome: tribuna.nome
+      nome: tribuna.nome,
+      descricao: tribuna.descricao
     });
     setEditMode(true);
     setEditId(tribuna.id);
@@ -95,7 +103,6 @@ const CadastroTribunas = () => {
       console.error('Erro ao excluir tribuna:', error);
     }
   };
-
   return (
     <div>
       <NavigationBar />
@@ -112,18 +119,23 @@ const CadastroTribunas = () => {
                 value={formData.nome}
                 onChange={handleChange}
               />
+              <label htmlFor="nome">Descrição:</label>
+              <textarea id="descricao" name="descricao" value={formData.descricao} onChange={handleChange}></textarea>
             </div>
             <div className="form-group">
               <button className="button" type="submit">{editMode ? 'Atualizar' : 'Cadastrar'}</button>
             </div>
           </form>
+          
           <h2>Tribunas Cadastradas</h2>
           <ul>
             {tribunas.map((tribuna) => (
               <li key={tribuna.id}>
-                {tribuna.nome}
-                <button className="button" onClick={() => handleEdit(tribuna)}>Editar</button>
-                <button className="button" onClick={() => handleDelete(tribuna.id)}>Excluir</button>
+                <ModalComponent title={tribuna.nome} desc={tribuna.descricao}/>
+               
+                <img src={lapis} alt='editar' style={{ width: "30px", padding: "3px" }} onClick={() => handleEdit(tribuna)}/>
+                <img src={lixeira} alt='deletar' style={{ width: "30px", padding: "3px" }} onClick={() => handleDelete(tribuna.id)}/>
+               
               </li>
             ))}
           </ul>
