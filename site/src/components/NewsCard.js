@@ -1,6 +1,7 @@
 // NewsCard.js
 import React from 'react';
 
+
 const NewsCard = ({ title, content, date }) => {
   return (
     <div className="news-card">

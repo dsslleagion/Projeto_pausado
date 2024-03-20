@@ -32,7 +32,6 @@ const Home = () => {
         }));
         setNews(formattedData);
         setMainNews(formattedData.slice(0, 3));
-
       })
       .catch((error) => {
         console.error('Erro ao obter notícias:', error);
@@ -42,7 +41,6 @@ const Home = () => {
   return (
     <div className="home-page">
       <NavigationBar />
-      <div className="">
       <div className="container2">
         <div className="main-news">
           <Slider dots infinite autoplay>
@@ -63,14 +61,22 @@ const Home = () => {
           ))}
         </div>
       </div>
+
       <div className="container3">
-      <div className="list-news-down">
+        <div className="list-news-down">
           {news.map((item) => (
-            <NewsCard key={item.id} title={item.title} content={item.content} date={item.date} />
+            <div key={item.id} className="news-card">
+              <img src="https://via.placeholder.com/300x200" alt="Imagem Fictícia" />
+              <div className="news-info">
+                <h2>{item.title}</h2>
+                <p>{item.content}</p>
+                <span>{item.date}</span>
+              </div>
+            </div>
           ))}
         </div>
-        </div>
-        </div>
+      </div>
+
       <Footer />
     </div>
   );
