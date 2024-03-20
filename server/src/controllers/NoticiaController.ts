@@ -31,8 +31,6 @@ class NoticiaController {
     }
 
     public async store(req: Request, res: Response) {
-        const infoLog = await info()
-        const warmLog = await warm()
         try {
             const createNoticia = req.body
             const noticiaRepository = AppDataSource.getRepository(Noticia)
@@ -44,17 +42,10 @@ class NoticiaController {
 
 
             const allNoticia = await noticiaRepository.save(insertNoticia)
-            infoLog.insertOne({
-                date: new Date(),
-                message: "Noticias cadastradas com sucesso",
-                id: allNoticia.id
-            })
             return res.json(allNoticia)
         } catch (err) {
-            warmLog.insertOne({
-                date: new Date(),
-                message: 'Erro ao cadastrar Noticia: ' + err
-            })
+            console.log(err);
+            
             return res.status(400).json({ error: err })
         }
     }
