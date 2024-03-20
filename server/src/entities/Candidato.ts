@@ -17,7 +17,10 @@ export class Candidato {
   partido: string;
 
   @Column({ nullable: false })
-  cargo: string;
+  cargoPretendido: string;
+  
+  @Column({ nullable: false })
+  biografia: string;
 
   @OneToMany(() => ClienteToCandidato, (cliToCan) => cliToCan.candidato)
   cliToCan: ClienteToCandidato[];

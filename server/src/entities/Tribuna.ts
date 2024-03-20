@@ -12,6 +12,9 @@ export class Tribuna {
   @Column({ nullable: false })
   nome: string;
 
+  @Column({ nullable: false })
+  descricao: string;
+  
   @OneToMany(() => ClienteToTribuna, (cliToTri) => cliToTri.tribuna)
   cliToTri: ClienteToTribuna[];
 

@@ -30,10 +30,11 @@ class TribunaController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { nome } = req.body
+      const { nome , descricao } = req.body
       const rep = AppDataSource.getRepository(Tribuna)
       const tribuna = new Tribuna()
       tribuna.nome = nome
+      tribuna.descricao = descricao
       const one = await rep.save(tribuna)
       return res.status(200).json(one)
     }catch(err){
@@ -45,10 +46,11 @@ class TribunaController {
 
     try {
       const id:any = req.params.uuid
-      const { nome } = req.body
+      const { nome , descricao } = req.body
       const rep = AppDataSource.getRepository(Tribuna)
       const one = await rep.findOneBy({id: id})
       one.nome = nome
+      one.descricao = descricao
       const save = await rep.save(one)
       return res.status(200).json(save)
     } catch (error) {
