@@ -160,6 +160,9 @@ const CadastroCandidato = () => {
               <label htmlFor="nome">Biografia:</label>
               <textarea id="biografia" name="biografia" value={formValues.biografia} onChange={handleChange}></textarea>
             </div>
+            <div>
+              
+            </div>
             <button type="submit">{formValues.id ? 'Alterar' : 'Cadastrar'}</button>
           </form>
           <h2>Candidatos Cadastrados</h2>

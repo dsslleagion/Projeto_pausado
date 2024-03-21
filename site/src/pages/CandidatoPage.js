@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import './CandidatoPage.css';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 
 const CandidatoPage = () => {
-  const { id } = useParams();
   const [candidato, setCandidato] = useState(null);
 
-  // Exemplo de candidato (pode ser substituído por uma chamada à API)
-  const exemploCandidato = { id: 1, nome: 'Candidato 1', partido: 'Partido A', cargo: 'Presidente' };
+
+  const fetchCandidatos = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/candidato/all');
+      if (!response.ok) {
+        throw new Error('Erro ao buscar candidatos');
+      }
+      const data = await response.json();
+      setCandidato(data);
+    } catch (error) {
+      console.error('Erro ao buscar candidatos:', error);
+    }
+  };
 
   useEffect(() => {
-    // Simulação de busca do candidato pelo ID (pode ser substituído por uma chamada à API)
-    setCandidato(exemploCandidato);
-  }, [id]);
+    fetchCandidatos();
+  }, []);
 
   if (!candidato) {
     return <div>Carregando...</div>;
@@ -24,9 +32,16 @@ const CandidatoPage = () => {
     <div>
       <NavigationBar></NavigationBar>
     <div className="container">
-      <h1>{candidato.nome}</h1>
-      <p>Partido: {candidato.partido}</p>
-      <p>Cargo: {candidato.cargo}</p>
+      {candidato.map((item) => (
+        <div>
+          <h1>{item.nome}</h1>
+          <p>Partido: {item.partido}</p>
+          <p>Cargo: {item.cargoPretendido}</p>
+          <p>Biografia: {item.biografia}</p>
+          <p>{item.imagem}</p>
+        </div>
+      ))}
+      
       {/* Adicione mais detalhes do candidato conforme necessário */}
     </div>
     <Footer></Footer>
