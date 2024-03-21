@@ -1,5 +1,33 @@
 /* CadastroCandidato.css */
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* Estilo para o cabeçalho quando hover */
+th:hover {
+  background-color: #ddd;
+}
+
+/* ------------------------------------ */
+
 .cadastro-candidato {
   max-width: 800px;
   margin: 0 auto;
