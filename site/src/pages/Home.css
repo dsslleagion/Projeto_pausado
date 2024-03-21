@@ -82,11 +82,19 @@
 
 
 .secondary-news .news-card {
-  background-color: #ffffff;
+  background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+  transition:.25s ease-in-out  ;
+  
+}
+
+.secondary-news .news-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: scale(1.1);
+
 }
 
 .secondary-news .news-card h2 {
@@ -113,12 +121,20 @@
 }
 
 .list-news-down .news-card {
+  background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
   display: flex; /* Alteração */
-  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transition:.25s ease-in-out  ;
+}
+
+.list-news-down .news-card:hover{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: scale(1.1);
+
 }
 
 .list-news-down .news-card img {
