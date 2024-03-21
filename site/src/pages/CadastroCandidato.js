@@ -7,6 +7,7 @@ import lixeira from '../assets/lixeira.png'
 import {  ModalChildren } from '../components/Modal';
 import { Tabela } from '../components/Tabela';
 import perfil from '../assets/perfil-sem-foto.png' 
+import  Upload  from '../components/Upload';
 
 
 const CadastroCandidato = () => {
@@ -161,7 +162,7 @@ const CadastroCandidato = () => {
               <textarea id="biografia" name="biografia" value={formValues.biografia} onChange={handleChange}></textarea>
             </div>
             <div>
-              
+              <Upload></Upload>
             </div>
             <button type="submit">{formValues.id ? 'Alterar' : 'Cadastrar'}</button>
           </form>
