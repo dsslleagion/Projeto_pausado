@@ -1,0 +1,26 @@
+.noticia-container {
+  max-width: 800px;
+  margin: 50px auto; /* Adiciona espaço na parte superior para afastar o conteúdo do topo */
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.noticia-container h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.noticia-container p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.noticia-container span {
+  font-size: 14px;
+  color: #999;
+}

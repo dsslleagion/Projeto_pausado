@@ -17,7 +17,7 @@
   max-width: 1200px;
   margin: 0 auto;
   margin-left: -130px; /* Ajuste para mover o container ligeiramente para a esquerda */
-  margin-top: -540px; /* Ajuste para subir mais a posição */
+  margin-top: -640px; /* Ajuste para subir mais a posição */
 }
 
 
@@ -32,29 +32,54 @@
 }
 
 .carousel-news-item {
+  position: relative;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   margin-bottom: 20px;
 }
 
-.carousel-news-item h2 {
+.carousel-image-overlay {
+  position: relative;
+}
+
+.carousel-image-overlay img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.carousel-news-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border-radius: 8px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5)); /* Adição de um gradiente para melhorar a legibilidade do texto */
+}
+
+.carousel-news-content h2 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #222222;
+  color: #ffffff;
 }
 
-.carousel-news-item p {
+.carousel-news-content p {
   font-size: 16px;
-  color: #444444;
   margin-bottom: 10px;
+  color: #ffffff;
 }
 
-.carousel-news-item span {
+.carousel-news-content span {
   font-size: 14px;
-  color: #666666;
+  color: #ffffff;
 }
+
 
 .secondary-news .news-card {
   background-color: #ffffff;

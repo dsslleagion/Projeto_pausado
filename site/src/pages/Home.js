@@ -3,8 +3,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NavigationBar from '../components/NavigationBar';
-import NewsCard from '../components/NewsCard';
 import Footer from '../components/Footer';
+import NewsCard from '../components/NewsCard';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
@@ -45,19 +46,27 @@ const Home = () => {
         <div className="main-news">
           <Slider dots infinite autoplay>
             {mainNews.map((item) => (
-              <div key={item.id} className="carousel-news-item">
-                <img src="https://via.placeholder.com/720x300" alt="Imagem Fictícia" />
-                <h2>{item.title}</h2>
-                <p>{item.content}</p>
-                <span>{item.date}</span>
-              </div>
+              <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+                <div className="carousel-news-item">
+                  <div className="carousel-image-overlay">
+                    <img src="https://via.placeholder.com/720x300" alt="Imagem Fictícia" />
+                    <div className="carousel-news-content">
+                      <h2>{item.title}</h2>
+                      <p>{item.content}</p>
+                      <span>{item.date}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             ))}
           </Slider>
         </div>
 
         <div className="secondary-news">
           {news.map((item) => (
-            <NewsCard key={item.id} title={item.title} content={item.content} date={item.date} />
+            <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+              <NewsCard title={item.title} content={item.content} date={item.date} />
+            </Link>
           ))}
         </div>
       </div>
@@ -65,14 +74,16 @@ const Home = () => {
       <div className="container3">
         <div className="list-news-down">
           {news.map((item) => (
-            <div key={item.id} className="news-card">
-              <img src="https://via.placeholder.com/300x200" alt="Imagem Fictícia" />
-              <div className="news-info">
-                <h2>{item.title}</h2>
-                <p>{item.content}</p>
-                <span>{item.date}</span>
+            <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+              <div className="news-card">
+                <img src="https://via.placeholder.com/300x200" alt="Imagem Fictícia" />
+                <div className="news-info">
+                  <h2>{item.title}</h2>
+                  <p>{item.content}</p>
+                  <span>{item.date}</span>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

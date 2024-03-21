@@ -19,6 +19,8 @@ import CadastroForum from './pages/CadastroForum';
 import { Provider } from './contexts/TribunaContext'
 import { ProviderCandidato } from './contexts/CandidatoContext';
 import CadastroTribunas from './pages/CadastroTribunas';
+import NoticiaPage from './pages/NoticiaPage';
+
 function App() {
   return (
     <Router>
@@ -37,6 +39,7 @@ function App() {
             <Route path="/candidato" element={<CandidatoPage />} />
             <Route path="/candidatosPage" element={<CandidatosPage />} />
             <Route path="/jornal" element={<JornalPage />} />
+            <Route path="/NoticiaPage/:id" element={<NoticiaPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/cadastroNoticia" element={<CadastroNoticia />} />
             <Route path="/login" element={<Login />} /> {/* Adiciona a rota para a página de login */}
