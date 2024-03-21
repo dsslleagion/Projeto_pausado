@@ -27,13 +27,14 @@ class CandidatoController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { nome, partido, cargoPretendido , biografia } = req.body
+      const { nome, partido, cargoPretendido , biografia, imagem } = req.body
       const rep = AppDataSource.getRepository(Candidato)
       const candidato = new Candidato()
       candidato.nome = nome
       candidato.partido = partido
       candidato.cargoPretendido = cargoPretendido
       candidato.biografia = biografia
+      candidato.imagem = imagem
       const result = await rep.save(candidato)
       return res.status(200).json(result)
     }catch(err){
@@ -44,7 +45,7 @@ class CandidatoController {
   public async put(req: Request, res: Response): Promise<Response> {
     try {
       const id:any = req.params.uuid
-      const { nome, partido, cargoPretendido , biografia} = req.body
+      const { nome, partido, cargoPretendido , biografia, imagem} = req.body
       const rep = AppDataSource.getRepository(Candidato)
       const candidato = await rep.findOneBy({id:id})
       if (!candidato) {
@@ -54,6 +55,7 @@ class CandidatoController {
       candidato.partido = partido
       candidato.cargoPretendido = cargoPretendido 
       candidato.biografia = biografia
+      candidato.imagem = imagem
       const result = await rep.save(candidato)
       return res.status(200).json(result)
     } catch (error) {

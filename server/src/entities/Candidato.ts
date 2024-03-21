@@ -22,6 +22,9 @@ export class Candidato {
   @Column({ nullable: false })
   biografia: string;
 
+  @Column({ nullable: false })
+  imagem: string;
+
   @OneToMany(() => ClienteToCandidato, (cliToCan) => cliToCan.candidato)
   cliToCan: ClienteToCandidato[];
 

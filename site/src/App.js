@@ -12,7 +12,6 @@ import CadastroAdm from './pages/CadastroAdm';
 import CadastroJornal from './pages/CadastroJornal';
 import CadastroCandidato from './pages/CadastroCandidato';
 import CandidatoPage from './pages/CandidatoPage';
-import CandidatosPage from './pages/CandidatosPage';
 import TribunasPage from './pages/TribunasPage';
 import ViewForum from './pages/ViewForum';
 import CadastroForum from './pages/CadastroForum';
@@ -37,7 +36,6 @@ function App() {
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
             <Route path="/CadastroForum" element={<CadastroForum />} />
             <Route path="/candidato" element={<CandidatoPage />} />
-            <Route path="/candidatosPage" element={<CandidatosPage />} />
             <Route path="/jornal" element={<JornalPage />} />
             <Route path="/NoticiaPage/:id" element={<NoticiaPage />} />
             <Route path="/perfil" element={<ProfilePage />} />

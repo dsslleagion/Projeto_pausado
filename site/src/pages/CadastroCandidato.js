@@ -2,13 +2,21 @@ import React, { useState, useEffect } from 'react';
 import './CadastroCandidato.css';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
+import lapis from '../assets/lapis.png' 
+import lixeira from '../assets/lixeira.png' 
+import {  ModalChildren } from '../components/Modal';
+import { Tabela } from '../components/Tabela';
+import perfil from '../assets/perfil-sem-foto.png' 
+import  Upload  from '../components/Upload';
+
 
 const CadastroCandidato = () => {
   const [formValues, setFormValues] = useState({
     id: '',
     nome: '',
     partido: '',
-    cargo: ''
+    cargoPretendido: '',
+    biografia: ''
   });
 
   const [candidatos, setCandidatos] = useState([]);
@@ -35,7 +43,8 @@ const CadastroCandidato = () => {
         id: '',
         nome: '',
         partido: '',
-        cargo: ''
+        cargoPretendido: '',
+        biografia: ''
       });
       fetchCandidatos();
     } catch (error) {
@@ -79,7 +88,8 @@ const CadastroCandidato = () => {
       id: candidato.id,
       nome: candidato.nome,
       partido: candidato.partido,
-      cargo: candidato.cargo
+      cargoPretendido: candidato.cargoPretendido,
+      biografia: candidato.biografia
     });
   };
 
@@ -100,7 +110,8 @@ const CadastroCandidato = () => {
         id: '',
         nome: '',
         partido: '',
-        cargo: ''
+        cargoPretendido: '',
+        biografia: ''
       });
       fetchCandidatos();
     } catch (error) {
@@ -137,27 +148,54 @@ const CadastroCandidato = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="cargo">Cargo:</label>
+              <label htmlFor="cargoPretendido">Cargo:</label>
               <input
                 type="text"
-                id="cargo"
-                name="cargo"
-                value={formValues.cargo}
+                id="cargoPretendido"
+                name="cargoPretendido"
+                value={formValues.cargoPretendido}
                 onChange={handleChange}
               />
             </div>
-            <button type="submit">{formValues.id ? 'Salvar Alterações' : 'Cadastrar Candidato'}</button>
+            <div>
+              <label htmlFor="nome">Biografia:</label>
+              <textarea id="biografia" name="biografia" value={formValues.biografia} onChange={handleChange}></textarea>
+            </div>
+            <div>
+              <Upload></Upload>
+            </div>
+            <button type="submit">{formValues.id ? 'Alterar' : 'Cadastrar'}</button>
           </form>
           <h2>Candidatos Cadastrados</h2>
-          <ul>
-            {candidatos.map((candidato) => (
-              <li key={candidato.id}>
-                {candidato.nome} ({candidato.partido}) - {candidato.cargo}
-                <button onClick={() => handleEdit(candidato)}>Editar</button>
-                <button onClick={() => handleDelete(candidato.id)}>Excluir</button>
-              </li>
-            ))}
-          </ul>
+          <Tabela th={
+            <>
+              <th className="text-center">Nome </th><th className="text-center">Partido</th>
+              <th className="text-center">Cargo Pretendido</th>
+              <th className="text-center">Ações</th>
+            </>
+          }>
+                {candidatos.map((candidato) => (
+                    <tr key={candidato.id} className="dropdown-label anexo">
+                      {/*corpo tabela*/}
+                   
+                      <td className="text-center">{candidato.nome}</td>
+                      <td className="text-center">{candidato.partido}</td>
+                      <td className="text-center">{candidato.cargoPretendido}</td>
+                      <td className="text-center">
+                        
+                      <img src={lapis} alt='editar' style={{ width: "30px", padding: "3px" }} onClick={() => handleEdit(candidato)}/>
+                      <img src={lixeira} alt='deletar' style={{ width: "30px", padding: "3px" }} onClick={() => handleDelete(candidato.id)}/>
+                        <ModalChildren image={perfil}>
+                          <h1 style={{textAlign: 'center'}}>{candidato.nome}</h1>
+                          <p>Partido: {candidato.partido}</p>
+                          <p>Cargo: {candidato.cargoPretendido}</p>
+                          <p>Biografia: {candidato.biografia}</p>
+                        </ModalChildren>
+                      
+                      </td>
+                    </tr>
+                  ))}
+          </Tabela>
         </div>
       </div>
       <Footer />
