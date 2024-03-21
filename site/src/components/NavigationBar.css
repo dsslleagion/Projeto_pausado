@@ -18,6 +18,8 @@
 
 .logo-link {
   text-decoration: none;
+  border-radius: 50%; /* Torna o logo-link circular */
+  overflow: hidden;
 }
 
 .logo-img {
@@ -68,27 +70,26 @@
 /* Adicione uma classe específica para cada dropdown */
 .dropdown-cadastro {
   top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
-  left: 0; /* Alinha o dropdown com a borda esquerda do elemento pai */
+  /* left: 0;  Alinha o dropdown com a borda esquerda do elemento pai */
 }
 
 .dropdown-jornal {
-  top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
-  left: -20px; /* Ajuste a posição horizontal conforme necessário */
+  top: calc(100% + 5px); /* Ajuste a posição horizontal conforme necessário */
 }
 
 .dropdown-candidatos {
   top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
-  left: -40px; /* Ajuste a posição horizontal conforme necessário */
+  /* Ajuste a posição horizontal conforme necessário */
 }
 
 .dropdown-tribunas {
   top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
-  left: -60px; /* Ajuste a posição horizontal conforme necessário */
+   /* Ajuste a posição horizontal conforme necessário */
 }
 
 .dropdown-profile {
   top: calc(100% + 5px); /* Posiciona o dropdown abaixo da barra de navegação */
-  right: 0; /* Alinha o dropdown com a borda direita do elemento pai */
+   /* Alinha o dropdown com a borda direita do elemento pai */
 }
 
 .nav-category:hover .dropdown-content,
