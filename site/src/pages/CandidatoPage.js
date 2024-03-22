@@ -38,7 +38,12 @@ const CandidatoPage = () => {
           <p>Partido: {item.partido}</p>
           <p>Cargo: {item.cargoPretendido}</p>
           <p>Biografia: {item.biografia}</p>
-          <p>{item.imagem}</p>
+          <img
+            className="rounded-circle"
+            src={item.imagem}
+            alt="avatar"
+            style={{ width: '30%', height: '30%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
+          />
         </div>
       ))}
       

@@ -6,6 +6,8 @@ import Footer from '../components/Footer';
 import { useContextoTribuna } from '../hooks'
 import Checkboxes from '../components/Checkbox';
 import { useContextoCandidato } from '../hooks';
+import { ModalChildren, ModalComponent } from '../components/Modal';
+import lapis from '../assets/lapis.png' 
 
 const ProfilePage = () => {
   const { userData, updateUserData, getClienteById } = useAuth();
@@ -26,6 +28,7 @@ const ProfilePage = () => {
     cep: '',
     redes_sociais: '',
     password: '',
+    passwordRep: '',
   });
 
   const isChecked = (lista1, lista2) => {
@@ -55,8 +58,8 @@ const ProfilePage = () => {
     return lista1;
   };
 
-  const handleCheckboxChange = (id, idjunt) => {
-    setNovasTribunas((prevTribunas) => {
+  const handleCheckboxChange = (id, idjunt, set) => {
+    set((prevTribunas) => {
       const exists = prevTribunas.find((item) => item.id === id);
       if (!exists) {
         return [...prevTribunas, { id: Number(id), idjunt: idjunt }];
@@ -64,42 +67,23 @@ const ProfilePage = () => {
       return prevTribunas.filter((item) => item.id !== id);
     });
   };
-  const handleCheckboxChange2 = (id, idjunt) => {
-    setNovosCandidatos((prevCandidatos) => {
-      const exists = prevCandidatos.find((item) => item.id === id);
-      if (!exists) {
-        return [...prevCandidatos, { id: Number(id), idjunt: idjunt }];
-      }
-      return prevCandidatos.filter((item) => item.id !== id);
-    });
-  };
 
 
   useEffect(() => {
+    const fetchClienteData = async () => {
+      try {
+        const clienteData = await getClienteById(userData.cliente.id);
+        setFormData(clienteData);
+      } catch (error) {
+        console.error('Erro ao buscar dados do cliente:', error);
+      }
+    };
     setTribunasUsa(isChecked(tribuna, userData.tribunas));
-    const fetchClienteData = async () => {
-      try {
-        const clienteData = await getClienteById(userData.cliente.id);
-        setFormData(clienteData);
-      } catch (error) {
-        console.error('Erro ao buscar dados do cliente:', error);
-      }
-    };
-    fetchClienteData();
-  }, [userData.cliente.id, getClienteById, tribunasUsa, tribuna]);
-
-  useEffect(() => {
     setCandidatosUsa(isChecked2(candidato, userData.candidatos));
-    const fetchClienteData = async () => {
-      try {
-        const clienteData = await getClienteById(userData.cliente.id);
-        setFormData(clienteData);
-      } catch (error) {
-        console.error('Erro ao buscar dados do cliente:', error);
-      }
-    };
+    
     fetchClienteData();
-  }, [userData.cliente.id, getClienteById, candidatosUsa, candidato]);
+  }, [userData.cliente.id, getClienteById, tribunasUsa, tribuna, candidatosUsa, candidato, userData.tribunas, userData.candidatos]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -190,24 +174,30 @@ const ProfilePage = () => {
 
   const handleUpdatePassword = async () => {
     try {
-      const response = await fetch(`/cliente/modifypassword/${userData.cliente.userEmail}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password: formData.password }),
-      });
-      if (response.ok) {
-        alert('Senha atualizada com sucesso!');
-        setFormData({ ...formData, password: '' });
-      } else {
-        alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+      if(formData.password === formData.passwordRep && formData.password !== null && formData.password !== undefined){
+        const response = await fetch(`/cliente/modifypassword/${userData.cliente.userEmail}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ password: formData.password }),
+        });
+        if (response.ok) {
+          alert('Senha atualizada com sucesso!');
+          setFormData({ ...formData, password: '' });
+          logout(); // Chama o logout após a atualização
+        } else {
+          alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
+        }
       }
+      else{
+        alert('A senha e o repetir senha tem que ser iguais!')
+      }
+
     } catch (error) {
       console.error('Erro ao atualizar a senha:', error);
       alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
     }
-    logout(); // Chama o logout após a atualização
   };
 
   const handleUpdateClientData = async () => {
@@ -290,32 +280,48 @@ const ProfilePage = () => {
             <label>Redes Sociais:</label>
             <input type="text" name="redes_sociais" value={formData.redes_sociais} onChange={handleChange} />
           </div>
-          <div className="form-group">
-            <label>Nova Senha:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} />
-          </div>
           <h3>Tribunas interessados</h3>
           <div>
-            {tribunasUsa.map((res) =>
-              <div>
-                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt)} />
-                <p>{res.nome}</p>
-              </div>
-            )}
+            <ModalChildren image={lapis}>
+              <h1>Tribunas interessados</h1>
+              {tribunasUsa.map((res) =>
+                <div>
+                  <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt, setNovasTribunas)} />
+                  <p>{res.nome}</p>
+                </div>
+              )}
+              <button type="button" onClick={tribunasCD}>Atualizar tribunas</button>
+            </ModalChildren>
+            
           </div>
           <h3>Candidatos interessados</h3>
           <div>
-            {candidatosUsa.map((res) =>
-              <div>
-                <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange2(e, res.idjunt)} />
-                <p>{res.nome}</p>
-              </div>
-            )}
+            <ModalChildren image={lapis}>
+              <h1>Candidatos interessados</h1>
+              {candidatosUsa.map((res) =>
+                <div>
+                  <Checkboxes value={res.id} isChecked={res.checked} onChange={(e) => handleCheckboxChange(e, res.idjunt, setNovosCandidatos)} />
+                  <p>{res.nome}</p>
+                </div>
+              )}
+              <button type="button" onClick={candidatosCD}>Atualizar candidatos</button>
+            </ModalChildren>
+            
           </div>
           <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
-          <button type="button" onClick={tribunasCD}>Atualizar tribunas</button>
-          <button type="button" onClick={candidatosCD}>Atualizar candidatos</button>
-          <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
+          {/* <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button> */}
+          <ModalComponent title={'Atualizar Senha'}>
+              <h1>Atualizar Senha</h1>
+              <div className="form-group">
+                <label>Nova Senha:</label>
+                <input type="password" name="password" value={formData.password} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Repetir Senha:</label>
+                <input type="password" name="passwordRep" value={formData.passwordRep} onChange={handleChange} />
+              </div>
+              <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
+          </ModalComponent>
         </form>
       </div>
       <Footer />

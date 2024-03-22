@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 
 import { useState } from 'react';
 
-export function ModalComponent({title, desc}){
+export function ModalComponent({title, children}){
     const style = {
         position: 'absolute',
         top: '50%',
@@ -17,12 +17,21 @@ export function ModalComponent({title, desc}){
         boxShadow: 24,
         p: 4,
       };
+
+    const styleButton = {
+        padding: '10px 20px',
+        backgroundColor: '#e00a0a',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '5px',
+        cursor:'pointer'
+    }
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     return(
         <div>
-            <Button onClick={handleOpen}>{title}</Button> 
+            <Button style={styleButton} onClick={handleOpen}>{title}</Button> 
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -30,12 +39,7 @@ export function ModalComponent({title, desc}){
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h4" textAlign={'center'} component="h2">
-                        {title}
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {desc}
-                    </Typography>
+                    {children}
                 </Box>
             </Modal>
         </div>
