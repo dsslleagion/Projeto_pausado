@@ -42,6 +42,7 @@ const Home = () => {
   return (
     <div className="home-page">
       <NavigationBar />
+      <div className="container">
       <div className="container2">
         <div className="main-news">
           <Slider dots infinite autoplay>
@@ -86,6 +87,7 @@ const Home = () => {
             </Link>
           ))}
         </div>
+      </div>
       </div>
 
       <Footer />

@@ -9,6 +9,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  
 }
 .container3 {
   display: flex;
@@ -16,8 +17,8 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-left: -130px; /* Ajuste para mover o container ligeiramente para a esquerda */
-  margin-top: -640px; /* Ajuste para subir mais a posição */
+  margin-left: -278px; /* Ajuste para mover o container ligeiramente para a esquerda */
+  margin-top: -198px; /* Ajuste para subir mais a posição */
 }
 
 
