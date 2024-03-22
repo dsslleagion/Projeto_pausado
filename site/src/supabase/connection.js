@@ -6,4 +6,4 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
-export const urlupload = 'https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/noticias/'
+export const urlupload = 'https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/'

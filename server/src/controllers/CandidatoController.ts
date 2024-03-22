@@ -38,6 +38,8 @@ class CandidatoController {
       const result = await rep.save(candidato)
       return res.status(200).json(result)
     }catch(err){
+      console.log(err);
+      
       return res.status(400).json({erro: "Candidato não cadastrado!", err: err})
     }
   }
