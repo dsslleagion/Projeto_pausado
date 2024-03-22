@@ -34,7 +34,7 @@ const CadastroCandidato = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const up =  await upload(formValues.nome, icone, 'noticias')
+      const up =  await upload(formValues.nome, icone, 'candidatos')
       console.log(up);
       const response = await fetch('http://localhost:3001/candidato/post', {
         method: 'POST',
@@ -109,18 +109,44 @@ const CadastroCandidato = () => {
     setIcone(candidato.imagem)
   };
 
+  console.log(icone);
+  console.log(avatarSRC);
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3001/candidato/put/${formValues.id}`, {
+      if(icone !== avatarSRC){
+        const up =  await upload(formValues.nome, icone, 'candidatos')
+        const response = await fetch(`http://localhost:3001/candidato/put/${formValues.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formValues)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar candidato');
+        body: JSON.stringify({nome: formValues.nome, 
+          partido: formValues.partido,
+          cargoPretendido: formValues.cargoPretendido,
+          biografia: formValues.biografia,
+          imagem: up})
+        });
+        if (!response.ok) {
+          throw new Error('Erro ao atualizar candidato');
+        }
+      }
+      else{
+        const response = await fetch(`http://localhost:3001/candidato/put/${formValues.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({nome: formValues.nome, 
+          partido: formValues.partido,
+          cargoPretendido: formValues.cargoPretendido,
+          biografia: formValues.biografia,
+          imagem: icone})
+        });
+        if (!response.ok) {
+          throw new Error('Erro ao atualizar candidato');
+        }
       }
       setFormValues({
         id: '',
@@ -256,6 +282,12 @@ const CadastroCandidato = () => {
                           <h1 style={{textAlign: 'center'}}>{candidato.nome}</h1>
                           <p>Partido: {candidato.partido}</p>
                           <p>Cargo: {candidato.cargoPretendido}</p>
+                          <img
+                            className="rounded-circle"
+                            src={candidato.imagem}
+                            alt="avatar"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
+                          />
                           <p>Biografia: {candidato.biografia}</p>
                         </ModalChildren>
                       
