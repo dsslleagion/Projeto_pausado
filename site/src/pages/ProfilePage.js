@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './ProfilePage.css'; // Arquivo de estilos CSS
 import NavigationBar from '../components/NavigationBar';
@@ -8,6 +8,7 @@ import Checkboxes from '../components/Checkbox';
 import { useContextoCandidato } from '../hooks';
 import { ModalChildren, ModalComponent } from '../components/Modal';
 import lapis from '../assets/lapis.png' 
+import { upload } from '../supabase/upload';
 
 const ProfilePage = () => {
   const { userData, updateUserData, getClienteById } = useAuth();
@@ -29,7 +30,11 @@ const ProfilePage = () => {
     redes_sociais: '',
     password: '',
     passwordRep: '',
+    imagem: ''
   });
+  const [avatarSRC, setAvatarSRC] = useState('')
+  const [icone, setIcone] = useState()
+  const inputFile = useRef(null)
 
   const isChecked = (lista1, lista2) => {
     lista1.forEach((item1) => {
@@ -74,6 +79,7 @@ const ProfilePage = () => {
       try {
         const clienteData = await getClienteById(userData.cliente.id);
         setFormData(clienteData);
+        setAvatarSRC(clienteData.imagem)
       } catch (error) {
         console.error('Erro ao buscar dados do cliente:', error);
       }
@@ -202,12 +208,59 @@ const ProfilePage = () => {
 
   const handleUpdateClientData = async () => {
     try {
+      if(icone !== undefined){
+        const up =  await upload(formData.nome, icone, 'usuarios')
+        const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nome: formData.nome,
+            email: formData.email,
+            sexo: formData.sexo,
+            telefone: formData.telefone,
+            bairro: formData.bairro,
+            endereco: formData.endereco,
+            cidade: formData.cidade,
+            cep: formData.cep,
+            redes_sociais: formData.redes_sociais,
+            password: formData.password,
+            profile: formData.profile,
+            imagem: up,
+          }),
+        });
+  
+        if (response.ok) {
+  
+          alert('Dados do cliente atualizados com sucesso!');
+          logout();
+  
+          const updatedUserData = { ...userData, cliente: formData };
+          updateUserData(updatedUserData);
+          // Chama o logout após a atualização
+          logout();
+        }
+      }
       const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          nome: formData.nome,
+          email: formData.email,
+          sexo: formData.sexo,
+          telefone: formData.telefone,
+          bairro: formData.bairro,
+          endereco: formData.endereco,
+          cidade: formData.cidade,
+          cep: formData.cep,
+          redes_sociais: formData.redes_sociais,
+          password: formData.password,
+          profile: formData.profile,
+          imagem: formData.imagem,
+        }),
       });
 
       if (response.ok) {
@@ -226,8 +279,24 @@ const ProfilePage = () => {
 
     }
   };
+console.log(formData);
+  const onChangeInputFile = (e) =>{
+    const files = e.target.files;
+    
+    if (FileReader && files && files.length > 0) {
+      const file = files[0] 
+    console.log(files);
 
-
+      var fr = new FileReader();
+      fr.onload = function () {
+        if(fr.result){
+          setAvatarSRC(fr.result.toString())
+          setIcone(files)
+        }        
+      }           
+      fr.readAsDataURL(file);
+    }
+  }
 
   const logout = () => {
     localStorage.removeItem('userData');
@@ -280,6 +349,27 @@ const ProfilePage = () => {
             <label>Redes Sociais:</label>
             <input type="text" name="redes_sociais" value={formData.redes_sociais} onChange={handleChange} />
           </div>
+
+          <div style={{ position: 'relative', width: 190, height: 190 }}>
+            <input
+              ref={inputFile}
+              accept="image/png, image/jpeg"
+              type="file"
+              className="position-absolute opacity-0"
+              id="fileInput"
+              onChange={onChangeInputFile}
+              style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+            />
+            <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+              <img
+                className="rounded-circle"
+                src={avatarSRC}
+                alt="avatar"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
+              />
+            </label>
+          </div>
+
           <h3>Tribunas interessados</h3>
           <div>
             <ModalChildren image={lapis}>
