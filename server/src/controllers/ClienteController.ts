@@ -129,6 +129,10 @@ class ClienteController {
         findCliente.profile = createCliente.profile
       }
 
+      if(createCliente.imagem !== null || createCliente.imagem !== undefined){
+        findCliente.imagem = createCliente.imagem
+      }
+
       // Salve as alterações no cliente
       const updatedCliente = await clienteRepository.save(findCliente);
       return res.json(updatedCliente);
@@ -244,6 +248,11 @@ class ClienteController {
       insertCliente.password = createCliente.password
       insertCliente.form = createCliente.form
 
+      if(createCliente.imagem === null || createCliente.imagem === undefined){
+        insertCliente.imagem = 'https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png'
+      }else{
+        insertCliente.imagem = createCliente.imagem
+      }
   
   
       const allCliente = await clienteRepository.save(insertCliente)

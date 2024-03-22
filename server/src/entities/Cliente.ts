@@ -41,7 +41,10 @@ export class Cliente {
     password: string
 
     @Column()
-    profile: string;
+    profile: string
+
+    @Column({ nullable: false })
+    imagem: string
 
 
     @BeforeInsert() //a função hashPassword é disparada antes do insert e update

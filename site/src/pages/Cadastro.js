@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Button from '../components/Button';
 import './Cadastro.css';
 import Footer from '../components/Footer';
+import { upload } from '../supabase/upload';
 
 const Cadastro = () => {
   const [formValues, setFormValues] = useState({
@@ -17,11 +18,16 @@ const Cadastro = () => {
     redes_sociais: '',
     password: '',
     profile: 'user',
+    imagem: '',
     tribunaIds: [], // Inicializar como array vazio para múltiplas seleções
     candidatoIds: [], // Inicializar como array vazio para múltiplas seleções
     tribunas: [],
     candidatos: []
   });
+
+  const [avatarSRC, setAvatarSRC] = useState('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png')
+  const [icone, setIcone] = useState()
+  const inputFile = useRef(null)
 
   useEffect(() => {
     fetch('http://localhost:3001/tribuna/all')
@@ -54,72 +60,120 @@ const Cadastro = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const onChangeInputFile = (e) =>{
+    const files = e.target.files;
+    
+    if (FileReader && files && files.length > 0) {
+      const file = files[0] 
+    console.log(files);
+
+      var fr = new FileReader();
+      fr.onload = function () {
+        if(fr.result){
+          setAvatarSRC(fr.result.toString())
+          setIcone(files)
+        }        
+      }           
+      fr.readAsDataURL(file);
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:3001/cliente/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...formValues,
-        tribunaIds: formValues.tribunaIds.map(id => parseInt(id)),
-        candidatoIds: formValues.candidatoIds.map(id => parseInt(id))
-      })
-    })
-    .then(response => response.json())
-    .then(clienteData => {
+  
+    try {
+      
+  
+      if (icone !== undefined) {
+        const up = await upload(formValues.nome, icone, 'usuarios');
+        await sendForm(up)
+      }
+      else{
+        await sendForm('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png');
+      }
+      // Aguarda até que o upload seja concluído antes de prosseguir
+
+  
+      // Se o upload for bem-sucedido, envie o formulário
+    } catch (error) {
+      console.error('Erro ao realizar o cadastro:', error);
+    }
+  };
+  
+  const sendForm = async (img) => {
+    try {
+      const response = await fetch('http://localhost:3001/cliente/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome: formValues.nome,
+          email: formValues.email,
+          sexo: formValues.sexo,
+          telefone: formValues.telefone,
+          bairro: formValues.bairro,
+          endereco: formValues.endereco,
+          cidade: formValues.cidade,
+          cep: formValues.cep,
+          redes_sociais: formValues.redes_sociais,
+          password: formValues.password,
+          profile: formValues.profile,
+          imagem: img,
+          tribunas: formValues.tribunas,
+          candidatos: formValues.candidatos,
+          tribunaIds: formValues.tribunaIds.map(id => parseInt(id)),
+          candidatoIds: formValues.candidatoIds.map(id => parseInt(id))
+        })
+      });
+  
+      const clienteData = await response.json();
       console.log('Dados cadastrados com sucesso:', clienteData);
       const clienteId = clienteData.id;
-
-      formValues.tribunaIds.forEach(tribunaId => {
-        const tribunaVinculo = {
-          cliente: { id: clienteId },
-          tribuna: { id: parseInt(tribunaId) }
-        };
-
-        fetch('http://localhost:3001/ct/post', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(tribunaVinculo)
+  
+      // Laços para criar os vínculos com tribuna e candidato
+      await Promise.all(
+        formValues.tribunaIds.map(async tribunaId => {
+          const tribunaVinculo = {
+            cliente: { id: clienteId },
+            tribuna: { id: parseInt(tribunaId) }
+          };
+  
+          const tribunaResponse = await fetch('http://localhost:3001/ct/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tribunaVinculo)
+          });
+  
+          const tribunaData = await tribunaResponse.json();
+          console.log('Vínculo com tribuna criado com sucesso:', tribunaData);
+        }),
+  
+        formValues.candidatoIds.map(async candidatoId => {
+          const candidatoVinculo = {
+            cliente: { id: clienteId },
+            candidato: { id: parseInt(candidatoId) }
+          };
+  
+          const candidatoResponse = await fetch('http://localhost:3001/cc/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(candidatoVinculo)
+          });
+  
+          const candidatoData = await candidatoResponse.json();
+          console.log('Vínculo com candidato criado com sucesso:', candidatoData);
         })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Vínculo com tribuna criado com sucesso:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao vincular cliente à tribuna:', error);
-        });
-      });
-
-      formValues.candidatoIds.forEach(candidatoId => {
-        const candidatoVinculo = {
-          cliente: { id: clienteId },
-          candidato: { id: parseInt(candidatoId) }
-        };
-
-        fetch('http://localhost:3001/cc/post', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(candidatoVinculo)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Vínculo com candidato criado com sucesso:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao vincular cliente ao candidato:', error);
-        });
-      });
-    })
-    .catch(error => {
-      console.error('Erro ao cadastrar os dados:', error);
-    });
+      );
+    } catch (error) {
+      console.error('Erro ao enviar o formulário:', error);
+    }
   };
+  
 
 
   return (
@@ -232,6 +286,28 @@ const Cadastro = () => {
               onChange={handleChange}
             />
           </div>
+
+          <div style={{ position: 'relative', width: 190, height: 190 }}>
+            <input
+              ref={inputFile}
+              accept="image/png, image/jpeg"
+              type="file"
+              className="position-absolute opacity-0"
+              id="fileInput"
+              onChange={onChangeInputFile}
+              style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+            />
+            <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+              <img
+                className="rounded-circle"
+                src={avatarSRC}
+                alt="avatar"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
+              />
+            </label>
+          </div>
+
+
           <div className="form-group">
             <label htmlFor="tribunaIds">Selecione as tribunas de interesse:</label>
             {formValues.tribunas.map(tribuna => (
