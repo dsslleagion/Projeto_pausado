@@ -5,7 +5,8 @@ import Footer from '../components/Footer';
 import './CadastroTribuna.css';
 import lapis from '../assets/lapis.png' 
 import lixeira from '../assets/lixeira.png' 
-import { ModalComponent } from '../components/Modal';
+import { ModalChildren, ModalComponent } from '../components/Modal';
+import { Tabela } from '../components/Tabela';
 
 const CadastroTribunas = () => {
   const [tribunas, setTribunas] = useState([]);
@@ -129,15 +130,34 @@ const CadastroTribunas = () => {
           
           <h2>Tribunas Cadastradas</h2>
           <ul>
+          <Tabela th={
+            <>
+              <th className="text-center">Nome </th>
+              <th className="text-center">Ações</th>
+            </>
+          }>
             {tribunas.map((tribuna) => (
               <li key={tribuna.id}>
-                <ModalComponent title={tribuna.nome} desc={tribuna.descricao}/>
-               
-                <img src={lapis} alt='editar' style={{ width: "30px", padding: "3px" }} onClick={() => handleEdit(tribuna)}/>
-                <img src={lixeira} alt='deletar' style={{ width: "30px", padding: "3px" }} onClick={() => handleDelete(tribuna.id)}/>
+
+                <tr key={tribuna.id} className="dropdown-label anexo">
+                      {/*corpo tabela*/}
+                   
+                      <td className="text-center">{tribuna.nome}</td>
+                      <td className="text-center">
+                        
+                      <img src={lapis} alt='editar' style={{ width: "30px", padding: "3px" }} onClick={() => handleEdit(tribuna)}/>
+                      <img src={lixeira} alt='deletar' style={{ width: "30px", padding: "3px" }} onClick={() => handleDelete(tribuna.id)}/> 
+                        <ModalChildren image={lapis}>
+                          <h1 style={{textAlign: 'center'}}>{tribuna.nome}</h1>
+                          <p>Descrição: {tribuna.descricao}</p>
+                        </ModalChildren>
+                      
+                      </td>
+                    </tr>
                
               </li>
             ))}
+          </Tabela>
           </ul>
         </div>
       </div>
