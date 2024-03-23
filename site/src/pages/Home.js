@@ -73,7 +73,7 @@ const Home = () => {
       </div>
 
       <div className="container3">
-        <div className="">
+        <div className="secondary-news2">
           {news.map((item) => (
             <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
               <NewsCard title={item.title} content={item.content} date={item.date} />

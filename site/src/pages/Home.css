@@ -115,51 +115,40 @@
   font-size: 12px;
   color: #666666;
 }
-.list-news-down {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
 
-.list-news-down .news-card {
-  background: #f6f6f6;
+
+
+/* __________________ */
+
+.secondary-news2 .news-card {
+  background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
-  max-width: 300px; /* Defina uma largura máxima para os cards */
-  transition: box-shadow 0.25s ease-in-out;
+  transition:.25s ease-in-out  ;
+  
 }
 
-.list-news-down .news-card:hover {
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-  transform: scale(1.05);
+.secondary-news2 .news-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: scale(1.1);
+
 }
 
-.list-news-down .news-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.list-news-down .news-card .news-info {
-  padding-left: 20px;
-}
-
-.list-news-down .news-card h2 {
+.secondary-news2 .news-card h2 {
   font-size: 18px;
-  margin-bottom: 5px;
-  color: #222;
+  margin-bottom: 10px;
+  color: #222222;
 }
 
-.list-news-down .news-card p {
+.secondary-news2 .news-card p {
   font-size: 14px;
-  color: #444;
-  margin-bottom: 5px;
+  color: #444444;
+  margin-bottom: 10px;
 }
 
-.list-news-down .news-card span {
+.secondary-news2 .news-card span {
   font-size: 12px;
-  color: #666;
+  color: #666666;
 }
