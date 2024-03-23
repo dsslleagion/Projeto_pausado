@@ -73,6 +73,25 @@ const Home = () => {
       </div>
 
       <div className="container3">
+        <div className="main-news2">
+          <Slider dots infinite autoplay>
+            {mainNews.map((item) => (
+              <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+                <div className="carousel-news-item2">
+                  <div className="carousel-image-overlay2">
+                    <img src="https://via.placeholder.com/720x300" alt="Imagem Fictícia" />
+                    <div className="carousel-news-content2">
+                      <h2>{item.title}</h2>
+                      <p>{item.content}</p>
+                      <span>{item.date}</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </Slider>
+        </div>
+
         <div className="secondary-news2">
           {news.map((item) => (
             <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
@@ -81,6 +100,8 @@ const Home = () => {
           ))}
         </div>
       </div>
+
+      
       </div>
 
       <Footer />
