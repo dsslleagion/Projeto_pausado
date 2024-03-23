@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import Swal from 'sweetalert2'; // Importando o SweetAlert2
 import './Login.css';
 
 const Login = () => {
   const { login } = useAuth();
-  const navigate = useNavigate(); // Hook para navegação programática
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -18,15 +18,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      // Verificar se os campos de email e senha estão vazios
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos vazios',
+        text: 'Por favor, preencha todos os campos antes de fazer login.'
+      });
+      return;
+    }
     try {
-      // Chamar a função de login com email e senha
       await login(formData.email, formData.password);
-
       // Redirecionar para a página após o login bem-sucedido
-      navigate('/');
-
+      window.location.href = '/'; // Redirecionar para a home
     } catch (error) {
       console.error('Erro ao fazer login:', error.message);
+      // Exibindo um alerta de erro com o SweetAlert2
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro ao fazer login',
+        text: 'Verifique seu email e senha e tente novamente.'
+      });
     }
   };
 
