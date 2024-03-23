@@ -62,6 +62,7 @@ class ClienteController {
             profile: usuario.profile,
             tribunas: one,
             candidatos: candidatos,
+            imagem: usuario.imagem,
             token
           });
         } else {
