@@ -48,10 +48,11 @@
   margin-bottom: 5px;
   transition: color 0.3s ease;
   cursor: pointer; /* Adicione esta linha */
+  color: #ffffff;
 }
 
 .nav-category:hover .nav-category-title {
-  color: #ccc;
+  color: #0b0b0b;
 }
 
 .dropdown-content {

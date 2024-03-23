@@ -21,7 +21,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background: linear-gradient(to bottom right, #f9d9e3, #3d3d3d); /* Degrade de cores pastéis */
+  background: linear-gradient(to bottom right, #ffffff, #ffffff); /* Degrade de cores pastéis */
   border-radius: 10px; /* Adicione bordas arredondadas para o contêiner */
 }
 

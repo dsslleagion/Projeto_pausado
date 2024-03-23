@@ -73,17 +73,10 @@ const Home = () => {
       </div>
 
       <div className="container3">
-        <div className="list-news-down">
+        <div className="">
           {news.map((item) => (
             <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-              <div className="news-card">
-                <img src="https://via.placeholder.com/300x200" alt="Imagem Fictícia" />
-                <div className="news-info">
-                  <h2>{item.title}</h2>
-                  <p>{item.content}</p>
-                  <span>{item.date}</span>
-                </div>
-              </div>
+              <NewsCard title={item.title} content={item.content} date={item.date} />
             </Link>
           ))}
         </div>

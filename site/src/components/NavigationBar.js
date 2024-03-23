@@ -85,21 +85,14 @@ const NavigationBar = () => {
               </div>
             </div>
             {(isAdmin || showCandidatos) && (
-              <div className="nav-category" onClick={() => activateDropdown('dropdown-candidatos')}>
-                <span className="nav-category-title">Candidatos</span>
-                <div className="dropdown-content dropdown-candidatos">
-                  {/* <Link to="/candidatosPage" className="nav-link">Principal</Link> */}
-                </div>
-              </div>
+               <Link to="/candidatos" className="nav-category"style={{ textDecoration: 'none' }}>
+               <span className="nav-category-title">Candidatos</span>
+             </Link>
             )}
             {(isAdmin || showTribunas) && (
-              <div className="nav-category" onClick={() => activateDropdown('dropdown-tribunas')}>
-                <span className="nav-category-title">Tribunas</span>
-                <div className="dropdown-content dropdown-tribunas">
-                  {/* <Link to="/tribuna/educacao" className="nav-link">Educação</Link>
-                  <Link to="/tribuna/saude" className="nav-link">Saúde</Link> */}
-                </div>
-              </div>
+              <Link to="/tribunas" className="nav-category"style={{ textDecoration: 'none' }}>
+              <span className="nav-category-title">Tribunas</span>
+            </Link>
             )}
             {location.pathname !== '/perfil' && (
               <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>

@@ -35,7 +35,7 @@ function App() {
             <Route path="/CadastroTribunas" element={<CadastroTribunas />} />
             <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
             <Route path="/CadastroForum" element={<CadastroForum />} />
-            <Route path="/candidato" element={<CandidatoPage />} />
+            <Route path="/candidatos" element={<CandidatoPage />} />
             <Route path="/jornal" element={<JornalPage />} />
             <Route path="/NoticiaPage/:id" element={<NoticiaPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
