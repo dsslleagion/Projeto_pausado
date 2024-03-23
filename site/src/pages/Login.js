@@ -28,9 +28,24 @@ const Login = () => {
       return;
     }
     try {
-      await login(formData.email, formData.password);
-      // Redirecionar para a página após o login bem-sucedido
-      window.location.href = '/'; // Redirecionar para a home
+      const response = await login(formData.email, formData.password);
+      // Verificar o response recebido do backend e exibir os alertas correspondentes
+      if (response.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Login bem-sucedido!',
+          text: 'Usuário logado com sucesso.'
+        }).then(() => {
+          // Redirecionar para a home após fechar o SweetAlert
+          window.location.href = '/';
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao fazer login',
+          text: 'Verifique seu email e senha e tente novamente.'
+        });
+      }
     } catch (error) {
       console.error('Erro ao fazer login:', error.message);
       // Exibindo um alerta de erro com o SweetAlert2

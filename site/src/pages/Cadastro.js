@@ -4,8 +4,30 @@ import Button from '../components/Button';
 import './Cadastro.css';
 import Footer from '../components/Footer';
 import { upload } from '../supabase/upload';
+import Swal from 'sweetalert2';
+
+const showSwalForField = (fieldName) => {
+  Swal.fire({
+    icon: 'info',
+    title: `Preencha o campo ${fieldName}`,
+    text: 'Este campo é obrigatório',
+    timer: 2000, // Tempo em milissegundos
+    timerProgressBar: true,
+    toast: true,
+    position: 'top',
+    showConfirmButton: false
+  });
+};
 
 const Cadastro = () => {
+  const handleInputFocus = (fieldName) => {
+    showSwalForField(fieldName);
+  };
+  const handleInputBlur = () => {
+    // Oculte o alerta
+    Swal.close();
+  };
+
   const [formValues, setFormValues] = useState({
     nome: '',
     email: '',
@@ -29,6 +51,7 @@ const Cadastro = () => {
   const [icone, setIcone] = useState()
   const inputFile = useRef(null)
 
+
   useEffect(() => {
     fetch('http://localhost:3001/tribuna/all')
       .then(response => response.json())
@@ -36,7 +59,7 @@ const Cadastro = () => {
         setFormValues(prevState => ({ ...prevState, tribunas: data }));
       })
       .catch(error => console.error('Erro ao carregar tribunas:', error));
-    
+
     fetch('http://localhost:3001/candidato/all')
       .then(response => response.json())
       .then(data => {
@@ -44,6 +67,8 @@ const Cadastro = () => {
       })
       .catch(error => console.error('Erro ao carregar candidatos:', error));
   }, []);
+
+
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -60,46 +85,59 @@ const Cadastro = () => {
     }
   };
 
-  const onChangeInputFile = (e) =>{
+  const onChangeInputFile = (e) => {
     const files = e.target.files;
-    
+
     if (FileReader && files && files.length > 0) {
-      const file = files[0] 
-    console.log(files);
+      const file = files[0]
+      console.log(files);
 
       var fr = new FileReader();
       fr.onload = function () {
-        if(fr.result){
+        if (fr.result) {
           setAvatarSRC(fr.result.toString())
           setIcone(files)
-        }        
-      }           
+        }
+      }
       fr.readAsDataURL(file);
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verificar se pelo menos um campo obrigatório foi preenchido
+  const requiredFields = ['nome', 'email', 'sexo', 'telefone', 'bairro', 'endereco', 'cidade', 'cep', 'password'];
+  const isAnyFieldFilled = requiredFields.some(field => !!formValues[field]);
+
+  if (!isAnyFieldFilled) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro de validação',
+      text: 'Preencha pelo menos um campo obrigatório.',
+    });
+    return;
+  }
   
     try {
-      
-  
+
+
       if (icone !== undefined) {
         const up = await upload(formValues.nome, icone, 'usuarios');
         await sendForm(up)
       }
-      else{
+      else {
         await sendForm('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png');
       }
       // Aguarda até que o upload seja concluído antes de prosseguir
 
-  
+
       // Se o upload for bem-sucedido, envie o formulário
     } catch (error) {
       console.error('Erro ao realizar o cadastro:', error);
     }
   };
-  
+
   const sendForm = async (img) => {
     try {
       const response = await fetch('http://localhost:3001/cliente/create', {
@@ -126,11 +164,20 @@ const Cadastro = () => {
           candidatoIds: formValues.candidatoIds.map(id => parseInt(id))
         })
       });
-  
+
       const clienteData = await response.json();
       console.log('Dados cadastrados com sucesso:', clienteData);
       const clienteId = clienteData.id;
-  
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Usuário criado com sucesso!',
+        text: 'Você será redirecionado para a página de login.'
+      }).then(() => {
+        // Redirecionar para a página de login após fechar o SweetAlert
+        window.location.href = '/login';
+      });
+
       // Laços para criar os vínculos com tribuna e candidato
       await Promise.all(
         formValues.tribunaIds.map(async tribunaId => {
@@ -138,7 +185,7 @@ const Cadastro = () => {
             cliente: { id: clienteId },
             tribuna: { id: parseInt(tribunaId) }
           };
-  
+
           const tribunaResponse = await fetch('http://localhost:3001/ct/post', {
             method: 'POST',
             headers: {
@@ -146,17 +193,17 @@ const Cadastro = () => {
             },
             body: JSON.stringify(tribunaVinculo)
           });
-  
+
           const tribunaData = await tribunaResponse.json();
           console.log('Vínculo com tribuna criado com sucesso:', tribunaData);
         }),
-  
+
         formValues.candidatoIds.map(async candidatoId => {
           const candidatoVinculo = {
             cliente: { id: clienteId },
             candidato: { id: parseInt(candidatoId) }
           };
-  
+
           const candidatoResponse = await fetch('http://localhost:3001/cc/post', {
             method: 'POST',
             headers: {
@@ -164,7 +211,7 @@ const Cadastro = () => {
             },
             body: JSON.stringify(candidatoVinculo)
           });
-  
+
           const candidatoData = await candidatoResponse.json();
           console.log('Vínculo com candidato criado com sucesso:', candidatoData);
         })
@@ -173,7 +220,7 @@ const Cadastro = () => {
       console.error('Erro ao enviar o formulário:', error);
     }
   };
-  
+
 
 
   return (
@@ -190,6 +237,8 @@ const Cadastro = () => {
               name="nome"
               value={formValues.nome}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Nome')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -200,6 +249,8 @@ const Cadastro = () => {
               name="email"
               value={formValues.email}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Email')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -209,6 +260,8 @@ const Cadastro = () => {
               name="sexo"
               value={formValues.sexo}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Sexo')}
+              onBlur={handleInputBlur}
             >
               <option value="">Selecione</option>
               <option value="masculino">Masculino</option>
@@ -223,6 +276,8 @@ const Cadastro = () => {
               name="telefone"
               value={formValues.telefone}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Telefone')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -233,6 +288,8 @@ const Cadastro = () => {
               name="bairro"
               value={formValues.bairro}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Bairro')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -243,6 +300,8 @@ const Cadastro = () => {
               name="endereco"
               value={formValues.endereco}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Endereco')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -253,6 +312,8 @@ const Cadastro = () => {
               name="cidade"
               value={formValues.cidade}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Cidade')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -263,6 +324,8 @@ const Cadastro = () => {
               name="cep"
               value={formValues.cep}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('CEP')}
+              onBlur={handleInputBlur}
             />
           </div>
           <div className="form-group">
@@ -284,6 +347,8 @@ const Cadastro = () => {
               name="password"
               value={formValues.password}
               onChange={handleChange}
+              onFocus={() => handleInputFocus('Senha')}
+              onBlur={handleInputBlur}
             />
           </div>
 
