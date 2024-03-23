@@ -23,6 +23,7 @@ body {
   padding: 20px;
   background: linear-gradient(to bottom right, #ffffff, #ffffff); /* Degrade de cores pastéis */
   border-radius: 10px; /* Adicione bordas arredondadas para o contêiner */
+  
 }
 
 .p {

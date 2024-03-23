@@ -13,12 +13,10 @@
 }
 .container3 {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-left: -278px; /* Ajuste para mover o container ligeiramente para a esquerda */
-  margin-top: -270px; /* Ajuste para subir mais a posição */
 }
 
 
