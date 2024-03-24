@@ -50,10 +50,10 @@ const Home = () => {
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                 <div className="carousel-news-item">
                   <div className="carousel-image-overlay">
-                    <img src="https://via.placeholder.com/720x300" alt="Imagem Fictícia" />
+                    <img src="https://picsum.photos/id/237/720/300" alt="Imagem Fictícia" />
                     <div className="carousel-news-content">
                       <h2>{item.title}</h2>
-                      <p>{item.content}</p>
+                      
                       <span>{item.date}</span>
                     </div>
                   </div>
@@ -66,7 +66,7 @@ const Home = () => {
         <div className="secondary-news">
           {news.map((item) => (
             <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-              <NewsCard title={item.title} content={item.content} date={item.date} />
+              <NewsCard title={item.title} date={item.date} />
             </Link>
           ))}
         </div>
@@ -79,10 +79,10 @@ const Home = () => {
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                 <div className="carousel-news-item2">
                   <div className="carousel-image-overlay2">
-                    <img src="https://via.placeholder.com/720x300" alt="Imagem Fictícia" />
+                    <img src="https://picsum.photos/id/237/720/300" alt="Imagem Fictícia" />
                     <div className="carousel-news-content2">
                       <h2>{item.title}</h2>
-                      <p>{item.content}</p>
+                    
                       <span>{item.date}</span>
                     </div>
                   </div>
@@ -95,7 +95,7 @@ const Home = () => {
         <div className="secondary-news2">
           {news.map((item) => (
             <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-              <NewsCard title={item.title} content={item.content} date={item.date} />
+              <NewsCard title={item.title} date={item.date} />
             </Link>
           ))}
         </div>

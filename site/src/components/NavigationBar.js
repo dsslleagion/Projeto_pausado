@@ -5,12 +5,14 @@ import logo from '../assets/logoccv.png';
 import profilePic from '../assets/perfil-sem-foto.png'; // Importe uma imagem de perfil fictícia
 import './NavigationBar.css';
 
+
 const NavigationBar = () => {
   const { userData, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showCandidatos, setShowCandidatos] = useState(false);
   const [showTribunas, setShowTribunas] = useState(false);
   const location = useLocation();
+
 
   useEffect(() => {
     if (userData && userData.cliente) {
@@ -28,6 +30,14 @@ const NavigationBar = () => {
     categoryElement.classList.toggle('active');
   };
 
+  const renderProfileImage = () => {
+    if (userData && userData.cliente && typeof userData.cliente.imagem === 'string') {
+      return <img src={userData.cliente.imagem} alt="Perfil" className="profile-pic" />;
+    } else {
+      return <img src={profilePic} alt="Perfil" className="profile-pic" />;
+    }
+  };
+  
   const isCadastroPage = location.pathname === '/cadastro';
   const isAuthenticated = userData && userData.token;
   const isAdmin = isAuthenticated && userData.cliente && userData.cliente.profile === 'admin';
@@ -97,12 +107,12 @@ const NavigationBar = () => {
             {location.pathname !== '/perfil' && (
               <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                 <div className="nav-profile" onClick={toggleDropdown}>
-                  <img src={userData.cliente.imagem} alt="Perfil" className="profile-pic" />
+                {renderProfileImage()}
                 </div>
                 {dropdownOpen && (
                   <div className="dropdown-content dropdown-profile">
                     <div className="profile-dropdown">
-                      <img src={userData.cliente.imagem} alt="Perfil" className="profile-pic-large" />
+                    {renderProfileImage()}
                       <div className="profile-info">
                         <p>Bem-Vindo! {userData.cliente.nome}</p>
                         <Link to="/perfil" className="nav-link">Perfil</Link>
