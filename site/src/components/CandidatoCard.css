@@ -1,0 +1,31 @@
+/* NewsCard.css */
+
+.news-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .news-card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    /* Ajuste do tamanho da fonte e cor */
+    font-size: 16px;
+    color: #222222;
+  }
+  .news-card-img {
+    width: 100%; /* Torna a imagem responsiva */
+    border-radius: 8px; /* Adiciona borda arredondada */
+  }
+  .news-card p {
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .news-card span {
+    font-size: 12px;
+    color: #666666;
+  }
+  

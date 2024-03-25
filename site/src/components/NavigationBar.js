@@ -94,16 +94,16 @@ const NavigationBar = () => {
                 <Link to="/Jornal" className="nav-link">Cá entre Nós</Link>                
               </div>
             </div>
-            {(isAdmin || showCandidatos) && (
+            {/* {(isAdmin || showCandidatos) && (
                <Link to="/candidatos" className="nav-category"style={{ textDecoration: 'none' }}>
                <span className="nav-category-title">Candidatos</span>
              </Link>
-            )}
-            {(isAdmin || showTribunas) && (
+            )} */}
+            {/* {(isAdmin || showTribunas) && (
               <Link to="/tribunas" className="nav-category"style={{ textDecoration: 'none' }}>
               <span className="nav-category-title">Tribunas</span>
             </Link>
-            )}
+            )} */}
             {location.pathname !== '/perfil' && (
               <div className="nav-category" onMouseEnter={toggleDropdown} onMouseLeave={toggleDropdown}>
                 <div className="nav-profile" onClick={toggleDropdown}>
