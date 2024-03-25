@@ -59,7 +59,7 @@ const Home = () => {
     <div className="home-page">
       <NavigationBar />
       <div className="container">
-      <div className="candidato-card clearfix">
+        <div className="candidato-card clearfix">
           {candidatos.map((candidato) => (
             <Link to={`/CandidatoPage/${candidato.id}`} key={candidato.id}>
               <CandidatoCard nome={candidato.nome} content={candidato.cargoPretendido} imagem={candidato.imagem} />
@@ -67,9 +67,9 @@ const Home = () => {
           ))}
         </div>
         <div className="container2">
-        
+
           <div className="main-news">
-            
+
             <Slider dots infinite autoplay>
               {mainNews.map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
@@ -86,12 +86,12 @@ const Home = () => {
               ))}
             </Slider>
             <div className="additional-card">
-            {news.map((item) => (
-              <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                <NewsCard title={item.title} date={item.date} />
-              </Link>
-            ))}
-          </div>
+              {news.map((item) => (
+                <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+                  <NewsCard title={item.title} date={item.date} />
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="secondary-news">
@@ -102,7 +102,7 @@ const Home = () => {
             ))}
           </div>
 
-          
+
         </div>
 
         <div className="container3">
@@ -122,6 +122,17 @@ const Home = () => {
                 </Link>
               ))}
             </Slider>
+
+
+            <div className="additional-card">
+              {news.map((item) => (
+                <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
+                  <NewsCard title={item.title} date={item.date} />
+                </Link>
+              ))}
+            </div>
+          
+
           </div>
 
           <div className="secondary-news2">
