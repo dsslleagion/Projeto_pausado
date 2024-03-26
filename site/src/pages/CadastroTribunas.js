@@ -1,36 +1,33 @@
-// CadastroTribunas.js
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 import './CadastroTribuna.css';
-import lapis from '../assets/lapis.png' 
-import lixeira from '../assets/lixeira.png' 
-import { ModalChildren, ModalComponent } from '../components/Modal';
-import { Tabela } from '../components/Tabela';
+import TribunaForm from '../components/TribunaForm';
 
 const CadastroTribunas = () => {
-  const [tribunas, setTribunas] = useState([]);
-  const [formData, setFormData] = useState({
-    nome: '',
-    descricao: ''
-  });
+  const { id } = useParams(); // Obtém o id da tribuna da URL
+  const [formData, setFormData] = useState({ nome: '', descricao: '' });
   const [editMode, setEditMode] = useState(false);
-  const [editId, setEditId] = useState('');
 
   useEffect(() => {
-    fetchTribunas();
-  }, []);
+    if (id) {
+      // Se um id for fornecido, busca os detalhes da tribuna correspondente
+      fetchTribuna(id);
+    }
+  }, [id]);
 
-  const fetchTribunas = async () => {
+  const fetchTribuna = async (id) => {
     try {
-      const response = await fetch('http://localhost:3001/tribuna/all');
+      const response = await fetch(`http://localhost:3001/tribuna/one/${id}`);
       if (!response.ok) {
-        throw new Error('Erro ao buscar tribunas');
+        throw new Error('Erro ao buscar tribuna');
       }
       const data = await response.json();
-      setTribunas(data);
+      setFormData({ nome: data.nome, descricao: data.descricao });
+      setEditMode(true); // Habilita o modo de edição
     } catch (error) {
-      console.error('Erro ao buscar tribunas:', error);
+      console.error('Erro ao buscar tribuna:', error);
     }
   };
 
@@ -42,123 +39,38 @@ const CadastroTribunas = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/tribuna/post', {
-        method: 'POST',
+      const url = editMode ? `http://localhost:3001/tribuna/put/${id}` : 'http://localhost:3001/tribuna/post';
+      const method = editMode ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error('Erro ao cadastrar tribuna');
+        throw new Error('Erro ao cadastrar/atualizar tribuna');
       }
-      if(response.ok){
-        alert("Cadastro realizado com susseso!")
-        setFormData({ nome: '', descricao: '' });
-        fetchTribunas();
-      }
-    } catch (error) {
-      console.error('Erro ao cadastrar tribuna:', error);
-    }
-  };
-
-  const handleEdit = (tribuna) => {
-    setFormData({
-      nome: tribuna.nome,
-      descricao: tribuna.descricao
-    });
-    setEditMode(true);
-    setEditId(tribuna.id);
-  };
-
-  const handleUpdate = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/tribuna/put/${editId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar tribuna');
-      }
-      setFormData({ nome: '' });
+      alert(editMode ? 'Tribuna atualizada com sucesso!' : 'Tribuna cadastrada com sucesso!');
+      setFormData({ nome: '', descricao: '' });
       setEditMode(false);
-      fetchTribunas();
     } catch (error) {
-      console.error('Erro ao atualizar tribuna:', error);
+      console.error('Erro ao cadastrar/atualizar tribuna:', error);
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/tribuna/delete/${id}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao excluir tribuna');
-      }
-      fetchTribunas();
-    } catch (error) {
-      console.error('Erro ao excluir tribuna:', error);
-    }
-  };
   return (
     <div>
       <NavigationBar />
       <div className="container">
         <div className="cadastro-tribuna">
           <h1>Cadastro de Tribuna</h1>
-          <form onSubmit={editMode ? handleUpdate : handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="nome">Nome:</label>
-              <input
-                type="text"
-                id="nome"
-                name="nome"
-                value={formData.nome}
-                onChange={handleChange}
-              />
-              <label htmlFor="nome">Descrição:</label>
-              <textarea id="descricao" name="descricao" value={formData.descricao} onChange={handleChange}></textarea>
-            </div>
-            <div className="form-group">
-              <button className="button" type="submit">{editMode ? 'Atualizar' : 'Cadastrar'}</button>
-            </div>
-          </form>
-          
-          <h2>Tribunas Cadastradas</h2>
-          <ul>
-          <Tabela th={
-            <>
-              <th className="text-center">Nome </th>
-              <th className="text-center">Ações</th>
-            </>
-          }>
-            {tribunas.map((tribuna) => (
-              <li key={tribuna.id}>
-
-                <tr key={tribuna.id} className="dropdown-label anexo">
-                      {/*corpo tabela*/}
-                   
-                      <td className="text-center">{tribuna.nome}</td>
-                      <td className="text-center">
-                        
-                      <img src={lapis} alt='editar' style={{ width: "30px", padding: "3px" }} onClick={() => handleEdit(tribuna)}/>
-                      <img src={lixeira} alt='deletar' style={{ width: "30px", padding: "3px" }} onClick={() => handleDelete(tribuna.id)}/> 
-                        <ModalChildren image={lapis}>
-                          <h1 style={{textAlign: 'center'}}>{tribuna.nome}</h1>
-                          <p>Descrição: {tribuna.descricao}</p>
-                        </ModalChildren>
-                      
-                      </td>
-                    </tr>
-               
-              </li>
-            ))}
-          </Tabela>
-          </ul>
+          <TribunaForm
+            formData={formData}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            editMode={editMode}
+          />
         </div>
       </div>
       <Footer />

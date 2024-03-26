@@ -77,7 +77,7 @@ const NavigationBar = () => {
                   <Link to="/cadastroJornal" className="nav-link"> Jornal</Link>
                   <Link to="/cadastroAdm" className="nav-link"> Usuário</Link>
                   <Link to="/cadastroCandidato" className="nav-link"> Candidato</Link>
-                  <Link to="/CadastroTribunas" className="nav-link"> Tribuna </Link>
+                  <Link to="/listagemTribunas" className="nav-link"> Tribuna </Link>
                 </div>
               </div>
             )}
