@@ -16,6 +16,11 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Efeito de sombra */
     padding: 20px;
+    transition: transform 0.3s ease-in-out; /* Adicionando uma transição suave */
+}
+
+.post-card:hover {
+    transform: translateY(-5px); /* Efeito de levantamento ao passar o mouse */
 }
 
 .post-header {
@@ -44,6 +49,7 @@
     width: 100%;
     height: auto;
     margin-top: 20px;
+    border-radius: 8px; /* Adicionando borda arredondada */
 }
 
 .post-description {
