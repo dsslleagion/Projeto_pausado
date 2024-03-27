@@ -3,15 +3,38 @@ import './CadastroForum.css';
 import NavigationBar from '../components/NavigationBar';
 import Button from '../components/Button';
 import Footer from '../components/Footer';
+import { useParams } from 'react-router-dom';
 
 const CadastroForum = () => {
+  const { id } = useParams();
   const [conteudo, setConteudo] = useState('');
-  const [reclamacoes, setReclamacoes] = useState([]);
-  const [idEditar, setIdEditar] = useState(null); // Estado para armazenar o ID da reclamação a ser editada
+  const [idEditar, setIdEditar] = useState(null);
 
   useEffect(() => {
-    fetchReclamacoes();
-  }, []);
+    if (id) {
+      setIdEditar(id);
+      fetchReclamacao(id)
+        .then(data => {
+          setConteudo(data.conteudo);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar reclamação:', error);
+        });
+    }
+  }, [id]);
+
+  const fetchReclamacao = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/form/one/${id}`);
+      if (!response.ok) {
+        throw new Error('Erro ao buscar reclamação');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('Erro ao buscar reclamação: ' + error.message);
+    }
+  };
 
   const handleChange = (e) => {
     setConteudo(e.target.value);
@@ -22,13 +45,13 @@ const CadastroForum = () => {
     try {
       if (idEditar) {
         await editarReclamacao(idEditar, { conteudo });
-        setIdEditar(null); // Limpa o ID da reclamação a ser editada após a edição
+        console.log('Reclamação editada com sucesso!');
       } else {
         await cadastrarReclamacao({ conteudo });
+        console.log('Reclamação cadastrada com sucesso!');
       }
       setConteudo('');
-      console.log('Reclamação salva com sucesso!');
-      fetchReclamacoes();
+      window.location.href = '/ListagemForum';
     } catch (error) {
       console.error('Erro ao salvar reclamação:', error.message);
     }
@@ -68,48 +91,11 @@ const CadastroForum = () => {
     }
   };
 
-  const fetchReclamacoes = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/form/all', {
-        method: 'GET'
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setReclamacoes(data);
-      } else {
-        console.error('Erro ao buscar reclamações:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar reclamações:', error.message);
-    }
-  };
-
-  const handleExcluirReclamacao = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/form/delete/${id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        console.log('Reclamação excluída com sucesso!');
-        fetchReclamacoes();
-      } else {
-        console.error('Erro ao excluir reclamação:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao excluir reclamação:', error.message);
-    }
-  };
-
-  const handleEditarReclamacao = (id, conteudo) => {
-    setIdEditar(id);
-    setConteudo(conteudo);
-  };
-
   return (
     <div>
       <NavigationBar />
       <div className="container">
-        <h1 className="title">Cadastro de Reclamações</h1>
+        <h1 className="title">{idEditar ? 'Editar Reclamação' : 'Cadastro de Reclamações'}</h1>
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
             <label htmlFor="conteudo">Conteúdo da reclamação:</label>
@@ -123,16 +109,6 @@ const CadastroForum = () => {
           </div>
           <Button type="submit" text={idEditar ? 'Salvar Edição' : 'Enviar Reclamação'} />
         </form>
-        <h2>Lista de Reclamações</h2>
-        <ul>
-          {reclamacoes.map((reclamacao) => (
-            <li key={reclamacao.id}>
-              {reclamacao.conteudo}
-              <button onClick={() => handleExcluirReclamacao(reclamacao.id)}>Excluir</button>
-              <button onClick={() => handleEditarReclamacao(reclamacao.id, reclamacao.conteudo)}>Editar</button>
-            </li>
-          ))}
-        </ul>
       </div>
       <Footer />
     </div>
