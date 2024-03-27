@@ -59,12 +59,20 @@ const Home = () => {
     <div className="home-page">
       <NavigationBar />
       <div className="container">
-        <div className="candidato-card clearfix">
-          {candidatos.map((candidato) => (
-            <Link to={`/CandidatoPage/${candidato.id}`} key={candidato.id}>
-              <CandidatoCard nome={candidato.nome} content={candidato.cargoPretendido} imagem={candidato.imagem} />
-            </Link>
-          ))}
+      <div className="main-carousel">
+      <Slider dots infinite autoplay>
+            {candidatos.map((candidato) => (
+              <Link to={`/CandidatoPage/${candidato.id}`} key={candidato.id}>
+                <div className="carousel-candidato-item">
+                  <img src={candidato.imagem} alt={candidato.nome} />
+                  <div className="carousel-candidato-text">
+                    <h3>{candidato.nome}</h3>
+                    <p>{candidato.cargoPretendido}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </Slider>
         </div>
         <div className="container2">
 

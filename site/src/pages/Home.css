@@ -322,3 +322,43 @@
   font-size: 12px;
   color: #666666;
 }
+
+.main-carousel {
+  margin-bottom: 20px;
+}
+
+.carousel-candidato-item {
+  width: 100%;
+  height: 300px; /* Altura do card do carrossel */
+}
+
+.carousel-candidato-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Para garantir que a imagem preencha todo o espaço do card */
+}
+
+/* Adicione este CSS para estilizar o texto no carrossel */
+.carousel-candidato-item {
+  position: relative;
+}
+
+.carousel-candidato-text {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+}
+
+.carousel-candidato-text h3,
+.carousel-candidato-text p {
+  margin: 0;
+}
+
+.carousel-candidato-text h3 {
+  font-size: 1.5rem;
+}
+
+.carousel-candidato-text p {
+  font-size: 1rem;
+}
