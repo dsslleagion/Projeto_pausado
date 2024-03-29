@@ -76,7 +76,7 @@ const NavigationBar = () => {
                   <Link to="/cadastroNoticia" className="nav-link"> Notícias</Link>
                   <Link to="/cadastroJornal" className="nav-link"> Jornal</Link>
                   <Link to="/cadastroAdm" className="nav-link"> Usuário</Link>
-                  <Link to="/cadastroCandidato" className="nav-link"> Candidato</Link>
+                  <Link to="/listagemCandidatos" className="nav-link"> Candidato</Link>
                   <Link to="/listagemTribunas" className="nav-link"> Tribuna </Link>
                 </div>
               </div>
