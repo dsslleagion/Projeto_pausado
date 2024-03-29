@@ -73,7 +73,7 @@ const NavigationBar = () => {
               <div className="nav-category" onClick={() => activateDropdown('dropdown-cadastro')}>
                 <span className="nav-category-title">Cadastros</span>
                 <div className="dropdown-content dropdown-cadastro">
-                  <Link to="/cadastroNoticia" className="nav-link"> Notícias</Link>
+                  <Link to="/ListarNoticia" className="nav-link"> Notícias</Link>
                   <Link to="/listagemJornal" className="nav-link"> Jornal</Link>
                   <Link to="/listagemUsuarios" className="nav-link"> Usuário</Link>
                   <Link to="/listagemCandidatos" className="nav-link"> Candidato</Link>

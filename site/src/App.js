@@ -24,6 +24,7 @@ import ListagemForum from './pages/ListagemForum';
 import ListagemCandidatos from './pages/ListagemCandidatos';
 import ListagemUsuarios from './pages/ListagemUsuarios';
 import ListaJornais from './pages/ListarJornais';
+import ListarNoticias from './pages/ListarNoticias';
 
 
 function App() {
@@ -54,10 +55,12 @@ function App() {
               <Route path="/CadastroForum/:id" element={<CadastroForum />} />
               <Route path="/candidatos" element={<CandidatoPage />} />
               <Route path="/jornal" element={<JornalPage />} />
+              <Route path="/ListarNoticia" element={<ListarNoticias />} />
               <Route path="/CandidatoPage/:id" element={<CandidatoPage />} />
               <Route path="/NoticiaPage/:id" element={<NoticiaPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
               <Route path="/cadastroNoticia" element={<CadastroNoticia />} />
+              <Route path="/cadastroNoticia/:id" element={<CadastroNoticia />} />
               <Route path="/login" element={<Login />} /> {/* Adiciona a rota para a página de login */}
               <Route path="/viewforum" element={<ViewForum />} />
               <Route path="*" element={<NotFound />} />
