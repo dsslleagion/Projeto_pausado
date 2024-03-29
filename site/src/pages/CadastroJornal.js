@@ -4,19 +4,35 @@ import Button from '../components/Button';
 import './CadastroJornal.css';
 import Footer from '../components/Footer';
 
+import { useParams } from 'react-router-dom';
+
 const CadastroJornal = () => {
+  const { id } = useParams();
   const [formValues, setFormValues] = useState({
-    id: null,
     titulo: '',
     conteudo: '',
     dataPublicacao: new Date().toISOString()
   });
-  const [jornais, setJornais] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    fetchJornais();
-  }, []);
+    if (id) {
+      fetchJornal(id);
+    }
+  }, [id]);
+
+  const fetchJornal = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/jornal/one/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFormValues(data);
+      } else {
+        console.error('Erro ao buscar jornal:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar jornal:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,8 +42,8 @@ const CadastroJornal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const endpoint = isEditing ? `http://localhost:3001/jornal/put/${formValues.id}` : 'http://localhost:3001/jornal/post';
-      const method = isEditing ? 'PUT' : 'POST';
+      const endpoint = id ? `http://localhost:3001/jornal/put/${id}` : 'http://localhost:3001/jornal/post';
+      const method = id ? 'PUT' : 'POST';
       const response = await fetch(endpoint, {
         method: method,
         headers: {
@@ -36,99 +52,47 @@ const CadastroJornal = () => {
         body: JSON.stringify(formValues)
       });
       if (response.ok) {
-        console.log(`Jornal ${isEditing ? 'editado' : 'cadastrado'} com sucesso!`);
+        console.log(`Jornal ${id ? 'editado' : 'cadastrado'} com sucesso!`);
         setFormValues({
-          id: null,
           titulo: '',
           conteudo: '',
           dataPublicacao: new Date().toISOString()
         });
-        setIsEditing(false);
-        fetchJornais(); // Atualiza a lista após o cadastro/edição
       } else {
-        console.error(`Erro ao ${isEditing ? 'editar' : 'cadastrar'} jornal:`, response.statusText);
+        console.error(`Erro ao ${id ? 'editar' : 'cadastrar'} jornal:`, response.statusText);
       }
     } catch (error) {
-      console.error(`Erro ao ${isEditing ? 'editar' : 'cadastrar'} jornal:`, error);
+      console.error(`Erro ao ${id ? 'editar' : 'cadastrar'} jornal:`, error);
     }
-  };
-
-  const fetchJornais = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/jornal/all');
-      if (response.ok) {
-        const data = await response.json();
-        setJornais(data);
-      } else {
-        console.error('Erro ao buscar jornais:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar jornais:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/jornal/delete/${id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        console.log('Jornal excluído com sucesso!');
-        fetchJornais(); // Atualiza a lista após a exclusão
-      } else {
-        console.error('Erro ao excluir jornal:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao excluir jornal:', error);
-    }
-  };
-
-  const handleEdit = (jornal) => {
-    setFormValues(jornal);
-    setIsEditing(true);
   };
 
   return (
     <div>
-      <NavigationBar />
-      <div className='conteiner'>
-        <div className="jornal-page">
-          <div className="jornal-content">
-            <h1>{isEditing ? 'Editar Jornal' : 'Cadastro de Jornal'}</h1>
-            <form onSubmit={handleSubmit} className="form">
-              <div className="form-group">
-                <label htmlFor="titulo">Título:</label>
-                <input
-                  type="text"
-                  id="titulo"
-                  name="titulo"
-                  value={formValues.titulo}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="conteudo">Conteúdo:</label>
-                <textarea
-                  id="conteudo"
-                  name="conteudo"
-                  value={formValues.conteudo}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-              <Button type="submit" text={isEditing ? 'Editar' : 'Cadastrar'} />
-            </form>
-            <h2>Lista de Jornais</h2>
-            <ul>
-            {jornais.map((jornal) => (
-              <li key={jornal.id}>
-                {jornal.titulo}
-                <button onClick={() => handleDelete(jornal.id)}>Excluir</button>
-                <button onClick={() => handleEdit(jornal)}>Editar</button>
-              </li>
-            ))}
-          </ul>
-          </div>          
+      <NavigationBar></NavigationBar>
+      <div className='container'>
+      <h1>{id ? 'Editar Jornal' : 'Cadastro de Jornal'}</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="titulo">Título:</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value={formValues.titulo}
+            onChange={handleChange}
+          />
         </div>
+        <div>
+          <label htmlFor="conteudo">Conteúdo:</label>
+          <textarea
+            id="conteudo"
+            name="conteudo"
+            value={formValues.conteudo}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+        <button type="submit">{id ? 'Editar' : 'Cadastrar'}</button>
+      </form>
       </div>
       <Footer></Footer>
     </div>

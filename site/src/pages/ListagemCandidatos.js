@@ -66,6 +66,7 @@ const ListagemCandidatos = () => {
           ))}
         </tbody>
       </table>
+      <button ><Link to="/cadastroCandidato">Cadastrar</Link></button>
     </div>
     <Footer></Footer>
     </div>

@@ -23,6 +23,8 @@ import ListagemTribunas from './pages/ListagemTribunas';
 import ListagemForum from './pages/ListagemForum';
 import ListagemCandidatos from './pages/ListagemCandidatos';
 import ListagemUsuarios from './pages/ListagemUsuarios';
+import ListaJornais from './pages/ListarJornais';
+
 
 function App() {
   return (
@@ -37,12 +39,14 @@ function App() {
               <Route path="/cadastroAdm/:id" element={<CadastroAdm />} />
               <Route path="/tribunas" element={<TribunasPage />} />
               <Route path="/listagemUsuarios" element={<ListagemUsuarios />} />
-              <Route path="/listagemTribunas" element={<ListagemTribunas />} />
+              <Route path="/listagemJornal" element={<ListaJornais />} />
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
+              <Route path="/listagemforum" element={<ListagemForum />} />
               <Route path="/listagemforum" element={<ListagemForum />} />
               <Route path="/cadastroTri" element={<CadastroTribunas />} />
               <Route path="/cadastroTri/:id" element={<CadastroTribunas />} />
               <Route path="/cadastroJornal" element={<CadastroJornal />} />
+              <Route path="/cadastroJornal/:id" element={<CadastroJornal />} />
               <Route path="/CadastroTribunas" element={<CadastroTribunas />} />
               <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
               <Route path="/cadastroCandidato/:id" element={<CadastroCandidato />} />

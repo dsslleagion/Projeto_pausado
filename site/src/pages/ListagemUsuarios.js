@@ -67,9 +67,12 @@ const ListagemUsuarios = () => {
                 {/* Botão de Excluir */}
                 <button onClick={() => handleExcluirUsuario(usuario.id)} className="delete-button">Excluir</button>
               </div>
+
             </div>
+            
           ))}
         </div>
+        <button ><Link to="/cadastroAdm">Cadastrar</Link></button>
       </div>
       <Footer />
     </div>

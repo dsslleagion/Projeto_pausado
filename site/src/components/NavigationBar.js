@@ -74,7 +74,7 @@ const NavigationBar = () => {
                 <span className="nav-category-title">Cadastros</span>
                 <div className="dropdown-content dropdown-cadastro">
                   <Link to="/cadastroNoticia" className="nav-link"> Notícias</Link>
-                  <Link to="/cadastroJornal" className="nav-link"> Jornal</Link>
+                  <Link to="/listagemJornal" className="nav-link"> Jornal</Link>
                   <Link to="/listagemUsuarios" className="nav-link"> Usuário</Link>
                   <Link to="/listagemCandidatos" className="nav-link"> Candidato</Link>
                   <Link to="/listagemTribunas" className="nav-link"> Tribuna </Link>

@@ -315,7 +315,7 @@ console.log(formData);
       <div className="profile-container">
 
         <form className="profile-form">
-          <h1>Perfil do Usuário</h1>
+          <h1>Cadastro Usuário</h1>
           <div className="form-group">
             <label>Nome:</label>
             <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
