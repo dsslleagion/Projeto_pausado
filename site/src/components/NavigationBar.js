@@ -31,10 +31,10 @@ const NavigationBar = () => {
   };
 
   const renderProfileImage = () => {
-    if (userData && userData.cliente && typeof userData.cliente.imagem === 'string') {
+    if (userData && userData.cliente && typeof userData.cliente.imagem === 'string' && userData.cliente.imagem !== '') {
       return <img src={userData.cliente.imagem} alt="Perfil" className="profile-pic" />;
     } else {
-      return <img src={profilePic} alt="Perfil" className="profile-pic" />;
+      return <img src="https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png" alt="Perfil Padrão" className="profile-pic" />;
     }
   };
   
@@ -75,7 +75,7 @@ const NavigationBar = () => {
                 <div className="dropdown-content dropdown-cadastro">
                   <Link to="/cadastroNoticia" className="nav-link"> Notícias</Link>
                   <Link to="/cadastroJornal" className="nav-link"> Jornal</Link>
-                  <Link to="/cadastroAdm" className="nav-link"> Usuário</Link>
+                  <Link to="/listagemUsuarios" className="nav-link"> Usuário</Link>
                   <Link to="/listagemCandidatos" className="nav-link"> Candidato</Link>
                   <Link to="/listagemTribunas" className="nav-link"> Tribuna </Link>
                 </div>

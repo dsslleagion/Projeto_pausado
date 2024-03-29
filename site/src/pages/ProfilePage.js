@@ -80,6 +80,7 @@ const ProfilePage = () => {
         const clienteData = await getClienteById(userData.cliente.id);
         setFormData(clienteData);
         setAvatarSRC(clienteData.imagem)
+        
       } catch (error) {
         console.error('Erro ao buscar dados do cliente:', error);
       }

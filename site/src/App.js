@@ -22,6 +22,7 @@ import NoticiaPage from './pages/NoticiaPage';
 import ListagemTribunas from './pages/ListagemTribunas';
 import ListagemForum from './pages/ListagemForum';
 import ListagemCandidatos from './pages/ListagemCandidatos';
+import ListagemUsuarios from './pages/ListagemUsuarios';
 
 function App() {
   return (
@@ -33,7 +34,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/cadastro" element={<Cadastro />} />
               <Route path="/cadastroAdm" element={<CadastroAdm />} />
+              <Route path="/cadastroAdm/:id" element={<CadastroAdm />} />
               <Route path="/tribunas" element={<TribunasPage />} />
+              <Route path="/listagemUsuarios" element={<ListagemUsuarios />} />
               <Route path="/listagemTribunas" element={<ListagemTribunas />} />
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
               <Route path="/listagemforum" element={<ListagemForum />} />
