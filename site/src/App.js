@@ -25,6 +25,9 @@ import ListagemCandidatos from './pages/ListagemCandidatos';
 import ListagemUsuarios from './pages/ListagemUsuarios';
 import ListaJornais from './pages/ListarJornais';
 import ListarNoticias from './pages/ListarNoticias';
+import CadastroSobreNos from './pages/CadastroSobreNos';
+import SobreNosView from './pages/SobreNosView';
+import ListagemSobreNos from './pages/ListagemSobreNos';
 
 
 function App() {
@@ -43,7 +46,9 @@ function App() {
               <Route path="/listagemJornal" element={<ListaJornais />} />
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
               <Route path="/listagemTribunas" element={<ListagemTribunas />} />
-            
+              <Route path="/cadastroSobreNos" element={<CadastroSobreNos />} />
+              <Route path="/ListagemSobreNos" element={<ListagemSobreNos />} />
+              <Route path="/SobreNosView" element={<SobreNosView />} />
               <Route path="/listagemforum" element={<ListagemForum />} />
               <Route path="/cadastroTri" element={<CadastroTribunas />} />
               <Route path="/cadastroTri/:id" element={<CadastroTribunas />} />

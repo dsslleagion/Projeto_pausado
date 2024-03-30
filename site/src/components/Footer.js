@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Footer.css';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [showFooter, setShowFooter] = useState(false);
@@ -37,6 +38,7 @@ const Footer = () => {
             <li><a href="#"><i className="fab fa-linkedin-in"></i></a></li>
           </ul>
         </div>
+        <div><Link to="/SobreNosView">Sobre Nós</Link></div>
         <div className="contact-info">
           <h2>Contato</h2>
           <p>Telefone: (00) 1234-5678</p>
