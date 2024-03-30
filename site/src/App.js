@@ -42,7 +42,8 @@ function App() {
               <Route path="/listagemUsuarios" element={<ListagemUsuarios />} />
               <Route path="/listagemJornal" element={<ListaJornais />} />
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
-              <Route path="/listagemforum" element={<ListagemForum />} />
+              <Route path="/listagemTribunas" element={<ListagemTribunas />} />
+            
               <Route path="/listagemforum" element={<ListagemForum />} />
               <Route path="/cadastroTri" element={<CadastroTribunas />} />
               <Route path="/cadastroTri/:id" element={<CadastroTribunas />} />
