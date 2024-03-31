@@ -1,34 +1,24 @@
+// GraficoInteresseTribunas.js
 import React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { PieChart, Pie, Tooltip, Legend } from 'recharts';
 
 const GraficoInteresseTribunas = ({ dados }) => {
-  const labels = dados.map(item => item.tribuna);
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        data: dados.map(item => item.interesse),
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-        ],
-        hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-        ],
-      },
-    ],
-  };
-
-  return <Pie data={data} key={JSON.stringify(data)} />;
+  return (
+    <PieChart width={400} height={400}>
+      <Pie
+        data={dados}
+        dataKey="interesse"
+        nameKey="tribuna"
+        cx="50%"
+        cy="50%"
+        outerRadius={80}
+        fill="#8884d8"
+        label
+      />
+      <Tooltip />
+      <Legend />
+    </PieChart>
+  );
 };
 
 export default GraficoInteresseTribunas;
