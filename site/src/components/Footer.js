@@ -37,8 +37,9 @@ const Footer = () => {
             <li><a href="#"><i className="fab fa-instagram"></i></a></li>
             <li><a href="#"><i className="fab fa-linkedin-in"></i></a></li>
           </ul>
+          <h2><Link to="/SobreNosView">Sobre Nós</Link></h2>
         </div>
-        <div><Link to="/SobreNosView">Sobre Nós</Link></div>
+        
         <div className="contact-info">
           <h2>Contato</h2>
           <p>Telefone: (00) 1234-5678</p>

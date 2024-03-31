@@ -78,9 +78,15 @@ const NavigationBar = () => {
                   <Link to="/listagemUsuarios" className="nav-link"> Usuário</Link>
                   <Link to="/listagemCandidatos" className="nav-link"> Candidato</Link>
                   <Link to="/listagemTribunas" className="nav-link"> Tribuna </Link>
+                  <Link to="/listagemSobreNos" className="nav-link"> Administração </Link>
                 </div>
               </div>
             )}
+            {(isAdmin) && (
+              <Link to="/Estatisticas" className="nav-category"style={{ textDecoration: 'none' }}>
+              <span className="nav-category-title">Estatisticas</span>
+            </Link>
+            )} 
             <div className="nav-category" onClick={() => activateDropdown('dropdown-jornal')}>
               <span className="nav-category-title">Forum</span>
               <div className="dropdown-content dropdown-jornal">

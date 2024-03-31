@@ -12,7 +12,7 @@ const ListagemSobreNos = () => {
 
   const fetchSobreNos = async () => {
     try {
-      const response = await fetch('/sobre-nos');
+      const response = await fetch('/');
       if (response.ok) {
         const data = await response.json();
         setSobreNosItems(data);
@@ -33,7 +33,7 @@ const ListagemSobreNos = () => {
           <div key={item.id} className="sobre-nos-item">
             <h2>{item.nome}</h2>
             <img src={item.fotoUrl} alt={item.nome} />
-            <Link to={`/sobre-nos/${item.id}`}>Ver Detalhes</Link>
+            <Link to={`/cadastroSobreNos/${item.id}`}>Ver Detalhes</Link>
           </div>
         ))}
       </div>

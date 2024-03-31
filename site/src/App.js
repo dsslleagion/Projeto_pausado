@@ -28,6 +28,7 @@ import ListarNoticias from './pages/ListarNoticias';
 import CadastroSobreNos from './pages/CadastroSobreNos';
 import SobreNosView from './pages/SobreNosView';
 import ListagemSobreNos from './pages/ListagemSobreNos';
+import EstatisticasPage from './pages/EstatisticasPage';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path="/cadastroAdm" element={<CadastroAdm />} />
               <Route path="/cadastroAdm/:id" element={<CadastroAdm />} />
               <Route path="/tribunas" element={<TribunasPage />} />
+              <Route path="/Estatisticas" element={<EstatisticasPage />} />
               <Route path="/listagemUsuarios" element={<ListagemUsuarios />} />
               <Route path="/listagemJornal" element={<ListaJornais />} />
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
