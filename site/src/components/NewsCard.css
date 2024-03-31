@@ -6,7 +6,26 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
+.share-button {
+  cursor: pointer;
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: #fff; /* Cor do ícone */
+  border: none;
+  border-radius: 50%; /* Bordas arredondadas para tornar o botão circular */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: background-color 0.3s ease;
+}
 
+.share-button:hover {
+  background-color: #0056b3; /* Altera a cor de fundo ao passar o mouse */
+}
 .news-card h2 {
   font-size: 18px;
   margin-bottom: 10px;

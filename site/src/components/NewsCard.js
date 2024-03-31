@@ -1,14 +1,22 @@
-// NewsCard.js
 import React from 'react';
+import { FaShare } from 'react-icons/fa';
 
+const NewsCard = ({ id, title, content, date, imagem }) => {
+  const shareNews = () => {
+    const newsUrl = `http://localhost:3000/NoticiaPage/${id}`;
+    navigator.clipboard.writeText(newsUrl);
+    alert('Link da notícia copiado para a área de transferência!');
+  };
 
-const NewsCard = ({ title, content, date , imagem}) => {
   return (
     <div className="news-card">
-      <img>{imagem}</img>
+      <img src={imagem} alt="Imagem da Notícia" />
       <h2>{title}</h2>
       <p>{content}</p>
       <span>{date}</span>
+      <div className="share-button" onClick={shareNews}>
+        <FaShare />
+      </div>
     </div>
   );
 };

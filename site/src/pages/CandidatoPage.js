@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './CandidatoPage.css';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
+import { FaShare } from 'react-icons/fa';
+import './CandidatoPage.css';
 
 const CandidatoPage = () => {
   const { id } = useParams();
@@ -17,20 +18,23 @@ const CandidatoPage = () => {
         throw new Error('Erro ao buscar candidato');
       }
       const data = await response.json();
-      console.log(response);
       setCandidato(data);
       setLoading(false);
     } catch (error) {
-      console.error('Erro ao buscar candidato:', error);
       setError(error.message);
       setLoading(false);
     }
   };
 
-
   useEffect(() => {
     fetchCandidatoById();
   }, [id]);
+
+  const shareLink = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl);
+    alert('Link da página copiado para a área de transferência!');
+  };
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -56,6 +60,9 @@ const CandidatoPage = () => {
               alt="avatar"
               style={{ width: '30%', height: '30%', objectFit: 'cover' }}
             />
+            <button onClick={shareLink} className="share-button">
+              <FaShare /> Compartilhar
+            </button>
           </>
         )}
       </div>

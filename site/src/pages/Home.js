@@ -132,7 +132,7 @@ const Home = () => {
             <div className="additional-card">
               {filtrarNoticias().map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                  <NewsCard title={item.title} date={item.date} />
+                  <NewsCard id={item.id} title={item.title} date={item.date} />
                 </Link>
               ))}
             </div>
@@ -142,7 +142,7 @@ const Home = () => {
           <div className="secondary-news">
             {filtrarNoticias().map((item) => (
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                <NewsCard title={item.title} date={item.date} />
+                <NewsCard id={item.id} title={item.title} date={item.date} />
               </Link>
             ))}
           </div>
@@ -168,7 +168,7 @@ const Home = () => {
             <div className="additional-card">
               {filtrarNoticias().map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                  <NewsCard title={item.title} date={item.date} />
+                  <NewsCard id={item.id} title={item.title} date={item.date} />
                 </Link>
               ))}
             </div>
@@ -177,7 +177,7 @@ const Home = () => {
           <div className="secondary-news2">
             {filtrarNoticias().map((item) => (
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                <NewsCard title={item.title} date={item.date} />
+                <NewsCard id={item.id} title={item.title} date={item.date} />
               </Link>
             ))}
           </div>
