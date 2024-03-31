@@ -7,12 +7,15 @@ import Footer from '../components/Footer';
 import NewsCard from '../components/NewsCard';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import CandidatoCard from '../components/CandidatoCard';
 
 const Home = () => {
   const [news, setNews] = useState([]);
   const [mainNews, setMainNews] = useState([]);
   const [candidatos, setCandidatos] = useState([]);
+  const [filtroData, setFiltroData] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroCidade, setFiltroCidade] = useState('');
+  const [filtroTribuna, setFiltroTribuna] = useState('');
 
   useEffect(() => {
     getData();
@@ -33,6 +36,9 @@ const Home = () => {
           title: item.titulo,
           content: item.conteudo,
           date: new Date(item.dataPublicacao).toLocaleDateString(),
+          estado: item.estado,
+          cidade: item.cidade,
+          tribuna: item.tribuna
         }));
         setNews(formattedData);
         setMainNews(formattedData.slice(0, 3));
@@ -55,12 +61,35 @@ const Home = () => {
     }
   };
 
+  // Função para filtrar as notícias com base nos filtros selecionados
+  const filtrarNoticias = () => {
+    let noticiasFiltradas = news;
+
+    if (filtroData) {
+      noticiasFiltradas = noticiasFiltradas.filter(item => item.date.includes(filtroData));
+    }
+
+    if (filtroEstado) {
+      noticiasFiltradas = noticiasFiltradas.filter(item => item.estado.toLowerCase().includes(filtroEstado.toLowerCase()));
+    }
+
+    if (filtroCidade) {
+      noticiasFiltradas = noticiasFiltradas.filter(item => item.cidade.toLowerCase().includes(filtroCidade.toLowerCase()));
+    }
+
+    if (filtroTribuna) {
+      noticiasFiltradas = noticiasFiltradas.filter(item => item.tribuna.toLowerCase().includes(filtroTribuna.toLowerCase()));
+    }
+
+    return noticiasFiltradas;
+  };
+
   return (
     <div className="home-page">
       <NavigationBar />
       <div className="container">
-      <div className="main-carousel">
-      <Slider dots infinite autoplay>
+        <div className="main-carousel">
+          <Slider dots infinite autoplay>
             {candidatos.map((candidato) => (
               <Link to={`/CandidatoPage/${candidato.id}`} key={candidato.id}>
                 <div className="carousel-candidato-item">
@@ -75,9 +104,16 @@ const Home = () => {
           </Slider>
         </div>
         <div className="container2">
+          {/* Filtros */}
+          <div className="filtros">
+            <input type="text" placeholder="Data" value={filtroData} onChange={(e) => setFiltroData(e.target.value)} />
+            <input type="text" placeholder="Estado" value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)} />
+            <input type="text" placeholder="Cidade" value={filtroCidade} onChange={(e) => setFiltroCidade(e.target.value)} />
+            <input type="text" placeholder="Tribuna" value={filtroTribuna} onChange={(e) => setFiltroTribuna(e.target.value)} />
+          </div>
 
+          {/* Notícias principais */}
           <div className="main-news">
-
             <Slider dots infinite autoplay>
               {mainNews.map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
@@ -94,7 +130,7 @@ const Home = () => {
               ))}
             </Slider>
             <div className="additional-card">
-              {news.map((item) => (
+              {filtrarNoticias().map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                   <NewsCard title={item.title} date={item.date} />
                 </Link>
@@ -102,15 +138,14 @@ const Home = () => {
             </div>
           </div>
 
+          {/* Notícias secundárias */}
           <div className="secondary-news">
-            {news.map((item) => (
+            {filtrarNoticias().map((item) => (
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                 <NewsCard title={item.title} date={item.date} />
               </Link>
             ))}
           </div>
-
-
         </div>
 
         <div className="container3">
@@ -130,21 +165,17 @@ const Home = () => {
                 </Link>
               ))}
             </Slider>
-
-
             <div className="additional-card">
-              {news.map((item) => (
+              {filtrarNoticias().map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                   <NewsCard title={item.title} date={item.date} />
                 </Link>
               ))}
             </div>
-          
-
           </div>
 
           <div className="secondary-news2">
-            {news.map((item) => (
+            {filtrarNoticias().map((item) => (
               <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
                 <NewsCard title={item.title} date={item.date} />
               </Link>
