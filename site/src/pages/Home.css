@@ -2,7 +2,10 @@
   min-height: 100vh;
 
 }
-
+.filtros{
+  display:flex;
+  gap:15px;
+}
 .container2 {
   display: flex;
   justify-content: space-between;
@@ -90,22 +93,7 @@
 }
 
 
- .news-card {
-  background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-  transition:.25s ease-in-out  ;
-  
-}
-
-.news-card:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  transform: scale(1.1);
-
-}
-
+ 
 .candidato-card .news-card{
   float: left;
   width: calc(50% - 10px);
@@ -119,23 +107,6 @@
   display: block;
 }
 
-
-.news-card h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #222222;
-}
-
-.news-card p {
-  font-size: 14px;
-  color: #444444;
-  margin-bottom: 10px;
-}
-
- .news-card span {
-  font-size: 12px;
-  color: #666666;
-}
 
 
 
@@ -294,7 +265,7 @@
   background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  
   margin-bottom: 20px;
   transition:.25s ease-in-out  ;
   
@@ -372,4 +343,9 @@
 
 .carousel-candidato-text p {
   font-size: 1rem;
+}
+
+.filtros{
+  margin-top: 25px;
+  margin-bottom: 25px;
 }

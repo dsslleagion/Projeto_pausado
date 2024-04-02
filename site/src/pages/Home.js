@@ -103,15 +103,16 @@ const Home = () => {
             ))}
           </Slider>
         </div>
-        <div className="container2">
-          {/* Filtros */}
-          <div className="filtros">
+                {/* Filtros */}
+                <div className="filtros">
             <input type="text" placeholder="Data" value={filtroData} onChange={(e) => setFiltroData(e.target.value)} />
             <input type="text" placeholder="Estado" value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)} />
             <input type="text" placeholder="Cidade" value={filtroCidade} onChange={(e) => setFiltroCidade(e.target.value)} />
             <input type="text" placeholder="Tribuna" value={filtroTribuna} onChange={(e) => setFiltroTribuna(e.target.value)} />
           </div>
 
+        <div className="container2">
+  
           {/* Notícias principais */}
           <div className="main-news">
             <Slider dots infinite autoplay>
@@ -132,7 +133,7 @@ const Home = () => {
             <div className="additional-card">
               {filtrarNoticias().map((item) => (
                 <Link to={`/NoticiaPage/${item.id}`} key={item.id}>
-                  <NewsCard id={item.id} title={item.title} date={item.date} />
+                  <NewsCard img={item.imagem}id={item.id} title={item.title} date={item.date} />
                 </Link>
               ))}
             </div>

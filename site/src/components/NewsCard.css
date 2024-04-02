@@ -1,49 +1,53 @@
-/* NewsCard.css */
-
-.news-card {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-.share-button {
-  cursor: pointer;
-  background-color: #007bff; /* Cor de fundo do botão */
-  color: #fff; /* Cor do ícone */
-  border: none;
-  border-radius: 50%; /* Bordas arredondadas para tornar o botão circular */
-  width: 40px;
-  height: 40px;
+.news-card{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  transition: background-color 0.3s ease;
+  flex-direction: column;
 }
 
-.share-button:hover {
-  background-color: #0056b3; /* Altera a cor de fundo ao passar o mouse */
-}
+
+
 .news-card h2 {
   font-size: 18px;
   margin-bottom: 10px;
-  /* Ajuste do tamanho da fonte e cor */
-  font-size: 16px;
   color: #222222;
 }
-.news-card-img {
-  width: 100%; /* Torna a imagem responsiva */
-  border-radius: 8px; /* Adiciona borda arredondada */
+.news-card {
+  background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition:.25s ease-in-out  ;
+  
 }
+
+.news-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  transform: scale(1.1);
+
+}
+
 .news-card p {
   font-size: 14px;
-  color: #333333;
+  color: #444444;
   margin-bottom: 10px;
 }
 
-.news-card span {
+ .news-card span {
   font-size: 12px;
   color: #666666;
+}
+.news-card-header{
+  
+}
+
+.news-card-header img{
+  max-width: 100%;
+  border-radius: 8px 8px 0 0;
+}
+
+.news-card-body{
+  padding: 20px 20px 10px 20px;
+}
+
+.news-card-footer{
+  padding: 5px 5px;
 }
