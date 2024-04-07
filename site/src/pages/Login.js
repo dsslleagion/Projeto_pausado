@@ -41,14 +41,24 @@ const Login = () => {
     } catch (error) {
       console.error('Erro ao fazer login:', error.message);
       // Exibindo um alerta de erro com o SweetAlert2
-      Swal.fire({
-        icon: 'error',
-        title: 'Erro ao fazer login',
-        text: 'Verifique seu email e senha e tente novamente.'
-      });
+      if (error.response && error.response.data.error === 'Dados de login não conferem') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciais inválidas',
+          text: 'Verifique seu email e senha e tente novamente.'
+        });
+      } else {
+        // Outro tipo de erro
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao fazer login',
+          text: 'Ocorreu um erro ao fazer login. Por favor, tente novamente mais tarde.'
+        });
+      }
     }
   };
-
+  
+  
   return (
     <div className="login-container">
       <h1>Login</h1>
