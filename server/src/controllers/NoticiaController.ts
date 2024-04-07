@@ -38,7 +38,10 @@ class NoticiaController {
             insertNoticia.titulo = createNoticia.titulo
             insertNoticia.conteudo = createNoticia.conteudo
             insertNoticia.dataPublicacao = createNoticia.dataPublicacao
-
+            insertNoticia.cidade = createNoticia.cidade
+            insertNoticia.bairro = createNoticia.bairro
+            insertNoticia.estado = createNoticia.estado
+            insertNoticia.candidato = createNoticia.candidato
 
 
             const allNoticia = await noticiaRepository.save(insertNoticia)
@@ -53,7 +56,7 @@ class NoticiaController {
     public async update(req: Request, res: Response) {
         try {
             const id: any = req.params.uuid
-            const { titulo, conteudo, dataPublicacao } = req.body
+            const { titulo, conteudo, dataPublicacao, cidade, bairro, estado, candidato } = req.body
             const rep = AppDataSource.getRepository(Noticia)
             const noticia = await rep.findOneBy({ id: id })
             if (!noticia) {
@@ -62,6 +65,10 @@ class NoticiaController {
             noticia.titulo = titulo
             noticia.conteudo = conteudo
             noticia.dataPublicacao = dataPublicacao
+            noticia.cidade = cidade
+            noticia.bairro = bairro
+            noticia.estado = estado
+            noticia.candidato = candidato
             const result = await rep.save(noticia)
             return res.status(200).json(result)
         } catch (error) {

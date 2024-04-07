@@ -47,8 +47,8 @@ export class Candidato {
   @OneToMany(() => CandidatoToJornal, (canToJor) => canToJor.candidato)
   canToJor: CandidatoToJornal[];
 
-  @ManyToOne(() => Noticia, (noti) => noti.candidato, { onDelete: 'CASCADE', eager: true })
-  noticia: Noticia;
+  @OneToMany(() => Noticia, (not) => not.candidato)
+  noticia: Noticia[];
 
   @ManyToOne(() => Tribuna, (tri) => tri.candidato, { onDelete: 'CASCADE', eager: true })
   tribuna: Tribuna;

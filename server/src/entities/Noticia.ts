@@ -12,8 +12,17 @@ export class Noticia {
     @Column({ nullable: false })
     titulo: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, type: 'longtext' })
     conteudo: string;
+
+    @Column({ nullable: false })
+    cidade: string;
+
+    @Column({ nullable: false })
+    estado: string;
+
+    @Column({ nullable: false })
+    bairro: string;
 
     @Column({ nullable: false, type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     dataPublicacao: Date;
@@ -21,8 +30,11 @@ export class Noticia {
     @OneToMany(() => TribunaToNoticia, (tritoNot) => tritoNot.noticia)
     triToNot: TribunaToNoticia[];
 
-    @OneToMany(() => Candidato, (can) => can.noticia)
-    candidato: Candidato[];
+
+    @ManyToOne(() => Candidato, (can) => can.noticia, { onDelete: 'CASCADE', eager: true })
+    candidato: Candidato;
+
+    
 
     // Você pode adicionar mais campos, se necessário
 }

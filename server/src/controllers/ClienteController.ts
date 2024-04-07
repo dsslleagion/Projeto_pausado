@@ -124,6 +124,7 @@ class ClienteController {
       findCliente.cep = createCliente.cep;
       findCliente.redes_sociais = createCliente.redes_sociais;
       findCliente.form = createCliente.form
+      findCliente.estado = createCliente.estado
       console.log(findCliente);
       
       if(createCliente.profile !== undefined){
@@ -248,6 +249,7 @@ class ClienteController {
       insertCliente.profile = createCliente.profile
       insertCliente.password = createCliente.password
       insertCliente.form = createCliente.form
+      insertCliente.estado = createCliente.estado
 
       if(createCliente.imagem === null || createCliente.imagem === undefined){
         insertCliente.imagem = 'https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png'

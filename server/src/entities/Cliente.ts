@@ -26,6 +26,9 @@ export class Cliente {
     bairro: string
 
     @Column({ nullable: false })
+    estado: string
+
+    @Column({ nullable: false })
     endereco: string
 
     @Column({ nullable: false })
