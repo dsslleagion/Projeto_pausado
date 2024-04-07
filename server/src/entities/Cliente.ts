@@ -29,6 +29,9 @@ export class Cliente {
     estado: string
 
     @Column({ nullable: false })
+    status: string
+
+    @Column({ nullable: false })
     endereco: string
 
     @Column({ nullable: false })
