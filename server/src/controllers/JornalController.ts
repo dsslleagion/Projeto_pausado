@@ -27,12 +27,13 @@ class JornalController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { titulo, conteudo, dataPublicacao } = req.body
+      const { titulo, conteudo, dataPublicacao, pdf } = req.body
       const rep = AppDataSource.getRepository(Jornal)
       const jornal = new Jornal()
       jornal.titulo = titulo
       jornal.conteudo = conteudo
       jornal.dataPublicacao = dataPublicacao
+      jornal.pdf_url = pdf 
       const result = await rep.save(jornal)
       return res.status(200).json(result)
     }catch(err){
@@ -43,7 +44,7 @@ class JornalController {
   public async put(req: Request, res: Response): Promise<Response> {
     try {
       const id:any = req.params.uuid
-      const { titulo, conteudo, dataPublicacao } = req.body
+      const { titulo, conteudo, dataPublicacao, pdf } = req.body
       const rep = AppDataSource.getRepository(Jornal)
       const jornal = await rep.findOneBy({id:id})
       if (!jornal) {
@@ -52,6 +53,7 @@ class JornalController {
       jornal.titulo = titulo
       jornal.conteudo = conteudo
       jornal.dataPublicacao = dataPublicacao
+      jornal.pdf_url = pdf 
       const result = await rep.save(jornal)
       return res.status(200).json(result)
     } catch (error) {

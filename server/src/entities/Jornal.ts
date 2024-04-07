@@ -11,8 +11,11 @@ export class Jornal {
   @Column({ nullable: false })
   titulo: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'longtext' })
   conteudo: string;
+
+  @Column({ nullable: false })
+  pdf_url: string;
 
   @Column({ nullable: false, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   dataPublicacao: Date;
