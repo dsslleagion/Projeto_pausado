@@ -12,7 +12,7 @@ export class Noticia {
     @Column({ nullable: false })
     titulo: string;
 
-    @Column({ nullable: false, type: 'array' })
+    @Column({ nullable: false })
     imagem: string;
 
     @Column({ nullable: false, type: 'longtext' })
