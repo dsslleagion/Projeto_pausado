@@ -4,6 +4,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ClienteToTribuna } from './ClienteToTribuna';
 import { TribunaToNoticia } from './TribunaToNoticia';
 import { Candidato } from './Candidato';
+import { Formulario } from './Formulario';
 
 @Entity()
 export class Tribuna {
@@ -27,6 +28,9 @@ export class Tribuna {
 
   @OneToMany(() => Candidato, (tri) => tri.tribuna)
   candidato: Candidato[];
+
+  @OneToMany(() => Formulario, (form) => form.tribuna)
+  form: Formulario[];
 
   // Outros campos e relacionamentos podem ser adicionados conforme necessário
 }

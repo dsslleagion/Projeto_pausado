@@ -69,8 +69,8 @@ export class Cliente {
         return this.constructor.prototype.password;
     }
 
-    @ManyToOne(() => Formulario, (form) => form.clinte, { onDelete: 'CASCADE', eager: true })
-    form: Formulario;
+    @OneToMany(() => Formulario, (form) => form.cliente)
+    form: Formulario[];
 
     @OneToMany(() => ClienteToTribuna, (cliToTri) => cliToTri.cliente)
     cliToTri: ClienteToTribuna[];

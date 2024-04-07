@@ -123,7 +123,6 @@ class ClienteController {
       findCliente.cidade = createCliente.cidade;
       findCliente.cep = createCliente.cep;
       findCliente.redes_sociais = createCliente.redes_sociais;
-      findCliente.form = createCliente.form
       findCliente.estado = createCliente.estado
       console.log(findCliente);
       
@@ -248,7 +247,6 @@ class ClienteController {
       insertCliente.telefone = createCliente.telefone
       insertCliente.profile = createCliente.profile
       insertCliente.password = createCliente.password
-      insertCliente.form = createCliente.form
       insertCliente.estado = createCliente.estado
 
       if(createCliente.imagem === null || createCliente.imagem === undefined){

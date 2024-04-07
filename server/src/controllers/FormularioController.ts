@@ -27,10 +27,18 @@ class FormularioController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { conteudo } = req.body
+      const { conteudo, imagem, titulo, cidade, estado, bairro, tribuna, cliente } = req.body
       const rep = AppDataSource.getRepository(Formulario)
       const formulario = new Formulario()
       formulario.conteudo = conteudo
+      formulario.imagem = imagem 
+      formulario.titulo = titulo
+      formulario.cidade = cidade 
+      formulario.estado = estado 
+      formulario.bairro = bairro 
+      formulario.tribuna = tribuna 
+      formulario.cliente = cliente 
+
       const result = await rep.save(formulario)
       return res.status(200).json(result)
     }catch(err){
@@ -41,13 +49,20 @@ class FormularioController {
   public async put(req: Request, res: Response): Promise<Response> {
     try {
       const id:any = req.params.uuid
-      const { conteudo } = req.body
+      const { conteudo, imagem, titulo, cidade, estado, bairro, tribuna, cliente } = req.body
       const rep = AppDataSource.getRepository(Formulario)
       const formulario = await rep.findOneBy({id:id})
       if (!formulario) {
         return res.status(404).json({ error: 'Formulário não encontrado' });
       }
       formulario.conteudo = conteudo
+      formulario.imagem = imagem 
+      formulario.titulo = titulo
+      formulario.cidade = cidade 
+      formulario.estado = estado 
+      formulario.bairro = bairro 
+      formulario.tribuna = tribuna 
+      formulario.cliente = cliente 
       const result = await rep.save(formulario)
       return res.status(200).json(result)
     } catch (error) {
