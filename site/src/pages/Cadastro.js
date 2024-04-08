@@ -5,7 +5,7 @@ import './Cadastro.css';
 import Footer from '../components/Footer';
 import { upload } from '../supabase/upload';
 import Swal from 'sweetalert2';
-import { useForm } from 'react-hook-form';
+
 
 
 const Cadastro = () => {
@@ -90,20 +90,28 @@ const Cadastro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Lista de campos a serem ignorados na validação
+    const fieldsToIgnore = ['imagem', 'tribunas', 'candidatos'];
+
+    // Verifica se algum campo obrigatório está vazio, exceto os campos a serem ignorados
+    const emptyFields = Object.entries(formValues)
+      .filter(([key, value]) => !fieldsToIgnore.includes(key) && value === '')
+      .map(([key]) => key);
+
+    if (emptyFields.length > 0) {
+      // Monta a mensagem de erro indicando os campos vazios
+      const errorMessage = emptyFields.map(field => `${field}`).join(', ');
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos obrigatórios não preenchidos',
+        html: `Por favor, preencha os seguintes campos obrigatórios:<br>${errorMessage}`,
+      });
+      return;
+    }
+
     try {
-
-
-      if (icone !== undefined) {
-        const up = await upload(formValues.nome, icone, 'usuarios');
-        await sendForm(up)
-      }
-      else {
-        await sendForm('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png');
-      }
-      // Aguarda até que o upload seja concluído antes de prosseguir
-
-
-      // Se o upload for bem-sucedido, envie o formulário
+      const img = icone !== undefined ? await upload(formValues.nome, icone, 'usuarios') : 'https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png';
+      await sendForm(img);
     } catch (error) {
       console.error('Erro ao realizar o cadastro:', error);
     }
@@ -203,6 +211,26 @@ const Cadastro = () => {
         <h1 className="title">Cadastro</h1>
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
+            <div style={{ position: 'relative', width: 190, height: 190, borderRadius: '50%', overflow: 'hidden' }}>
+              <input
+                ref={inputFile}
+                accept="image/png, image/jpeg"
+                type="file"
+                className="position-absolute opacity-0"
+                id="fileInput"
+                onChange={onChangeInputFile}
+                style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+              />
+              <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                <img
+                  src={avatarSRC}
+                  alt="avatar"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </label>
+            </div>
+
+
             <label htmlFor="nome">Nome:</label>
             <input
               type="text"
@@ -210,7 +238,7 @@ const Cadastro = () => {
               name="nome"
               value={formValues.nome}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -221,7 +249,7 @@ const Cadastro = () => {
               name="email"
               value={formValues.email}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -231,7 +259,7 @@ const Cadastro = () => {
               name="sexo"
               value={formValues.sexo}
               onChange={handleChange}
-              
+
             >
               <option value="">Selecione</option>
               <option value="masculino">Masculino</option>
@@ -246,7 +274,7 @@ const Cadastro = () => {
               name="telefone"
               value={formValues.telefone}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -256,7 +284,7 @@ const Cadastro = () => {
               name="estado"
               value={formValues.estado}
               onChange={handleChange}
-            
+
             >
               <option value="">Selecione</option>
               <option value="AC">Acre</option>
@@ -296,7 +324,7 @@ const Cadastro = () => {
               name="bairro"
               value={formValues.bairro}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -307,7 +335,7 @@ const Cadastro = () => {
               name="endereco"
               value={formValues.endereco}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -318,7 +346,7 @@ const Cadastro = () => {
               name="cidade"
               value={formValues.cidade}
               onChange={handleChange}
-             
+
             />
           </div>
           <div className="form-group">
@@ -329,7 +357,7 @@ const Cadastro = () => {
               name="cep"
               value={formValues.cep}
               onChange={handleChange}
-              
+
             />
           </div>
           <div className="form-group">
@@ -351,29 +379,10 @@ const Cadastro = () => {
               name="password"
               value={formValues.password}
               onChange={handleChange}
-             
+
             />
           </div>
 
-          <div style={{ position: 'relative', width: 190, height: 190 }}>
-            <input
-              ref={inputFile}
-              accept="image/png, image/jpeg"
-              type="file"
-              className="position-absolute opacity-0"
-              id="fileInput"
-              onChange={onChangeInputFile}
-              style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
-            />
-            <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-              <img
-                className="rounded-circle"
-                src={avatarSRC}
-                alt="avatar"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
-              />
-            </label>
-          </div>
 
 
           <div className="form-group">
