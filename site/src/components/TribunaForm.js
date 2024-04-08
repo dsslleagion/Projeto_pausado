@@ -20,6 +20,14 @@ const TribunaForm = ({ formData, handleChange, handleSubmit, editMode }) => {
           onChange={handleChange}
         ></textarea>
       </div>
+      <label htmlFor="link_grupo">link_grupo:</label>
+        <input
+          type="text"
+          id="link_grupo"
+          name="link_grupo"
+          value={formData.link_grupo}
+          onChange={handleChange}
+        />
       <div className="form-group">
         <button className="button" type="submit">
           {editMode ? 'Atualizar' : 'Cadastrar'}

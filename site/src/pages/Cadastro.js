@@ -5,28 +5,10 @@ import './Cadastro.css';
 import Footer from '../components/Footer';
 import { upload } from '../supabase/upload';
 import Swal from 'sweetalert2';
+import { useForm } from 'react-hook-form';
 
-const showSwalForField = (fieldName) => {
-  Swal.fire({
-    icon: 'info',
-    title: `Preencha o campo ${fieldName}`,
-    text: 'Este campo é obrigatório',
-    timer: 2000, // Tempo em milissegundos
-    timerProgressBar: true,
-    toast: true,
-    position: 'top',
-    showConfirmButton: false
-  });
-};
 
 const Cadastro = () => {
-  const handleInputFocus = (fieldName) => {
-    showSwalForField(fieldName);
-  };
-  const handleInputBlur = () => {
-    // Oculte o alerta
-    Swal.close();
-  };
 
   const [formValues, setFormValues] = useState({
     nome: '',
@@ -36,9 +18,11 @@ const Cadastro = () => {
     bairro: '',
     endereco: '',
     cidade: '',
+    estado: '',
     cep: '',
     redes_sociais: '',
     password: '',
+    status: 'ativo',
     profile: 'user',
     imagem: '',
     tribunaIds: [], // Inicializar como array vazio para múltiplas seleções
@@ -106,19 +90,6 @@ const Cadastro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar se pelo menos um campo obrigatório foi preenchido
-  const requiredFields = ['nome', 'email', 'sexo', 'telefone', 'bairro', 'endereco', 'cidade', 'cep', 'password'];
-  const isAnyFieldFilled = requiredFields.some(field => !!formValues[field]);
-
-  if (!isAnyFieldFilled) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Erro de validação',
-      text: 'Preencha pelo menos um campo obrigatório.',
-    });
-    return;
-  }
-  
     try {
 
 
@@ -153,6 +124,8 @@ const Cadastro = () => {
           bairro: formValues.bairro,
           endereco: formValues.endereco,
           cidade: formValues.cidade,
+          estado: formValues.estado,
+          status: formValues.status,
           cep: formValues.cep,
           redes_sociais: formValues.redes_sociais,
           password: formValues.password,
@@ -237,8 +210,7 @@ const Cadastro = () => {
               name="nome"
               value={formValues.nome}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Nome')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
           <div className="form-group">
@@ -249,8 +221,7 @@ const Cadastro = () => {
               name="email"
               value={formValues.email}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Email')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
           <div className="form-group">
@@ -260,8 +231,7 @@ const Cadastro = () => {
               name="sexo"
               value={formValues.sexo}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Sexo')}
-              onBlur={handleInputBlur}
+              
             >
               <option value="">Selecione</option>
               <option value="masculino">Masculino</option>
@@ -276,9 +246,47 @@ const Cadastro = () => {
               name="telefone"
               value={formValues.telefone}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Telefone')}
-              onBlur={handleInputBlur}
+             
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="estado">Estado:</label>
+            <select
+              id="estado"
+              name="estado"
+              value={formValues.estado}
+              onChange={handleChange}
+            
+            >
+              <option value="">Selecione</option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="bairro">Bairro:</label>
@@ -288,8 +296,7 @@ const Cadastro = () => {
               name="bairro"
               value={formValues.bairro}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Bairro')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
           <div className="form-group">
@@ -300,8 +307,7 @@ const Cadastro = () => {
               name="endereco"
               value={formValues.endereco}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Endereco')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
           <div className="form-group">
@@ -312,8 +318,7 @@ const Cadastro = () => {
               name="cidade"
               value={formValues.cidade}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Cidade')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
           <div className="form-group">
@@ -324,8 +329,7 @@ const Cadastro = () => {
               name="cep"
               value={formValues.cep}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('CEP')}
-              onBlur={handleInputBlur}
+              
             />
           </div>
           <div className="form-group">
@@ -347,8 +351,7 @@ const Cadastro = () => {
               name="password"
               value={formValues.password}
               onChange={handleChange}
-              onFocus={() => handleInputFocus('Senha')}
-              onBlur={handleInputBlur}
+             
             />
           </div>
 

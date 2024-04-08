@@ -24,7 +24,7 @@ const CadastroTribunas = () => {
         throw new Error('Erro ao buscar tribuna');
       }
       const data = await response.json();
-      setFormData({ nome: data.nome, descricao: data.descricao });
+      setFormData({ nome: data.nome, descricao: data.descricao, link_grupo:data.link_grupo });
       setEditMode(true); // Habilita o modo de edição
     } catch (error) {
       console.error('Erro ao buscar tribuna:', error);
