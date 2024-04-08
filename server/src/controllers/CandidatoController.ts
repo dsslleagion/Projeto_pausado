@@ -27,7 +27,7 @@ class CandidatoController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { nome, partido, cargoPretendido , biografia, imagem, cidade, estado, bairro, projetos, agenda, tribunas } = req.body
+      const { nome, partido, cargoPretendido , biografia, imagem, cidade, estado, bairro, projetos, agenda_link, tribunas } = req.body
       const rep = AppDataSource.getRepository(Candidato)
       const candidato = new Candidato()
       candidato.nome = nome
@@ -39,7 +39,7 @@ class CandidatoController {
       candidato.estado = estado
       candidato.bairro = bairro
       candidato.projetos = projetos
-      candidato.agenda_link = agenda
+      candidato.agenda_link = agenda_link
       candidato.tribuna = tribunas
 
       const result = await rep.save(candidato)
