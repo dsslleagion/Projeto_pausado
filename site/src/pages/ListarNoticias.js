@@ -74,18 +74,20 @@ const ListarNoticias = () => {
           onChange={e => setFiltro(e.target.value)}
         />
         {/* Tabela de notícias */}
-        <Tabela th={<th>Título</th>}>
-          {filtrarNoticias(filtro).map((noticia) => (
-            <tr key={noticia.id}>
-              <td>{noticia.titulo}</td>
-              <td>{noticia.conteudo}</td>
-              <td>
-                <button onClick={() => handleEditarNoticia(noticia.id)} className="edit-button">Editar</button>
-                <button onClick={() => handleExcluirNoticia(noticia.id)} className="delete-button">Excluir</button>
-              </td>
-            </tr>
-          ))}
-        </Tabela>
+        <Tabela th={<><th>Título</th><th>Data de Publicação</th><th>Conteúdo</th><th>Ações</th></>}>
+  {filtrarNoticias(filtro).map((noticia) => (
+    <tr key={noticia.id}>
+      <td>{noticia.titulo}</td>
+      <td>{noticia.dataPublicacao}</td>
+      <td>{noticia.conteudo}</td>
+      <td>
+        <button onClick={() => handleEditarNoticia(noticia.id)} className="edit-button">Editar</button>
+        <button onClick={() => handleExcluirNoticia(noticia.id)} className="delete-button">Excluir</button>
+      </td>
+    </tr>
+  ))}
+</Tabela>
+
         <button ><Link to="/cadastroNoticia">Cadastrar</Link></button>
       </div>
       <Footer />

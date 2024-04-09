@@ -124,6 +124,10 @@ const CadastroNoticia = () => {
             <label htmlFor='tribuna'>Tribuna </label>
             <MultiSelect options={selectTribuna()} set={setTribuna} /> 
           </div>
+          <div>
+            <label htmlFor='tribuna'>candidato </label>
+            <MultiSelect  /> 
+          </div>
           <div className="form-group">
             <label htmlFor="conteudo">Conteúdo:</label>
             <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea>
@@ -144,10 +148,7 @@ const CadastroNoticia = () => {
             <label htmlFor="bairro">Bairro:</label>
             <input type="text" id="bairro" name="bairro" value={formData.bairro} onChange={handleChange} />
           </div>
-          <div className="form-group">
-            <label htmlFor="candidato">Candidato:</label>
-            <input type="text" id="candidato" name="candidato" value={formData.candidato} onChange={handleChange} />
-          </div>
+          
           <div className="form-group">
             <label htmlFor="imagem">Imagem:</label>
             <input type="text" id="imagem" name="imagem" value={formData.imagem} onChange={handleChange} />
