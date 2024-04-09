@@ -10,9 +10,10 @@ import { ModalChildren, ModalComponent } from '../components/Modal';
 import lapis from '../assets/lapis.png'
 import { upload } from '../supabase/upload';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const CadastroAdm = () => {
-  const { id } = useParams();
+  const { id, email } = useParams();
   const { userData, updateUserData, getClienteById } = useAuth();
   const { candidato } = useContextoCandidato();
   const [candidatosUsa, setCandidatosUsa] = useState([]);
@@ -39,6 +40,7 @@ const CadastroAdm = () => {
   const [avatarSRC, setAvatarSRC] = useState('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png')
   const [icone, setIcone] = useState()
   const inputFile = useRef(null)
+  const [modoEdicao, setModoEdicao] = useState(false);
 
   const isChecked = (lista1, lista2) => {
     lista1.forEach((item1) => {
@@ -79,25 +81,32 @@ const CadastroAdm = () => {
 
 
   useEffect(() => {
-    const fetchClienteData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/cliente/specific/${id}`); // Use a rota específica para buscar os dados do usuário por ID
-        if (response.ok) {
-          const clienteData = await response.json();
-          setFormData(clienteData);
-          setAvatarSRC(clienteData.imagem)
-        } else {
-          console.error('Erro ao buscar dados do cliente:', response.statusText);
+    if (id) {
+
+      setModoEdicao(true);
+      const fetchClienteData = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/cliente/specific/${id}`); // Use a rota específica para buscar os dados do usuário por ID
+          if (response.ok) {
+            const clienteData = await response.json();
+            setFormData(clienteData);
+            setAvatarSRC(clienteData.imagem)
+          } else {
+            console.error('Erro ao buscar dados do cliente:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Erro ao buscar dados do cliente:', error);
         }
-      } catch (error) {
-        console.error('Erro ao buscar dados do cliente:', error);
-      }
-    };
+      };
 
-    setTribunasUsa(isChecked(tribuna, userData.tribunas));
-    setCandidatosUsa(isChecked2(candidato, userData.candidatos));
+      setTribunasUsa(isChecked(tribuna, userData.tribunas));
+      setCandidatosUsa(isChecked2(candidato, userData.candidatos));
 
-    fetchClienteData();
+      fetchClienteData();
+    } else {
+      // Senão, o usuário está cadastrando
+      setModoEdicao(false);
+    }
   }, [id, tribuna, candidato, userData.tribunas, userData.candidatos]);
 
   const handleChange = (e) => {
@@ -117,7 +126,7 @@ const CadastroAdm = () => {
             body: JSON.stringify({ cliente: userData.cliente.id, tribuna: tri.id }),
           });
           if (response.ok) {
-            logout();
+
             console.log('Usuário cadastrado com sucesso!');
           } else {
             console.error('Erro ao cadastrar usuário:', response.statusText);
@@ -127,7 +136,7 @@ const CadastroAdm = () => {
             method: 'DELETE',
           });
           if (response.ok) {
-            logout();
+
             console.log('Usuário excluído com sucesso!');
           } else {
             console.error('Erro ao excluir usuário:', response.statusText);
@@ -142,7 +151,7 @@ const CadastroAdm = () => {
       });
       const trib = await response.json();
       updateUserData({ ...userData, cliente: formData, tribunas: trib });
-      logout(); // Chama o logout após a atualização
+
     } catch (err) { }
   };
 
@@ -158,7 +167,7 @@ const CadastroAdm = () => {
             body: JSON.stringify({ cliente: userData.cliente.id, candidato: can.id }),
           });
           if (response.ok) {
-            logout();
+
             console.log('Usuário cadastrado com sucesso!');
           } else {
             console.error('Erro ao cadastrar usuário:', response.statusText);
@@ -168,7 +177,7 @@ const CadastroAdm = () => {
             method: 'DELETE',
           });
           if (response.ok) {
-            logout();
+
             console.log('Usuário excluído com sucesso!');
           } else {
             console.error('Erro ao excluir usuário:', response.statusText);
@@ -183,7 +192,7 @@ const CadastroAdm = () => {
       });
       const canb = await response.json();
       updateUserData({ ...userData, cliente: formData, candidatos: canb });
-      logout(); // Chama o logout após a atualização
+
     } catch (err) { }
   };
 
@@ -200,7 +209,7 @@ const CadastroAdm = () => {
         if (response.ok) {
           alert('Senha atualizada com sucesso!');
           setFormData({ ...formData, password: '' });
-          logout(); // Chama o logout após a atualização
+
         } else {
           alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
         }
@@ -245,12 +254,12 @@ const CadastroAdm = () => {
         if (response.ok) {
 
           alert('Dados do cliente atualizados com sucesso!');
-          logout();
+
 
           const updatedUserData = { ...userData, cliente: formData };
           updateUserData(updatedUserData);
           // Chama o logout após a atualização
-          logout();
+
         }
       }
       const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
@@ -279,12 +288,12 @@ const CadastroAdm = () => {
       if (response.ok) {
 
         alert('Dados do cliente atualizados com sucesso!');
-        logout();
+
 
         const updatedUserData = { ...userData, cliente: formData };
         updateUserData(updatedUserData);
-        // Chama o logout após a atualização
-        logout();
+
+
       } else {
 
       }
@@ -311,9 +320,10 @@ const CadastroAdm = () => {
     }
   }
 
-  const logout = () => {
-    window.location.href = "/listagemUsuarios";
+  const toggleModoEdicao = () => {
+    setModoEdicao(!modoEdicao);
   };
+
 
   return (
     <div>
@@ -321,7 +331,7 @@ const CadastroAdm = () => {
       <div className="profile-container">
 
         <form className="profile-form">
-          <h1>Cadastro Usuário</h1>
+          <h1>{modoEdicao ? 'Editar Usuário' : 'Cadastro Usuário'}</h1>
           <div style={{ position: 'relative', width: 190, height: 190, borderRadius: '50%', overflow: 'hidden' }}>
             <input
               ref={inputFile}
@@ -347,6 +357,20 @@ const CadastroAdm = () => {
           <div className="form-group">
             <label>E-mail:</label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Senha:</label>
+            {modoEdicao ? null : (
+              <>
+              <div>
+                <input type="password" name="senha" value={formData.password} onChange={handleChange} />
+                </div>
+                <div>
+                  <h3>Confirme a senha</h3>
+                <input type="password" name="senhaRep" value={formData.passwordRep} onChange={handleChange} />
+                </div>
+              </>
+            )}
           </div>
           <div className="form-group">
             <label>Sexo:</label>
@@ -390,7 +414,7 @@ const CadastroAdm = () => {
           <div className="form-group">
             <label>Estado:</label>
             <select name="estado" value={formData.estado} onChange={handleChange}>
-            <option value="">Selecione</option>
+              <option value="">Selecione</option>
               <option value="AC">Acre</option>
               <option value="AL">Alagoas</option>
               <option value="AP">Amapá</option>
@@ -453,20 +477,27 @@ const CadastroAdm = () => {
             </ModalChildren>
 
           </div>
-          <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
-          {/* <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button> */}
-          <ModalComponent title={'Atualizar Senha'}>
-            <h1>Atualizar Senha</h1>
-            <div className="form-group">
-              <label>Nova Senha:</label>
-              <input type="password" name="password" value={formData.password} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label>Repetir Senha:</label>
-              <input type="password" name="passwordRep" value={formData.passwordRep} onChange={handleChange} />
-            </div>
-            <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
-          </ModalComponent>
+          {/* Botões de acordo com o modo de edição */}
+          {modoEdicao ? (
+            <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
+          ) : (
+            <button type="button" >Cadastrar Usuário</button>
+          )}
+          {/* Botão de atualizar senha apenas no modo de edição */}
+          {modoEdicao && (
+            <ModalComponent title={'Atualizar Senha'}>
+              <h1>Atualizar Senha</h1>
+              <div className="form-group">
+                <label>Nova Senha:</label>
+                <input type="password" name="password" value={formData.password} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Repetir Senha:</label>
+                <input type="password" name="passwordRep" value={formData.passwordRep} onChange={handleChange} />
+              </div>
+              <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
+            </ModalComponent>
+          )}
         </form>
       </div>
       <Footer />

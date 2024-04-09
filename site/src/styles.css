@@ -15,6 +15,15 @@ body {
   padding-top: 170px;  /* Mantém a imagem fixa enquanto o conteúdo rola */
   padding-bottom: 500px;
 }
+a {
+  text-decoration: none; /* Remove o sublinhado */
+  color: inherit; /* Mantém a cor padrão do texto */
+}
+
+a:hover {
+  text-decoration: none; /* Remove o sublinhado ao passar o mouse */
+}
+
 
 
 .container {
