@@ -7,7 +7,7 @@ import { useContextoTribuna } from '../hooks'
 import Checkboxes from '../components/Checkbox';
 import { useContextoCandidato } from '../hooks';
 import { ModalChildren, ModalComponent } from '../components/Modal';
-import lapis from '../assets/lapis.png' 
+import lapis from '../assets/lapis.png'
 import { upload } from '../supabase/upload';
 import { useParams } from 'react-router-dom';
 
@@ -30,11 +30,13 @@ const CadastroAdm = () => {
     cidade: '',
     cep: '',
     redes_sociais: '',
+    estado: '',
+    status: '',
     password: '',
     passwordRep: '',
     imagem: ''
   });
-  const [avatarSRC, setAvatarSRC] = useState('')
+  const [avatarSRC, setAvatarSRC] = useState('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png')
   const [icone, setIcone] = useState()
   const inputFile = useRef(null)
 
@@ -94,7 +96,7 @@ const CadastroAdm = () => {
 
     setTribunasUsa(isChecked(tribuna, userData.tribunas));
     setCandidatosUsa(isChecked2(candidato, userData.candidatos));
-    
+
     fetchClienteData();
   }, [id, tribuna, candidato, userData.tribunas, userData.candidatos]);
 
@@ -187,7 +189,7 @@ const CadastroAdm = () => {
 
   const handleUpdatePassword = async () => {
     try {
-      if(formData.password === formData.passwordRep && formData.password !== null && formData.password !== undefined){
+      if (formData.password === formData.passwordRep && formData.password !== null && formData.password !== undefined) {
         const response = await fetch(`/cliente/modifypassword/${userData.cliente.userEmail}`, {
           method: 'PUT',
           headers: {
@@ -203,7 +205,7 @@ const CadastroAdm = () => {
           alert('Erro ao atualizar a senha. Tente novamente mais tarde.');
         }
       }
-      else{
+      else {
         alert('A senha e o repetir senha tem que ser iguais!')
       }
 
@@ -215,8 +217,8 @@ const CadastroAdm = () => {
 
   const handleUpdateClientData = async () => {
     try {
-      if(icone !== undefined){
-        const up =  await upload(formData.nome, icone, 'usuarios')
+      if (icone !== undefined) {
+        const up = await upload(formData.nome, icone, 'usuarios')
         const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
           method: 'PUT',
           headers: {
@@ -230,6 +232,8 @@ const CadastroAdm = () => {
             bairro: formData.bairro,
             endereco: formData.endereco,
             cidade: formData.cidade,
+            estado: formData.estado,
+            status: formData.status,
             cep: formData.cep,
             redes_sociais: formData.redes_sociais,
             password: formData.password,
@@ -237,12 +241,12 @@ const CadastroAdm = () => {
             imagem: up,
           }),
         });
-  
+
         if (response.ok) {
-  
+
           alert('Dados do cliente atualizados com sucesso!');
           logout();
-  
+
           const updatedUserData = { ...userData, cliente: formData };
           updateUserData(updatedUserData);
           // Chama o logout após a atualização
@@ -263,6 +267,8 @@ const CadastroAdm = () => {
           endereco: formData.endereco,
           cidade: formData.cidade,
           cep: formData.cep,
+          estado: formData.estado,
+          status: formData.status,
           redes_sociais: formData.redes_sociais,
           password: formData.password,
           profile: formData.profile,
@@ -286,21 +292,21 @@ const CadastroAdm = () => {
 
     }
   };
-console.log(formData);
-  const onChangeInputFile = (e) =>{
+  console.log(formData);
+  const onChangeInputFile = (e) => {
     const files = e.target.files;
-    
+
     if (FileReader && files && files.length > 0) {
-      const file = files[0] 
-    console.log(files);
+      const file = files[0]
+      console.log(files);
 
       var fr = new FileReader();
       fr.onload = function () {
-        if(fr.result){
+        if (fr.result) {
           setAvatarSRC(fr.result.toString())
           setIcone(files)
-        }        
-      }           
+        }
+      }
       fr.readAsDataURL(file);
     }
   }
@@ -316,6 +322,24 @@ console.log(formData);
 
         <form className="profile-form">
           <h1>Cadastro Usuário</h1>
+          <div style={{ position: 'relative', width: 190, height: 190, borderRadius: '50%', overflow: 'hidden' }}>
+            <input
+              ref={inputFile}
+              accept="image/png, image/jpeg"
+              type="file"
+              className="position-absolute opacity-0"
+              id="fileInput"
+              onChange={onChangeInputFile}
+              style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+            />
+            <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+              <img
+                src={avatarSRC}
+                alt="avatar"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </label>
+          </div>
           <div className="form-group">
             <label>Nome:</label>
             <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
@@ -355,26 +379,51 @@ console.log(formData);
             <label>Redes Sociais:</label>
             <input type="text" name="redes_sociais" value={formData.redes_sociais} onChange={handleChange} />
           </div>
-
-          <div style={{ position: 'relative', width: 190, height: 190 }}>
-            <input
-              ref={inputFile}
-              accept="image/png, image/jpeg"
-              type="file"
-              className="position-absolute opacity-0"
-              id="fileInput"
-              onChange={onChangeInputFile}
-              style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
-            />
-            <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-              <img
-                className="rounded-circle"
-                src={avatarSRC}
-                alt="avatar"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
-              />
-            </label>
+          <div className="form-group">
+            <label>Status:</label>
+            <select name="status" value={formData.status} onChange={handleChange}>
+              <option value="">Selecione o status</option>
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
           </div>
+          <div className="form-group">
+            <label>Estado:</label>
+            <select name="estado" value={formData.estado} onChange={handleChange}>
+            <option value="">Selecione</option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+              {/* Adicione todas as outras opções para os estados do Brasil aqui */}
+            </select>
+          </div>
+
+
+
 
           <h3>Tribunas interessados</h3>
           <div>
@@ -388,7 +437,7 @@ console.log(formData);
               )}
               <button type="button" onClick={tribunasCD}>Atualizar tribunas</button>
             </ModalChildren>
-            
+
           </div>
           <h3>Candidatos interessados</h3>
           <div>
@@ -402,21 +451,21 @@ console.log(formData);
               )}
               <button type="button" onClick={candidatosCD}>Atualizar candidatos</button>
             </ModalChildren>
-            
+
           </div>
           <button type="button" onClick={handleUpdateClientData}>Atualizar Dados do Cliente</button>
           {/* <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button> */}
           <ModalComponent title={'Atualizar Senha'}>
-              <h1>Atualizar Senha</h1>
-              <div className="form-group">
-                <label>Nova Senha:</label>
-                <input type="password" name="password" value={formData.password} onChange={handleChange} />
-              </div>
-              <div className="form-group">
-                <label>Repetir Senha:</label>
-                <input type="password" name="passwordRep" value={formData.passwordRep} onChange={handleChange} />
-              </div>
-              <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
+            <h1>Atualizar Senha</h1>
+            <div className="form-group">
+              <label>Nova Senha:</label>
+              <input type="password" name="password" value={formData.password} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Repetir Senha:</label>
+              <input type="password" name="passwordRep" value={formData.passwordRep} onChange={handleChange} />
+            </div>
+            <button type="button" onClick={handleUpdatePassword}>Atualizar Senha</button>
           </ModalComponent>
         </form>
       </div>
