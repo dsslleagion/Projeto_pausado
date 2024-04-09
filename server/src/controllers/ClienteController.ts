@@ -60,6 +60,8 @@ class ClienteController {
             cidade: usuario.cidade,
             redes_sociais: usuario.redes_sociais,
             profile: usuario.profile,
+            status: usuario.status,
+            estado: usuario.estado,
             tribunas: one,
             candidatos: candidatos,
             imagem: usuario.imagem,

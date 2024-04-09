@@ -19,17 +19,19 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao fazer login');
       }
-  
+
       const { token, ...clienteData } = data;
-  
-      localStorage.setItem('userData', JSON.stringify({ token, cliente: clienteData, tribunas: clienteData.tribunas , candidatos: clienteData.candidatos }));
+
+      localStorage.setItem('userData', JSON.stringify({ token, cliente: clienteData, tribunas: clienteData.tribunas, candidatos: clienteData.candidatos }));
       setUserData({ token, cliente: clienteData, tribunas: clienteData.tribunas, candidatos: clienteData.candidatos });
+
+      return { userData: clienteData }; // Retorna os dados do usuário, incluindo o status
     } catch (error) {
       throw new Error(error.message || 'Erro ao fazer login');
     }
