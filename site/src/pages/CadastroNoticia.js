@@ -1,137 +1,94 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import './CadastroNoticia.css';
 import Footer from '../components/Footer';
 import MultiSelect from '../components/MultiSelect';
-import Descrition from '../components/Description';
 import { useContextoTribuna } from '../hooks';
+
 
 const CadastroNoticia = () => {
   const [formData, setFormData] = useState({
     titulo: '',
-    conteudo: ''
+    conteudo: '',
+    dataPublicacao: '',
+    cidade: '',
+    estado: '',
+    bairro: '',
+    candidato: '',
+    imagem: ''
   });
-  const [noticias, setNoticias] = useState([]);
-  const [editandoNoticia, setEditandoNoticia] = useState(null); // Variável para controlar se está editando uma notícia
-  const [ tribunalista, setTribuna ] = useState([])
-  const { selectTribuna } = useContextoTribuna()
+  const [editando, setEditando] = useState(false); // Variável para controlar se está editando uma notícia
+  const [tribunalista, setTribuna] = useState([]);
+  const { selectTribuna } = useContextoTribuna();
+  const { id } = useParams();
+  
 
-  // useEffect(() => {
-  //   fetchNoticias();
-  // }, []);
+  useEffect(() => {
+    if (id) {
+      // Se houver um ID na URL, significa que estamos editando uma notícia
+      setEditando(true);
+      // Aqui você pode fazer a lógica para buscar os dados da notícia pelo ID e preencher o formulário
+      fetchNoticiaById(id);
+    }
+  }, [id]);
+
+  const fetchNoticiaById = async (id) => {
+    try {
+      const response = await fetch(`/noticia/one/${id}`); // Substitua pelo endpoint correto
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(data);
+      } else {
+        console.error('Erro ao buscar notícia:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar notícia:', error.message);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleChangeDesc = (e) => {
-    const name = 'conteudo'
-    setFormData({ ...formData, [name]: e });
-  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (editando) {
+        await updateNoticia(id, formData);
+      } else {
+        await cadastrarNoticia(formData);
+      }
       // Limpar o formulário após o envio bem-sucedido
-      setFormData({ titulo: '', conteudo: '' });
-      //setEditandoNoticia(null); // Limpar o estado de edição
+      setFormData({ titulo: '', conteudo: '', dataPublicacao: '', cidade: '', estado: '', bairro: '', candidato: '', imagem: '' });
     } catch (error) {
       console.error('Erro ao cadastrar/atualizar notícia:', error.message);
     }
   };
 
-  // const fetchNoticias = async () => {
-  //   try {
-  //     const response = await fetch('/noticia/noticias', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json;charset=utf-8'
-  //       }
-  //     });
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       const formattedData = data.map((noticia) => ({
-  //         id: noticia.id,
-  //         titulo: noticia.titulo,
-  //         conteudo: noticia.conteudo,
-  //         // Se necessário, adicione mais campos aqui
-  //       }));
-  //       setNoticias(formattedData);
-  //     } else {
-  //       console.error('Erro ao buscar notícias:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Erro ao buscar notícias:', error.message);
-  //   }
-  // };
-
-  const handleExcluirNoticia = async (id) => {
-    try {
-      const response = await fetch(`/noticia/noticias/${id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        console.log('Notícia excluída com sucesso!');
-        // Recarregar a lista de notícias após excluir
-        //fetchNoticias();
-      } else {
-        console.error('Erro ao excluir notícia:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao excluir notícia:', error.message);
-    }
-  };
-  const handleEditarNoticia = (noticia) => {
-    // Preencher o formulário com os dados da notícia selecionada
-    setFormData({ titulo: noticia.titulo, conteudo: noticia.conteudo });
-    setEditandoNoticia(noticia); // Atualizar o estado para indicar que está editando uma notícia
-    // Aqui você pode adicionar a lógica para editar a notícia
-    console.log('Editar notícia:', noticia);
-  };
-
-  console.log(tribunalista);
-
   const cadastrarNoticia = async (data) => {
     try {
-      await fetch('/noticia/post', {
+      const response = await fetch('/noticia/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-      }).then(async (res) => {
-        const re =  await res.json()
-        console.log(re);
-        cadastrarNoticiaToTribuna(re.id)
-      })
+      });
+      if (response.ok) {
+        console.log('Notícia cadastrada com sucesso!');
+      } else {
+        console.error('Erro ao cadastrar notícia:', response.statusText);
+      }
     } catch (error) {
       console.error('Erro ao cadastrar notícia:', error.message);
     }
   };
 
-  console.log(formData.conteudo);
-
-  const cadastrarNoticiaToTribuna = async (data) => {
+  const updateNoticia = async (id, data) => {
     try {
-      tribunalista.map(async (item) => {
-        console.log(item);
-        console.log(data);
-        await fetch('/tn/post', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify({ noticia: data , tribuna: item.value }),
-        });
-      })
-    } catch (error) {
-      console.error('Erro ao cadastrar notícia:', error.message);
-    }
-  };
-
-  const atualizarNoticia = async (id, data) => {
-    try {
-      const response = await fetch(`/noticia/noticias/${id}`, {
+      const response = await fetch(`/noticia/put/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
@@ -140,8 +97,6 @@ const CadastroNoticia = () => {
       });
       if (response.ok) {
         console.log('Notícia atualizada com sucesso!');
-        // Recarregar a lista de notícias após atualizar
-        //fetchNoticias();
       } else {
         console.error('Erro ao atualizar notícia:', response.statusText);
       }
@@ -150,12 +105,16 @@ const CadastroNoticia = () => {
     }
   };
 
-  
+  const handleCancelar = () => {
+    // Redirecionar para a lista de notícias caso o usuário cancele
+    window.location.href = '/listarNoticias';
+  };
+
   return (
     <div>
       <NavigationBar />
       <div className="container">
-        <h1>Cadastro de Notícia</h1>
+        <h1>{editando ? 'Editar Notícia' : 'Cadastro de Notícia'}</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="titulo">Título:</label>
@@ -167,26 +126,37 @@ const CadastroNoticia = () => {
           </div>
           <div className="form-group">
             <label htmlFor="conteudo">Conteúdo:</label>
-            {/* <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea> */}
-            <Descrition value={formData.conteudo} setValue={handleChangeDesc} />
+            <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea>
           </div>
-          <button onClick={() => cadastrarNoticia(formData)} className="edit-button">Enviar</button>
+          <div className="form-group">
+            <label htmlFor="dataPublicacao">Data de Publicação:</label>
+            <input type="date" id="dataPublicacao" name="dataPublicacao" value={formData.dataPublicacao} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="cidade">Cidade:</label>
+            <input type="text" id="cidade" name="cidade" value={formData.cidade} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="estado">Estado:</label>
+            <input type="text" id="estado" name="estado" value={formData.estado} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro" value={formData.bairro} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="candidato">Candidato:</label>
+            <input type="text" id="candidato" name="candidato" value={formData.candidato} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="imagem">Imagem:</label>
+            <input type="text" id="imagem" name="imagem" value={formData.imagem} onChange={handleChange} />
+          </div>
+          <div className="button-group">
+            <button type="submit" className="edit-button">{editando ? 'Salvar' : 'Enviar'}</button>
+            <button type="button" onClick={handleCancelar} className="cancel-button">Cancelar</button>
+          </div>
         </form>
-
-        {/* <h2>Notícias</h2>
-        <div className="noticias-container">
-          {noticias.map((noticia) => (
-            <div className="noticia-card" key={noticia.id}>
-              <strong>{noticia.titulo}</strong>
-              <p>{noticia.conteudo}</p>
-              <div className="buttons-container">
-                <button onClick={() => handleEditarNoticia(noticia)} className="edit-button">Editar</button>
-                <button onClick={() => handleExcluirNoticia(noticia.id)} className="delete-button">Excluir</button>
-              </div>
-            </div>
-          ))}
-        </div> */}
-        
       </div>
       <Footer />
     </div>

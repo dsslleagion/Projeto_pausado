@@ -3,8 +3,11 @@ import { useParams } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
+import { Tabela } from '../components/Tabela'; // Importando o componente de tabela
+
 const ListarNoticias = () => {
   const [noticias, setNoticias] = useState([]);
+  const [filtro, setFiltro] = useState(''); // Estado para o filtro de busca
   const params = useParams();
 
   const fetchNoticias = async () => {
@@ -51,23 +54,38 @@ const ListarNoticias = () => {
     }
   };
 
+  // Função para filtrar notícias com base no título
+  const filtrarNoticias = (filtro) => {
+    return noticias.filter(noticia =>
+      noticia.titulo.toLowerCase().includes(filtro.toLowerCase())
+    );
+  };
+
   return (
     <div>
       <NavigationBar />
       <div className="container">
         <h2>Notícias</h2>
-        <div className="noticias-container">
-          {noticias.map((noticia) => (
-            <div className="noticia-card" key={noticia.id}>
-              <strong>{noticia.titulo}</strong>
-              <p>{noticia.conteudo}</p>
-              <div className="buttons-container">
+        {/* Campo de busca */}
+        <input
+          type="text"
+          placeholder="Buscar notícia..."
+          value={filtro}
+          onChange={e => setFiltro(e.target.value)}
+        />
+        {/* Tabela de notícias */}
+        <Tabela th={<th>Título</th>}>
+          {filtrarNoticias(filtro).map((noticia) => (
+            <tr key={noticia.id}>
+              <td>{noticia.titulo}</td>
+              <td>{noticia.conteudo}</td>
+              <td>
                 <button onClick={() => handleEditarNoticia(noticia.id)} className="edit-button">Editar</button>
                 <button onClick={() => handleExcluirNoticia(noticia.id)} className="delete-button">Excluir</button>
-              </div>
-            </div>
+              </td>
+            </tr>
           ))}
-        </div>
+        </Tabela>
         <button ><Link to="/cadastroNoticia">Cadastrar</Link></button>
       </div>
       <Footer />
