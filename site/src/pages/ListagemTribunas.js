@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import TribunaItem from '../components/TribunaItem';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
-// Importe o arquivo CSS
+import { Tabela } from '../components/Tabela';
+import TribunaItem from '../components/TribunaItem';
 
 const ListagemTribunas = () => {
   const [tribunas, setTribunas] = useState([]);
@@ -33,7 +33,7 @@ const ListagemTribunas = () => {
       if (!response.ok) {
         throw new Error('Erro ao excluir tribuna');
       }
-      const updatedTribunas = tribunas.filter(tribuna => tribuna.id !== id);
+      const updatedTribunas = tribunas.filter((tribuna) => tribuna.id !== id);
       setTribunas(updatedTribunas);
       alert('Tribuna excluída com sucesso!');
     } catch (error) {
@@ -45,13 +45,22 @@ const ListagemTribunas = () => {
     <div>
       <NavigationBar />
       <div className='container'>
-      <h1>Listagem de Tribunas</h1>
-      <div className='container23'> {/* Remova a classe container */}
-        {tribunas.map((tribuna) => (
-          <TribunaItem key={tribuna.id} tribuna={tribuna} onDelete={handleDelete} />
-        ))}
-      </div>
-      <button ><Link to="/cadastroTribunas">Cadastrar</Link></button>
+        <h1>Listagem de Tribunas</h1>
+        <Tabela th={<><th>ID</th><th>Descrição</th><th>Ação</th></>}>
+          {tribunas.map((tribuna) => (
+            <tr key={tribuna.id}>
+              <td>{tribuna.id}</td>
+              <td>{tribuna.descricao}</td>
+              <td>
+                <button onClick={() => handleDelete(tribuna.id)}>Excluir</button>
+                <Link to={`/CadastroTribunas/${tribuna.id}`}>
+                  <button>Editar</button>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </Tabela>
+        <button><Link to="/cadastroTribunas">Cadastrar</Link></button>
       </div>
       <Footer />
     </div>

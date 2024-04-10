@@ -49,6 +49,7 @@ function App() {
               <Route path="/listagemCandidatos" element={<ListagemCandidatos />} />
               <Route path="/listagemTribunas" element={<ListagemTribunas />} />
               <Route path="/cadastroSobreNos" element={<CadastroSobreNos />} />
+              <Route path="/cadastroSobreNos/:id" element={<CadastroSobreNos />} />
               <Route path="/ListagemSobreNos" element={<ListagemSobreNos />} />
               <Route path="/SobreNosView" element={<SobreNosView />} />
               <Route path="/listagemforum" element={<ListagemForum />} />
@@ -57,6 +58,7 @@ function App() {
               <Route path="/cadastroJornal" element={<CadastroJornal />} />
               <Route path="/cadastroJornal/:id" element={<CadastroJornal />} />
               <Route path="/CadastroTribunas" element={<CadastroTribunas />} />
+              <Route path="/CadastroTribunas/:id" element={<CadastroTribunas />} />
               <Route path="/cadastroCandidato" element={<CadastroCandidato />} />
               <Route path="/cadastroCandidato/:id" element={<CadastroCandidato />} />
               <Route path="/CadastroForum" element={<CadastroForum />} />

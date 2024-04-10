@@ -27,13 +27,13 @@ class JornalController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-      const { titulo, conteudo, dataPublicacao, pdf } = req.body
+      const { titulo, conteudo, dataPublicacao, pdf_url } = req.body
       const rep = AppDataSource.getRepository(Jornal)
       const jornal = new Jornal()
       jornal.titulo = titulo
       jornal.conteudo = conteudo
       jornal.dataPublicacao = dataPublicacao
-      jornal.pdf_url = pdf 
+      jornal.pdf_url = pdf_url 
       const result = await rep.save(jornal)
       return res.status(200).json(result)
     }catch(err){

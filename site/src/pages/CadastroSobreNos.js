@@ -8,7 +8,11 @@ const CadastroSobreNos = () => {
   const [formData, setFormData] = useState({
     nome: '',
     informacoes: '',
-    fotoUrl: ''
+    fotoUrl: '',
+    historia_empresa: '',
+    conteudo: '',
+    foto_administracao: '',
+    projetos: ''
   });
 
   useEffect(() => {
@@ -19,7 +23,7 @@ const CadastroSobreNos = () => {
 
   const fetchSobreNosDetails = async (id) => {
     try {
-      const response = await fetch(`/sobre-nos/${id}`);
+      const response = await fetch(`http://localhost:3001/sobre/one/${id}`);
       if (response.ok) {
         const data = await response.json();
         setFormData(data);
@@ -44,7 +48,8 @@ const CadastroSobreNos = () => {
       } else {
         await cadastrarSobreNos(formData);
       }
-      setFormData({ nome: '', informacoes: '', fotoUrl: '' });
+      setFormData({ nome: '', informacoes: '', fotoUrl: '', historia_empresa: '', conteudo: '', foto_administracao: '', projetos: '' });
+      console.log('Formulário enviado com sucesso!');
     } catch (error) {
       console.error('Erro ao cadastrar/atualizar item "Sobre Nós":', error.message);
     }
@@ -52,7 +57,7 @@ const CadastroSobreNos = () => {
 
   const cadastrarSobreNos = async (data) => {
     try {
-      const response = await fetch('/sobre-nos', {
+      const response = await fetch('http://localhost:3001/sobre/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -71,7 +76,7 @@ const CadastroSobreNos = () => {
 
   const atualizarSobreNos = async (id, data) => {
     try {
-      const response = await fetch(`/sobre-nos/${id}`, {
+      const response = await fetch(`http://localhost:3001/sobre/put/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -105,6 +110,22 @@ const CadastroSobreNos = () => {
           <div className="form-group">
             <label htmlFor="fotoUrl">URL da Foto:</label>
             <input type="text" id="fotoUrl" name="fotoUrl" value={formData.fotoUrl} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="historia_empresa">História da Empresa:</label>
+            <textarea id="historia_empresa" name="historia_empresa" value={formData.historia_empresa} onChange={handleChange}></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="conteudo">Conteúdo:</label>
+            <textarea id="conteudo" name="conteudo" value={formData.conteudo} onChange={handleChange}></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="foto_administracao">URL da Foto da Administração:</label>
+            <input type="text" id="foto_administracao" name="foto_administracao" value={formData.foto_administracao} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="projetos">Projetos:</label>
+            <input type="text" id="projetos" name="projetos" value={formData.projetos} onChange={handleChange} />
           </div>
           <button type="submit">{id ? 'Atualizar' : 'Cadastrar'}</button>
         </form>

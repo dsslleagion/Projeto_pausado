@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
+import { Tabela } from '../components/Tabela'; // Importe o componente de tabela
 
 const ListaJornais = () => {
   const [jornais, setJornais] = useState([]);
@@ -41,27 +42,31 @@ const ListaJornais = () => {
     }
   };
 
-
   return (
     <div>
-      <NavigationBar></NavigationBar>
+      <NavigationBar />
       <div className='container'>
-      <h1>Lista de Jornais</h1>
-      <ul>
-        {jornais.map((jornal) => (
-          <li key={jornal.id}>
-            {jornal.titulo}
-            <button onClick={() => handleDelete(jornal.id)}>Excluir</button>
-            <Link to={`/cadastroJornal/${jornal.id}`}>
-              <button>Editar</button>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <button ><Link to="/cadastroJornal">Cadastrar</Link></button>
+        <h1>Lista de Jornais</h1>
+        {/* Utilize o componente Tabela aqui */}
+        <Tabela th={[<th key="titulo">Título</th>, <th key="acoes">Ações</th>]}>
+          {/* Mapeie os jornais para criar as linhas da tabela */}
+          {jornais.map((jornal) => (
+            <tr key={jornal.id}>
+              <td>{jornal.titulo}</td>
+              <td>
+                {/* Botão para excluir jornal */}
+                <button onClick={() => handleDelete(jornal.id)}>Excluir</button>
+                {/* Botão para editar jornal */}
+                <Link to={`/cadastroJornal/${jornal.id}`}>
+                  <button>Editar</button>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </Tabela>
+        <button ><Link to="/cadastroJornal">Cadastrar</Link></button>
       </div>
-
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };

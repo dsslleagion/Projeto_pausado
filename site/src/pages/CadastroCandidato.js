@@ -3,11 +3,6 @@ import { useParams } from 'react-router-dom';
 import './CadastroCandidato.css';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
-import lapis from '../assets/lapis.png';
-import lixeira from '../assets/lixeira.png';
-import { ModalChildren } from '../components/Modal';
-import { Tabela } from '../components/Tabela';
-import perfil from '../assets/perfil-sem-foto.png';
 import { upload } from '../supabase/upload';
 
 const CadastroCandidato = () => {
@@ -19,11 +14,16 @@ const CadastroCandidato = () => {
     nome: '',
     partido: '',
     cargoPretendido: '',
+    cidade: '',
+    estado: '',
+    bairro: '',
     biografia: '',
-    imagem: ''
+    projetos: '',
+    imagem: '',
+    agenda_link: ''
   });
 
-  const [avatarSRC, setAvatarSRC] = useState('');
+  const [avatarSRC, setAvatarSRC] = useState('https://cvfggtwoyyhatnhuumla.supabase.co/storage/v1/object/public/usuarios/perfil-sem-foto.png');
   const [icone, setIcone] = useState('');
 
   useEffect(() => {
@@ -65,10 +65,7 @@ const CadastroCandidato = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          nome: formValues.nome,
-          partido: formValues.partido,
-          cargoPretendido: formValues.cargoPretendido,
-          biografia: formValues.biografia,
+          ...formValues,
           imagem: up
         })
       });
@@ -82,8 +79,13 @@ const CadastroCandidato = () => {
         nome: '',
         partido: '',
         cargoPretendido: '',
+        cidade: '',
+        estado: '',
+        bairro: '',
         biografia: '',
-        imagem: ''
+        projetos: '',
+        imagem: '',
+        agenda_link: ''
       });
 
       setAvatarSRC('');
@@ -117,6 +119,24 @@ const CadastroCandidato = () => {
       <div className="container">
         <div className="cadastro-candidato">
           <h1>{id ? 'Edição de Candidato' : 'Cadastro de Candidato'}</h1>
+          <div style={{ position: 'relative', width: 190, height: 190, borderRadius: '50%', overflow: 'hidden' }}>
+              <input
+                ref={inputFile}
+                accept="image/png, image/jpeg"
+                type="file"
+                className="position-absolute opacity-0"
+                id="fileInput"
+                onChange={onChangeInputFile}
+                style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+              />
+              <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+                <img
+                  src={avatarSRC}
+                  alt="avatar"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </label>
+            </div>
           <form onSubmit={handleSubmit}>
             <input type="hidden" name="id" value={formValues.id} />
             <div className="form-group">
@@ -149,32 +169,69 @@ const CadastroCandidato = () => {
                 onChange={handleChange}
               />
             </div>
-            <div>
-              <label htmlFor="nome">Biografia:</label>
-              <textarea id="biografia" name="biografia" value={formValues.biografia} onChange={handleChange}></textarea>
+            <div className="form-group">
+              <label htmlFor="cidade">Cidade:</label>
+              <input
+                type="text"
+                id="cidade"
+                name="cidade"
+                value={formValues.cidade}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="estado">Estado:</label>
+              <input
+                type="text"
+                id="estado"
+                name="estado"
+                value={formValues.estado}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="bairro">Bairro:</label>
+              <input
+                type="text"
+                id="bairro"
+                name="bairro"
+                value={formValues.bairro}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="biografia">Biografia:</label>
+              <textarea
+                id="biografia"
+                name="biografia"
+                value={formValues.biografia}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="projetos">Projetos:</label>
+              <textarea
+                id="projetos"
+                name="projetos"
+                value={formValues.projetos}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="agenda_link">Agenda Link:</label>
+              <input
+                type="text"
+                id="agenda_link"
+                name="agenda_link"
+                value={formValues.agenda_link}
+                onChange={handleChange}
+              />
             </div>
             <div className="row">
               <div className="col-lg-5">
                 <div className='d-flex align-items-center justify-content-center'>
-                  <div style={{ position: 'relative', width: 190, height: 190 }}>
-                    <input
-                      ref={inputFile}
-                      accept="image/png, image/jpeg"
-                      type="file"
-                      className="position-absolute opacity-0"
-                      id="fileInput"
-                      onChange={onChangeInputFile}
-                      style={{ top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
-                    />
-                    <label htmlFor="fileInput" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-                      <img
-                        className="rounded-circle"
-                        src={avatarSRC}
-                        alt="avatar"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajuste o estilo conforme necessário
-                      />
-                    </label>
-                  </div>
+                
+
                 </div>
               </div>
             </div>
