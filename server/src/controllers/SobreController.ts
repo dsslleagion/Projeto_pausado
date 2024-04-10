@@ -27,10 +27,10 @@ class SobreController {
 
   public async post(req: Request, res: Response): Promise<Response>{
     try{
-        const { historia, conteudo, foto_administracao, projetos } = req.body
+        const { historia_empresa, conteudo, foto_administracao, projetos } = req.body
         const rep = AppDataSource.getRepository(Sobre)
         const sobre = new Sobre()
-        sobre.historia_empresa = historia
+        sobre.historia_empresa = historia_empresa
         sobre.conteudo = conteudo
         sobre.foto_administracao = foto_administracao
         sobre.projetos = projetos 
@@ -45,13 +45,13 @@ class SobreController {
   public async put(req: Request, res: Response): Promise<Response> {
     try {
       const id:any = req.params.uuid
-      const { historia, conteudo, foto_administracao, projetos } = req.body
+      const { historia_empresa, conteudo, foto_administracao, projetos } = req.body
       const rep = AppDataSource.getRepository(Sobre)
       const sobre = await rep.findOneBy({id:id})
       if (!sobre) {
         return res.status(404).json({ error: 'Sobre não encontrado' });
       }
-      sobre.historia_empresa = historia
+      sobre.historia_empresa = historia_empresa
       sobre.conteudo = conteudo
       sobre.foto_administracao = foto_administracao
       sobre.projetos = projetos  

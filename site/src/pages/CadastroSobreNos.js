@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 const CadastroSobreNos = () => {
   const { id } = useParams();
-  const [formData, setFormData] = useState({
+  const initialState = {
     nome: '',
     informacoes: '',
     fotoUrl: '',
@@ -13,7 +13,8 @@ const CadastroSobreNos = () => {
     conteudo: '',
     foto_administracao: '',
     projetos: ''
-  });
+  };
+  const [formData, setFormData] = useState(initialState);
 
   useEffect(() => {
     if (id) {
@@ -26,7 +27,11 @@ const CadastroSobreNos = () => {
       const response = await fetch(`http://localhost:3001/sobre/one/${id}`);
       if (response.ok) {
         const data = await response.json();
-        setFormData(data);
+        // Mescla os dados recebidos com o estado inicial
+        setFormData(prevState => ({
+          ...initialState,
+          ...data
+        }));
       } else {
         console.error('Erro ao buscar dados do item "Sobre Nós" para edição:', response.statusText);
       }
@@ -37,7 +42,10 @@ const CadastroSobreNos = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -48,7 +56,7 @@ const CadastroSobreNos = () => {
       } else {
         await cadastrarSobreNos(formData);
       }
-      setFormData({ nome: '', informacoes: '', fotoUrl: '', historia_empresa: '', conteudo: '', foto_administracao: '', projetos: '' });
+      setFormData(initialState);
       console.log('Formulário enviado com sucesso!');
     } catch (error) {
       console.error('Erro ao cadastrar/atualizar item "Sobre Nós":', error.message);
