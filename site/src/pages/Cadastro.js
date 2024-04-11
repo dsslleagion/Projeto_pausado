@@ -210,7 +210,7 @@ const Cadastro = () => {
       <div className="container">
         <h1 className="title">Cadastro</h1>
         <form onSubmit={handleSubmit} className="form">
-          <div className="form-group">
+          <div className="form-group-img">
             <div style={{ position: 'relative', width: 190, height: 190, borderRadius: '50%', overflow: 'hidden' }}>
               <input
                 ref={inputFile}
@@ -229,8 +229,8 @@ const Cadastro = () => {
                 />
               </label>
             </div>
-
-
+            </div>
+            <div className="form-group">
             <label htmlFor="nome">Nome:</label>
             <input
               type="text"

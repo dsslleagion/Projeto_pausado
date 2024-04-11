@@ -175,7 +175,7 @@
   background: linear-gradient(45deg, #f6f6f6, #ffff); /* Adição de gradiente de cores */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+
   margin-bottom: 20px;
   transition:.25s ease-in-out  ;
   

@@ -1,7 +1,10 @@
 /* cadastro.css */
 
 
-
+.form-group-img {
+  display: flex;
+  justify-content: center;
+}
 
 .title {
   font-size: 32px;
