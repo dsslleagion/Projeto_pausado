@@ -59,6 +59,7 @@ class EstatisticasController {
     }
   }
 
+
   public async getIntencaoVotoPorCandidato(req: Request, res: Response) {
     try {
       const candidatoRepository = AppDataSource.getRepository(Candidato);

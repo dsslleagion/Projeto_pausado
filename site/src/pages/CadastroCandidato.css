@@ -4,6 +4,10 @@
   width: 100%;
   overflow-x: auto;
 }
+.form-group-img{
+  display: flex;
+  justify-content: center;
+}
 
 table {
   width: 100%;
