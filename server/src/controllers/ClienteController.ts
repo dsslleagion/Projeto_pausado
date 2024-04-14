@@ -208,7 +208,21 @@ class ClienteController {
 
       //   profile
       // };
-      return res.json(cliente);
+      const rep = AppDataSource.getRepository(ClienteToTribuna)
+        const one = await rep
+          .createQueryBuilder('clienteToTribuna')
+          .innerJoinAndSelect('clienteToTribuna.tribuna', 'tribuna')
+          .where('clienteToTribuna.cliente = :clienteId', { clienteId: idCliente })
+          .getMany();
+        // const one = await rep.findBy({cliente: usuario.id})
+        // console.log(one.forEach((item) => console.log(item.tribuna)))
+        const repCandi = AppDataSource.getRepository(ClienteToCandidato)
+        const candidatos = await repCandi
+          .createQueryBuilder('clienteToCandidato')
+          .innerJoinAndSelect('clienteToCandidato.candidato', 'candidato')
+          .where('clienteToCandidato.cliente = :clienteId', { clienteId: idCliente })
+          .getMany();
+      return res.json({cliente: cliente, tribuna: one, candidato: candidatos});
     } catch (error) {
       console.error('Erro ao buscar cliente:', error);
       return res.status(500).json({ error: 'Erro ao buscar cliente' });

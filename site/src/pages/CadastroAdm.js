@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 
 const CadastroAdm = () => {
   const { id, email } = useParams();
-  const { userData, updateUserData, getClienteById } = useAuth();
+  //const { userData, updateUserData, getClienteById } = useAuth();
   const { candidato } = useContextoCandidato();
   const [candidatosUsa, setCandidatosUsa] = useState([]);
   const [novosCandidatos, setNovosCandidatos] = useState([]);
@@ -89,9 +89,12 @@ const CadastroAdm = () => {
           const response = await fetch(`http://localhost:3001/cliente/specific/${id}`); // Use a rota específica para buscar os dados do usuário por ID
           if (response.ok) {
             const clienteData = await response.json();
-            setFormData(clienteData);
-            setEmailUse(clienteData.email)
-            setAvatarSRC(clienteData.imagem)
+            console.log(clienteData);
+            setFormData(clienteData.cliente);
+            setTribunasUsa(isChecked(tribuna, clienteData.tribuna));
+            setCandidatosUsa(isChecked2(candidato, clienteData.candidato));
+            setEmailUse(clienteData.cliente.email)
+            setAvatarSRC(clienteData.cliente.imagem)
           } else {
             console.error('Erro ao buscar dados do cliente:', response.statusText);
           }
@@ -99,16 +102,12 @@ const CadastroAdm = () => {
           console.error('Erro ao buscar dados do cliente:', error);
         }
       };
-
-      setTribunasUsa(isChecked(tribuna, userData.tribunas));
-      setCandidatosUsa(isChecked2(candidato, userData.candidatos));
-
       fetchClienteData();
     } else {
       // Senão, o usuário está cadastrando
       setModoEdicao(false);
     }
-  }, [id, tribuna, candidato, userData.tribunas, userData.candidatos]);
+  }, [id, tribuna, candidato]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -124,7 +123,7 @@ const CadastroAdm = () => {
             headers: {
               'Content-Type': 'application/json;charset=utf-8',
             },
-            body: JSON.stringify({ cliente: userData.cliente.id, tribuna: tri.id }),
+            body: JSON.stringify({ cliente: id, tribuna: tri.id }),
           });
           if (response.ok) {
 
@@ -144,14 +143,14 @@ const CadastroAdm = () => {
           }
         }
       });
-      const response = await fetch(`http://localhost:3001/ct/allTri/${userData.cliente.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        },
-      });
-      const trib = await response.json();
-      updateUserData({ ...userData, cliente: formData, tribunas: trib });
+      // const response = await fetch(`http://localhost:3001/ct/allTri/${id}`, {
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/json;charset=utf-8',
+      //   },
+      // });
+      // const trib = await response.json();
+      // updateUserData({ ...userData, cliente: formData, tribunas: trib });
 
     } catch (err) { }
   };
@@ -165,7 +164,7 @@ const CadastroAdm = () => {
             headers: {
               'Content-Type': 'application/json;charset=utf-8',
             },
-            body: JSON.stringify({ cliente: userData.cliente.id, candidato: can.id }),
+            body: JSON.stringify({ cliente: id, candidato: can.id }),
           });
           if (response.ok) {
 
@@ -184,20 +183,23 @@ const CadastroAdm = () => {
             console.error('Erro ao excluir usuário:', response.statusText);
           }
         }
-      });
-      const response = await fetch(`http://localhost:3001/cc/allCan/${userData.cliente.id}`, {
+      })
+      const response = await fetch(`http://localhost:3001/cc/allCan/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
         },
-      });
+      })
       const canb = await response.json();
-      updateUserData({ ...userData, cliente: formData, candidatos: canb });
-
-    } catch (err) { }
+     // updateUserData({ ...userData, cliente: formData, candidatos: canb });
+      const foi =  setCandidatosUsa(isChecked2(candidato, await response.json()))
+      console.log(foi);
+    } catch (err) { 
+     
+    }
   };
 
-  console.log(emailUse);
+  console.log(candidatosUsa);
 
   const handleUpdatePassword = async () => {
     try {
@@ -231,7 +233,7 @@ const CadastroAdm = () => {
     try {
       if (icone !== undefined) {
         const up = await upload(formData.nome, icone, 'usuarios')
-        const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
+        const response = await fetch(`/cliente/modify/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -259,13 +261,13 @@ const CadastroAdm = () => {
           alert('Dados do cliente atualizados com sucesso!');
 
 
-          const updatedUserData = { ...userData, cliente: formData };
-          updateUserData(updatedUserData);
+          // const updatedUserData = { ..., cliente: formData };
+          // updateUserData(updatedUserData);
           // Chama o logout após a atualização
 
         }
       }
-      const response = await fetch(`/cliente/modify/${userData.cliente.id}`, {
+      const response = await fetch(`/cliente/modify/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -293,8 +295,8 @@ const CadastroAdm = () => {
         alert('Dados do cliente atualizados com sucesso!');
 
 
-        const updatedUserData = { ...userData, cliente: formData };
-        updateUserData(updatedUserData);
+        // const updatedUserData = { ...userData, cliente: formData };
+        // updateUserData(updatedUserData);
 
 
       } else {
