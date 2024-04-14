@@ -362,10 +362,10 @@ const CadastroAdm = () => {
             <input type="email" name="email" value={formData.email} onChange={handleChange} />
           </div>
           <div className="form-group">
-            <label>Senha:</label>
             {modoEdicao ? null : (
               <>
               <div>
+                <label>Senha:</label>
                 <input type="password" name="senha" value={formData.password} onChange={handleChange} />
                 </div>
                 <div>

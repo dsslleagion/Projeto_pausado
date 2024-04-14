@@ -5,11 +5,12 @@ import './Cadastro.css';
 import Footer from '../components/Footer';
 import { upload } from '../supabase/upload';
 import Swal from 'sweetalert2';
+import { useParams } from 'react-router-dom';
 
 
 
 const Cadastro = () => {
-
+  const { status } = useParams();
   const [formValues, setFormValues] = useState({
     nome: '',
     email: '',
@@ -149,16 +150,31 @@ const Cadastro = () => {
       const clienteData = await response.json();
       console.log('Dados cadastrados com sucesso:', clienteData);
       const clienteId = clienteData.id;
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Usuário criado com sucesso!',
-        text: 'Você será redirecionado para a página de login.'
-      }).then(() => {
-        // Redirecionar para a página de login após fechar o SweetAlert
-        window.location.href = '/login';
-      });
-
+      if(!status){
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuário criado com sucesso!',
+          text: 'Você será redirecionado para a página de login.'
+        }).then(() => {
+          // Redirecionar para a página de login após fechar o SweetAlert
+         
+          window.location.href = '/login';
+          
+        });
+      }else{
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuário criado com sucesso!',
+          text: 'Você será redirecionado para a página de listagem dos usuarios.'
+        }).then(() => {
+          // Redirecionar para a página de login após fechar o SweetAlert
+         
+          window.location.href = '/listagemUsuarios';
+          
+        });
+      }
+     
+      
       // Laços para criar os vínculos com tribuna e candidato
       await Promise.all(
         formValues.tribunaIds.map(async tribunaId => {
@@ -371,6 +387,19 @@ const Cadastro = () => {
               placeholder="Exemplo: Instagram: @seuUsuario, Facebook: nome de usuário"
             />
           </div>
+          {
+            status &&(
+              <div className="form-group">
+                <label>Status:</label>
+                <select name="status" value={formValues.status} onChange={handleChange}>
+                  <option value="">Selecione o status</option>
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+              </div>
+            )
+          }
+          
           <div className="form-group">
             <label htmlFor="password">Senha:</label>
             <input

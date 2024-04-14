@@ -95,7 +95,7 @@ const ListagemUsuarios = () => {
           ))}
         </Tabela>
 
-        <button ><Link to="/cadastroAdm">Cadastrar</Link></button>
+        <button ><Link to="/cadastroA/true">Cadastrar</Link></button>
       </div>
       <Footer />
     </div>

@@ -40,7 +40,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/cadastroAdm" element={<CadastroAdm />} />
+              <Route path="/cadastroA/:status" element={<Cadastro />} />
               <Route path="/cadastroAdm/:id" element={<CadastroAdm />} />
               <Route path="/tribunas" element={<TribunasPage />} />
               <Route path="/Estatisticas" element={<EstatisticasPage />} />
