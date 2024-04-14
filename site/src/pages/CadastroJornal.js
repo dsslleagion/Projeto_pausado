@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Button from '../components/Button';
 import './CadastroJornal.css';
@@ -7,6 +7,9 @@ import { useParams } from 'react-router-dom';
 
 const CadastroJornal = () => {
   const { id } = useParams();
+  const [avatarSRC, setAvatarSRC] = useState('')
+  const [icone, setIcone] = useState()
+  const inputFile = useRef(null)
   const [formValues, setFormValues] = useState({
     titulo: '',
     conteudo: '',
@@ -33,6 +36,22 @@ const CadastroJornal = () => {
       console.error('Erro ao buscar jornal:', error);
     }
   };
+
+  const onChangeInputFile = (e) => {
+    const files = e.target.files;
+
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        setAvatarSRC(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setIcone(e.target.files[0]);
+  }
+console.log(icone);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,6 +121,13 @@ const CadastroJornal = () => {
               onChange={handleChange}
             />
           </div>
+          <input type="file" onChange={onChangeInputFile} />
+      {avatarSRC && (
+        <div>
+          <iframe title='pdf' src={avatarSRC} type="application/pdf" width="100%" height="600px" />
+        </div>
+      )}
+     
           <button type="submit">{id ? 'Editar' : 'Cadastrar'}</button>
         </form>
       </div>

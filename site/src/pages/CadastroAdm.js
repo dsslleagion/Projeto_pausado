@@ -41,7 +41,7 @@ const CadastroAdm = () => {
   const [icone, setIcone] = useState()
   const inputFile = useRef(null)
   const [modoEdicao, setModoEdicao] = useState(false);
-
+  const [ emailUse, setEmailUse ] = useState('')
   const isChecked = (lista1, lista2) => {
     lista1.forEach((item1) => {
       const encontrado = lista2.some((item2) => item1.id === item2.tribuna.id);
@@ -90,6 +90,7 @@ const CadastroAdm = () => {
           if (response.ok) {
             const clienteData = await response.json();
             setFormData(clienteData);
+            setEmailUse(clienteData.email)
             setAvatarSRC(clienteData.imagem)
           } else {
             console.error('Erro ao buscar dados do cliente:', response.statusText);
@@ -196,10 +197,12 @@ const CadastroAdm = () => {
     } catch (err) { }
   };
 
+  console.log(emailUse);
+
   const handleUpdatePassword = async () => {
     try {
       if (formData.password === formData.passwordRep && formData.password !== null && formData.password !== undefined) {
-        const response = await fetch(`/cliente/modifypassword/${userData.cliente.userEmail}`, {
+        const response = await fetch(`/cliente/modifypassword/${emailUse}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
